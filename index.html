@@ -225,6 +225,10 @@
   @media (max-width:820px){ .cross-grid{ grid-template-columns:1fr; } }
   .field-row{ display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; margin-bottom:18px; }
   .result-box{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  .suggestion-card{ display:flex; justify-content:space-between; align-items:center; gap:16px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:8px; }
+  .suggestion-card .link{ font-family:var(--font-mono); font-size:13.5px; }
+  .suggestion-card .score{ font-size:12px; color:var(--muted); margin-top:4px; }
+  .suggestion-empty{ font-size:13px; color:var(--muted); padding:8px 0; }
   .result-box .big{ font-family:var(--font-display); font-size:28px; }
   .missing-list{ font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-top:10px; }
 
@@ -320,6 +324,8 @@
         </div>
       </div>
       <div id="cross-check-wrap" style="display:none">
+        <div id="cross-suggestions"></div>
+        <p class="field-label" style="margin-top:14px;">Of kies handmatig:</p>
         <div class="field-row">
           <div>
             <label class="field-label">Kolom in hoofdtabel</label>
@@ -988,6 +994,96 @@
     primarySel.innerHTML = STATE.headers.map(h => `<option value="${h}">${h}</option>`).join('');
   }
 
+  // ---- automatische relatie-detectie ----
+  function normalizeName(name){ return name.toLowerCase().replace(/[^a-z0-9]/g, ''); }
+
+  function nameTokens(name){
+    return name.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  }
+
+  function nameSimilarity(a, b){
+    const na = normalizeName(a), nb = normalizeName(b);
+    if (na === nb) return 1;
+    if (na.includes(nb) || nb.includes(na)) return 0.7;
+    const ta = new Set(nameTokens(a)), tb = new Set(nameTokens(b));
+    return [...ta].some(t => tb.has(t)) ? 0.5 : 0;
+  }
+
+  function distinctColumnValues(rows, col, cap){
+    const out = [];
+    const seen = new Set();
+    for (const r of rows) {
+      const v = r[col];
+      if (isNullish(v)) continue;
+      const s = String(v).trim();
+      if (!seen.has(s)) { seen.add(s); out.push(s); if (cap && out.length >= cap) break; }
+    }
+    return out;
+  }
+
+  function valueOverlap(primaryValues, refValueSet){
+    if (!primaryValues.length) return 0;
+    const sample = primaryValues.slice(0, 500);
+    const matched = sample.filter(v => refValueSet.has(v)).length;
+    return matched / sample.length;
+  }
+
+  // Vergelijkt elke kolom uit de hoofdtabel met elke kolom uit de referentietabel,
+  // op basis van naamovereenkomst en daadwerkelijke waarde-overlap, en geeft de
+  // sterkste kandidaten terug (alleen waar de waarde-overlap substantieel is).
+  function suggestRelations(){
+    if (!STATE.refTable) return [];
+    const candidates = [];
+    STATE.headers.forEach(ph => {
+      const primaryValues = distinctColumnValues(STATE.rows, ph, 500);
+      if (primaryValues.length < 2) return;
+      STATE.refTable.headers.forEach(rh => {
+        const refValues = new Set(distinctColumnValues(STATE.refTable.rows, rh));
+        if (refValues.size < 2) return;
+        const vScore = valueOverlap(primaryValues, refValues);
+        if (vScore < 0.5) return;
+        const nScore = nameSimilarity(ph, rh);
+        candidates.push({ primaryCol: ph, refCol: rh, vScore, nScore, combined: vScore * 0.75 + nScore * 0.25 });
+      });
+    });
+    candidates.sort((a, b) => b.combined - a.combined);
+    // voorkom dat dezelfde hoofdtabelkolom meerdere keren voorkomt in de top-lijst
+    const seenPrimary = new Set();
+    return candidates.filter(c => {
+      if (seenPrimary.has(c.primaryCol)) return false;
+      seenPrimary.add(c.primaryCol);
+      return true;
+    }).slice(0, 5);
+  }
+
+  function renderRelationSuggestions(){
+    const wrap = document.getElementById('cross-suggestions');
+    wrap.innerHTML = '';
+    const suggestions = suggestRelations();
+    if (!suggestions.length) {
+      wrap.appendChild(el('div', {class:'suggestion-empty', html:'Geen sterke automatische match gevonden op basis van naam en waarde-overlap — kies hieronder handmatig.'}));
+      return;
+    }
+    wrap.appendChild(el('p', {class:'field-label', html:'Automatisch gevonden mogelijke koppelingen:'}));
+    suggestions.forEach(s => {
+      const nameNote = s.nScore >= 0.5 ? ', namen lijken op elkaar' : '';
+      const card = el('div', {class:'suggestion-card'}, [
+        el('div', {}, [
+          el('div', {class:'link', html: `${s.primaryCol} &harr; ${s.refCol}`}),
+          el('div', {class:'score', html: `${(s.vScore*100).toFixed(0)}% van de waarden komt overeen${nameNote}`})
+        ])
+      ]);
+      const useBtn = el('button', {class:'btn small', html:'Gebruik deze koppeling'});
+      useBtn.addEventListener('click', () => {
+        document.getElementById('cross-primary-col').value = s.primaryCol;
+        document.getElementById('cross-ref-col').value = s.refCol;
+        document.getElementById('cross-check-btn').click();
+      });
+      card.appendChild(useBtn);
+      wrap.appendChild(card);
+    });
+  }
+
   const refDropzone = document.getElementById('ref-dropzone');
   const refFileInput = document.getElementById('ref-file-input');
   document.getElementById('ref-pick-btn').addEventListener('click', () => refFileInput.click());
@@ -1002,6 +1098,7 @@
       document.getElementById('cross-upload-wrap').style.display = 'none';
       document.getElementById('cross-check-wrap').style.display = 'block';
       document.getElementById('cross-ref-col').innerHTML = headers.map(h => `<option value="${h}">${h}</option>`).join('');
+      renderRelationSuggestions();
     });
   }
 
@@ -1010,6 +1107,7 @@
     document.getElementById('cross-upload-wrap').style.display = 'block';
     document.getElementById('cross-check-wrap').style.display = 'none';
     document.getElementById('cross-result').innerHTML = '';
+    document.getElementById('cross-suggestions').innerHTML = '';
     refFileInput.value = '';
   });
 
