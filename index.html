@@ -198,6 +198,11 @@
   .flag .dim-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
   .flag .dim-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
   .flag .ai-tag{ font-size:10px; font-family:var(--font-mono); background:var(--accent-soft); color:var(--accent); padding:2px 6px; border-radius:10px; }
+  .flag .custom-tag{ font-size:10px; font-family:var(--font-mono); background:var(--surface-sunken); color:var(--muted); padding:2px 6px; border-radius:10px; }
+  .flag-delete-btn{ background:none; border:none; color:var(--faint); font-size:17px; line-height:1; cursor:pointer; padding:0 2px; }
+  .flag-delete-btn:hover{ color:var(--danger); }
+  .add-rule-section{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+  .add-rule-form{ margin-top:10px; display:flex; flex-direction:column; gap:8px; }
   .flag .rule-text{ font-size:13.5px; margin-top:3px; }
   .flag .sql{ font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-top:6px; background:var(--surface-sunken); padding:6px 8px; border-radius:6px; display:block; overflow-x:auto; white-space:pre; }
   .no-flags{ font-size:13.5px; color:var(--muted); padding:10px 0; }
@@ -265,7 +270,7 @@
 
   <header class="top">
     <div>
-      <p class="eyebrow">NORA · Datakwaliteit &nbsp; <button class="gear-btn" id="settings-btn">AI-instellingen</button> <button class="gear-btn" id="mask-toggle-btn" title="Maskeert BSN- en IBAN-achtige kolommen in voorbeeldwaarden en cross-tabel resultaten">Maskeer gevoelige waarden: aan</button></p>
+      <p class="eyebrow">NORA · Datakwaliteit &nbsp; <button class="gear-btn" id="mask-toggle-btn" title="Maskeert BSN- en IBAN-achtige kolommen in voorbeeldwaarden en cross-tabel resultaten">Maskeer gevoelige waarden: aan</button></p>
       <h1>Data Quality Rule Assistant</h1>
       <p>Upload een tabel, laat automatisch profileren, valideer per signaal, en exporteer naar bruikbare regels.</p>
     </div>
@@ -371,23 +376,7 @@
 
 </div>
 
-<!-- AI settings modal -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal">
-    <h3>AI-verrijking</h3>
-    <p>Deze app gebruikt een gedeelde sleutel die via een server-functie loopt (<code>netlify/functions/generate-rule.js</code>), met een dagelijkse limiet per browser.</p>
-    <div class="row">
-      <label class="field-label">Functie-URL</label>
-      <input type="text" id="ai-endpoint-input" style="width:100%" placeholder="/.netlify/functions/generate-rule">
-    </div>
-    <p id="ai-usage-label" style="font-size:12.5px; color:var(--muted);"></p>
 
-    <div class="actions">
-      <button class="btn secondary small" id="settings-cancel-btn">Sluiten</button>
-      <button class="btn small" id="settings-save-btn">Opslaan</button>
-    </div>
-  </div>
-</div>
 
 <script>
 (function(){
@@ -447,6 +436,24 @@
     if (cls) s.className = cls;
     s.textContent = content;
     return s;
+  }
+
+  // creates any element with plain text content (safe for arbitrary/user-typed data)
+  function safeEl(tag, cls, content){
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    e.textContent = content;
+    return e;
+  }
+
+  // wraps a form control with a small field-label above it
+  function fieldWrap(labelText, inputEl){
+    const wrap = document.createElement('div');
+    const label = document.createElement('label');
+    label.className = 'field-label'; label.textContent = labelText;
+    inputEl.style.width = '100%';
+    wrap.appendChild(label); wrap.appendChild(inputEl);
+    return wrap;
   }
 
   function isNullish(v){
@@ -599,6 +606,19 @@
       .concat(profile.crossChecks.filter(c => c.confirmed !== false));
   }
 
+  // removes a flag by index and reindexes the confirmations map so remaining
+  // flags keep their correct "bevestigd" state
+  function removeFlagAt(profile, idx){
+    profile.flags.splice(idx, 1);
+    const remapped = {};
+    Object.entries(profile.confirmations).forEach(([k, v]) => {
+      const ki = parseInt(k, 10);
+      if (ki < idx) remapped[ki] = v;
+      else if (ki > idx) remapped[ki - 1] = v;
+    });
+    profile.confirmations = remapped;
+  }
+
   // ---------- dom helpers ----------
   function el(tag, attrs, children){
     const e = document.createElement(tag);
@@ -662,6 +682,9 @@
     });
   }
 
+  // columns for which the "eigen regel toevoegen" form is currently expanded
+  const openAddRuleFor = new Set();
+
   function renderColumns(){
     const list = document.getElementById('col-list');
     const openNames = new Set([...list.querySelectorAll('.col-card.open')].map(c => c.dataset.name));
@@ -721,16 +744,28 @@
           const dim = DIMENSIONS[f.dim];
           const flagEl = el('div', {class:'flag'});
           const swatch = el('span', {class:'swatch'}); swatch.style.background = dim.color;
-          const dimRow = el('div', {class:'dim-row'}, [
-            el('span', {class:'dim-label', html: dim.label})
-          ]);
-          dimRow.querySelector('.dim-label').style.color = dim.color;
-          if (f.ai) dimRow.appendChild(el('span', {class:'ai-tag', html:'AI-suggestie'}));
+
+          const leftTags = el('div', {style:'display:flex; align-items:center; gap:8px;'});
+          const dimLabel = el('span', {class:'dim-label', html: dim.label});
+          dimLabel.style.color = dim.color;
+          leftTags.appendChild(dimLabel);
+          if (f.ai) leftTags.appendChild(el('span', {class:'ai-tag', html:'AI-suggestie'}));
+          if (f.custom) leftTags.appendChild(el('span', {class:'custom-tag', html:'Eigen regel'}));
+
+          const dimRow = el('div', {class:'dim-row'}, [leftTags]);
+          if (f.custom) {
+            const delBtn = el('button', {class:'flag-delete-btn', title:'Verwijder deze eigen regel', html:'&times;'});
+            delBtn.addEventListener('click', () => {
+              removeFlagAt(p, idx);
+              renderColumns(); renderStats();
+            });
+            dimRow.appendChild(delBtn);
+          }
 
           const body = el('div', {class:'body'}, [
             dimRow,
-            el('div', {class:'rule-text', html: f.text}),
-            el('code', {class:'sql', html: f.sql})
+            safeEl('div', 'rule-text', f.text),
+            safeEl('code', 'sql', f.sql)
           ]);
 
           const confirm = el('div', {class:'confirm-toggle'});
@@ -753,6 +788,83 @@
           flagsBlock.appendChild(flagEl);
         });
       }
+
+      // ---- eigen regel toevoegen (business-kennis die profiling/AI niet heeft) ----
+      const addSection = el('div', {class:'add-rule-section'});
+
+      const quickInput = document.createElement('input');
+      quickInput.type = 'text';
+      quickInput.placeholder = 'bijv. actief, inactief, geblokkeerd';
+      const quickWrap = fieldWrap('Snel: toegestane waarden (kommagescheiden)', quickInput);
+      const quickBtn = el('button', {class:'btn small', html:'Toevoegen als regel'});
+      quickBtn.style.marginTop = '8px';
+      quickBtn.addEventListener('click', () => {
+        const raw = quickInput.value.trim();
+        if (!raw) { quickInput.focus(); return; }
+        const values = raw.split(',').map(v => v.trim()).filter(Boolean);
+        if (!values.length) return;
+        const sqlList = values.map(v => `'${v.replace(/'/g, "''")}'`).join(', ');
+        p.flags.push({
+          dim: 'juistheid',
+          text: `\`${p.name}\` mag alleen de volgende waarden bevatten: ${values.join(', ')}.`,
+          sql: `SELECT * FROM tabel WHERE ${p.name} NOT IN (${sqlList});`,
+          custom: true,
+          values
+        });
+        renderColumns(); renderStats();
+      });
+      addSection.appendChild(quickWrap);
+      addSection.appendChild(quickBtn);
+
+      const toggleFormBtn = el('button', {
+        class:'btn secondary small',
+        html: openAddRuleFor.has(p.name) ? 'Annuleer eigen regel' : '+ Andere eigen regel toevoegen'
+      });
+      toggleFormBtn.style.marginTop = '10px';
+      toggleFormBtn.addEventListener('click', () => {
+        if (openAddRuleFor.has(p.name)) openAddRuleFor.delete(p.name); else openAddRuleFor.add(p.name);
+        renderColumns();
+      });
+      addSection.appendChild(toggleFormBtn);
+
+      if (openAddRuleFor.has(p.name)) {
+        const dimSelect = document.createElement('select');
+        DIM_KEYS.forEach(k => {
+          const opt = document.createElement('option');
+          opt.value = k; opt.textContent = DIMENSIONS[k].label;
+          dimSelect.appendChild(opt);
+        });
+        const textInput = document.createElement('input');
+        textInput.type = 'text';
+        textInput.placeholder = 'Omschrijving, bijv. "Bedrag mag nooit negatief zijn bij type creditnota"';
+        const sqlInput = document.createElement('input');
+        sqlInput.type = 'text';
+        sqlInput.placeholder = 'SQL-check (optioneel)';
+
+        const submitBtn = el('button', {class:'btn small', html:'Regel toevoegen'});
+        submitBtn.addEventListener('click', () => {
+          const text = textInput.value.trim();
+          if (!text) { textInput.focus(); return; }
+          p.flags.push({
+            dim: dimSelect.value,
+            text,
+            sql: sqlInput.value.trim() || '-- geen SQL-check opgegeven',
+            custom: true
+          });
+          openAddRuleFor.delete(p.name);
+          renderColumns(); renderStats();
+        });
+
+        const form = el('div', {class:'add-rule-form'}, [
+          fieldWrap('NORA-dimensie', dimSelect),
+          fieldWrap('Omschrijving', textInput),
+          fieldWrap('SQL-check (optioneel)', sqlInput),
+          submitBtn
+        ]);
+        addSection.appendChild(form);
+      }
+
+      flagsBlock.appendChild(addSection);
 
       grid.appendChild(statsBlock); grid.appendChild(flagsBlock);
       detail.appendChild(grid);
@@ -807,10 +919,12 @@
   });
 
   // ---------- AI enrichment (fase 1) ----------
-  function getAIEndpoint(){ return localStorage.getItem('nora_ai_endpoint') || '/.netlify/functions/generate-rule'; }
+  // Vast adres van de server-functie. Bezoekers hoeven dit nooit te zien of aan te passen —
+  // als je dit adres ooit wijzigt, pas het hier in de code aan.
+  const AI_ENDPOINT = '/.netlify/functions/generate-rule';
 
-  // Zachte, client-side dagelijkse limiet per browser voor de GEDEELDE sleutel.
-  // Geldt niet als iemand zijn eigen sleutel invult (die kosten zijn dan van hemzelf).
+  // Zachte, client-side dagelijkse limiet per browser, puur om onbedoeld/overmatig
+  // gebruik van de gedeelde sleutel te voorkomen.
   const AI_DAILY_LIMIT = 20;
   function todayKey(){ return 'nora_ai_calls_' + new Date().toISOString().slice(0, 10); }
   function getAICallCount(){ return parseInt(localStorage.getItem(todayKey()) || '0', 10); }
@@ -822,7 +936,7 @@
       alert(`Dagelijkse limiet van ${AI_DAILY_LIMIT} AI-verrijkingen voor deze browser is bereikt. Probeer het morgen opnieuw.`);
       return;
     }
-    const endpoint = getAIEndpoint();
+    const endpoint = AI_ENDPOINT;
     const original = btn.textContent;
     btn.textContent = 'Bezig...'; btn.disabled = true;
     incrementAICallCount();
@@ -848,10 +962,9 @@
       });
       renderColumns(); renderStats();
     } catch (err) {
-      alert('AI-verrijking niet gelukt: ' + err.message + '\n\nControleer of netlify/functions/generate-rule.js is gedeployed en ANTHROPIC_API_KEY is ingesteld in je Netlify-projectinstellingen.');
+      alert('AI-verrijking is nu niet beschikbaar. Probeer het later opnieuw.');
     } finally {
       btn.textContent = original; btn.disabled = false;
-      updateSettingsUsageLabel();
     }
   }
 
@@ -867,24 +980,6 @@
     // cross-tabel result, if shown, needs a fresh check to re-apply masking
     const crossResult = document.getElementById('cross-result');
     if (crossResult) crossResult.innerHTML = '';
-  });
-
-  // settings modal
-  const settingsModal = document.getElementById('settings-modal');
-  function updateSettingsUsageLabel(){
-    const label = document.getElementById('ai-usage-label');
-    if (label) label.textContent = `Vandaag gebruikt: ${getAICallCount()} van ${AI_DAILY_LIMIT} AI-verrijkingen voor deze browser.`;
-  }
-  document.getElementById('settings-btn').addEventListener('click', () => {
-    document.getElementById('ai-endpoint-input').value = getAIEndpoint();
-    updateSettingsUsageLabel();
-    settingsModal.classList.add('show');
-  });
-  document.getElementById('settings-cancel-btn').addEventListener('click', () => settingsModal.classList.remove('show'));
-  document.getElementById('settings-save-btn').addEventListener('click', () => {
-    const val = document.getElementById('ai-endpoint-input').value.trim() || '/.netlify/functions/generate-rule';
-    localStorage.setItem('nora_ai_endpoint', val);
-    settingsModal.classList.remove('show');
   });
 
   // ---------- cross-tabel (fase 4) ----------
@@ -1020,6 +1115,10 @@
         if (r.dim === 'compleetheid') out += `          - not_null\n`;
         if (r.dim === 'uniciteit') out += `          - unique\n`;
         if (r.crossTable) out += `          # - relationships (zie referentietabel, vul relation en field in)\n`;
+        if (r.values && r.values.length) {
+          const list = r.values.map(v => `"${String(v).replace(/"/g, '\\"')}"`).join(', ');
+          out += `          - accepted_values:\n              values: [${list}]\n`;
+        }
       });
     });
     return out;
