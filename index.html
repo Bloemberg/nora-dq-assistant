@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NORA Data Quality Rule Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#F1F3EF;
+    --surface:#FFFFFF;
+    --surface-sunken:#E9ECE7;
+    --ink:#1B2420;
+    --muted:#5C6A62;
+    --faint:#8C978F;
+    --line:#DBE1D9;
+    --accent:#285C4D;
+    --accent-ink:#FFFFFF;
+    --accent-soft:#E4EEE9;
+    --danger:#A33A2D;
+    --radius:10px;
+    --font-display:'Newsreader', serif;
+    --font-body:'Public Sans', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+
+    --dim-compleetheid:#3B6FA0;
+    --dim-juistheid:#4C8C6B;
+    --dim-consistentie:#7A5FA0;
+    --dim-actualiteit:#B8862F;
+    --dim-uniciteit:#2B8C8C;
+    --dim-plausibiliteit:#B0562F;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.55;
+    min-height:100vh;
+  }
+  a{color:inherit;}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px 80px;
+  }
+
+  header.top{
+    padding:44px 0 28px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  header.top .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  header.top h1{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:32px;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  header.top p{
+    margin:8px 0 0;
+    color:var(--muted);
+    max-width:46ch;
+    font-size:14.5px;
+  }
+  .nora-note{
+    font-size:13px;
+    color:var(--faint);
+    max-width:260px;
+    text-align:right;
+    border-left:1px solid var(--line);
+    padding-left:20px;
+  }
+  .gear-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    border-radius:20px;
+    padding:2px 10px;
+    font-size:11px;
+    font-family:var(--font-mono);
+    cursor:pointer;
+  }
+  .gear-btn:hover{border-color:var(--accent); color:var(--accent);}
+
+  /* Empty state / dropzone */
+  .dropzone{
+    background:var(--surface);
+    border:1.5px dashed var(--line);
+    border-radius:16px;
+    padding:64px 40px;
+    text-align:center;
+    transition:border-color .15s, background .15s;
+    cursor:pointer;
+  }
+  .dropzone.drag{ border-color:var(--accent); background:var(--accent-soft); }
+  .dropzone.small{ padding:34px 24px; }
+  .dropzone h2{ font-family:var(--font-display); font-weight:500; font-size:22px; margin:0 0 10px; }
+  .dropzone h3{ font-family:var(--font-display); font-weight:500; font-size:17px; margin:0 0 8px; }
+  .dropzone p{ color:var(--muted); margin:0 0 22px; font-size:14px; }
+  .dropzone .filetypes{ font-family:var(--font-mono); font-size:12px; color:var(--faint); margin-top:18px; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--accent); color:var(--accent-ink);
+    border:none; padding:11px 20px; border-radius:8px;
+    font-family:var(--font-body); font-weight:600; font-size:14px; cursor:pointer;
+  }
+  .btn.secondary{ background:transparent; color:var(--accent); border:1px solid var(--line); }
+  .btn.small{ padding:7px 13px; font-size:12.5px; }
+  .btn.danger{ background:var(--danger); }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; }
+  input[type=file]{display:none;}
+
+  select, input[type=text]{
+    font-family:var(--font-body);
+    font-size:13.5px;
+    padding:8px 10px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--ink);
+  }
+  label.field-label{ font-size:12px; color:var(--muted); display:block; margin-bottom:5px; }
+
+  /* Tabs */
+  .tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:24px; }
+  .tab-btn{
+    background:none; border:none; padding:10px 16px; font-size:13.5px;
+    font-family:var(--font-body); font-weight:600; color:var(--muted);
+    cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px;
+  }
+  .tab-btn.active{ color:var(--accent); border-bottom-color:var(--accent); }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+
+  /* Dashboard stats */
+  .stats-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:26px; }
+  .stat-pill{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 16px; min-width:118px; }
+  .stat-pill .n{ font-family:var(--font-display); font-size:24px; font-weight:500; line-height:1.1; }
+  .stat-pill .l{ font-size:11.5px; color:var(--muted); margin-top:4px; }
+  .stat-pill.dim{ border-top:3px solid var(--dim-color, var(--line)); }
+
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px; }
+  .toolbar .meta{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); }
+
+  /* Column cards */
+  .col-list{ display:flex; flex-direction:column; gap:10px; }
+  .col-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .col-card-head{ display:flex; align-items:center; gap:18px; padding:16px 18px; cursor:pointer; }
+  .col-name{ font-family:var(--font-mono); font-weight:500; font-size:14px; min-width:180px; }
+  .col-type{ font-size:12px; color:var(--muted); background:var(--surface-sunken); padding:3px 9px; border-radius:20px; white-space:nowrap; }
+  .fingerprint{ display:flex; gap:5px; margin-left:auto; }
+  .dot{ width:10px; height:10px; border-radius:50%; background:var(--surface-sunken); border:1px solid var(--line); }
+  .dot.lit{ border-color:transparent; }
+  .quick-stats{ display:flex; gap:16px; font-size:12.5px; color:var(--muted); white-space:nowrap; }
+  .quick-stats b{ color:var(--ink); font-weight:600; }
+  .chevron{ color:var(--faint); font-size:18px; transition:transform .15s; line-height:1; }
+  .col-card.open .chevron{ transform:rotate(90deg); }
+
+  .col-detail{ display:none; border-top:1px solid var(--line); padding:20px 18px 22px; background:var(--surface-sunken); }
+  .col-card.open .col-detail{ display:block; }
+
+  .detail-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media (max-width:820px){ .detail-grid{ grid-template-columns:1fr; } }
+  .detail-block h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin:0 0 10px; font-weight:600; }
+
+  .stat-line{ display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .stat-line span:last-child{ font-family:var(--font-mono); font-size:12.5px; }
+
+  .flag{ display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:8px; background:var(--surface); border:1px solid var(--line); margin-bottom:8px; }
+  .flag .swatch{ width:8px; height:8px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+  .flag .body{ flex:1; }
+  .flag .dim-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .flag .dim-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
+  .flag .ai-tag{ font-size:10px; font-family:var(--font-mono); background:var(--accent-soft); color:var(--accent); padding:2px 6px; border-radius:10px; }
+  .flag .rule-text{ font-size:13.5px; margin-top:3px; }
+  .flag .sql{ font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-top:6px; background:var(--surface-sunken); padding:6px 8px; border-radius:6px; display:block; overflow-x:auto; white-space:pre; }
+  .no-flags{ font-size:13.5px; color:var(--muted); padding:10px 0; }
+
+  .confirm-toggle{ display:flex; gap:4px; margin-top:8px; }
+  .confirm-opt{ font-size:11px; padding:4px 9px; border-radius:20px; border:1px solid var(--line); background:var(--surface); cursor:pointer; color:var(--muted); }
+  .confirm-opt.active{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  .confirm-opt.active.neg{ background:var(--danger); border-color:var(--danger); }
+
+  .ai-enrich-btn{ margin-top:2px; }
+
+  footer.hint{ margin-top:40px; font-size:12.5px; color:var(--faint); border-top:1px solid var(--line); padding-top:18px; }
+
+  .legend{ display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--muted); margin-top:14px; }
+  .legend .item{ display:flex; align-items:center; gap:6px; }
+  .legend .dot{ width:8px; height:8px; border:none; }
+
+  /* cross-tabel */
+  .cross-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:22px; }
+  @media (max-width:820px){ .cross-grid{ grid-template-columns:1fr; } }
+  .field-row{ display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; margin-bottom:18px; }
+  .result-box{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  .result-box .big{ font-family:var(--font-display); font-size:28px; }
+  .missing-list{ font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-top:10px; }
+
+  /* export */
+  .export-tabs{ display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .export-tab-btn{ font-size:12.5px; padding:7px 12px; border-radius:20px; border:1px solid var(--line); background:var(--surface); cursor:pointer; color:var(--muted); }
+  .export-tab-btn.active{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  pre.export-preview{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:16px; font-family:var(--font-mono); font-size:12px; overflow-x:auto;
+    white-space:pre; max-height:420px; overflow-y:auto;
+  }
+
+  /* projects */
+  .project-row{ display:flex; justify-content:space-between; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 16px; margin-bottom:8px; }
+  .project-row .name{ font-weight:600; font-size:13.5px; }
+  .project-row .meta{ font-size:11.5px; color:var(--muted); font-family:var(--font-mono); }
+  .project-row .actions{ display:flex; gap:8px; }
+
+  /* modal */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(20,26,22,0.35);
+    align-items:center; justify-content:center; z-index:50; padding:20px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal{ background:var(--surface); border-radius:12px; padding:24px; max-width:440px; width:100%; }
+  .modal h3{ font-family:var(--font-display); font-weight:500; margin:0 0 6px; font-size:18px; }
+  .modal p{ font-size:13px; color:var(--muted); margin:0 0 16px; }
+  .modal .row{ margin-bottom:14px; }
+  .modal .actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:18px; }
+
+  #app-main{ display:none; }
+
+  @media print{
+    header.top .nora-note, .tabs, .toolbar button, .dropzone, .confirm-toggle, .ai-enrich-btn, footer.hint, .gear-btn { display:none !important; }
+    body{ background:#fff; }
+    .col-card{ break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="top">
+    <div>
+      <p class="eyebrow">NORA · Datakwaliteit &nbsp; <button class="gear-btn" id="settings-btn">AI-instellingen</button> <button class="gear-btn" id="mask-toggle-btn" title="Maskeert BSN- en IBAN-achtige kolommen in voorbeeldwaarden en cross-tabel resultaten">Maskeer gevoelige waarden: aan</button></p>
+      <h1>Data Quality Rule Assistant</h1>
+      <p>Upload een tabel, laat automatisch profileren, valideer per signaal, en exporteer naar bruikbare regels.</p>
+    </div>
+    <div class="nora-note">
+      NORA-kwaliteitsdimensies: compleetheid, juistheid, consistentie, actualiteit, uniciteit en plausibiliteit.
+    </div>
+  </header>
+
+  <div id="app-empty">
+    <div class="dropzone" id="dropzone">
+      <h2>Sleep een CSV of Excel-bestand hierheen</h2>
+      <p>Alles wordt lokaal in je browser verwerkt — er wordt niets naar een server verstuurd, behalve als je zelf AI-verrijking aanzet.</p>
+      <button class="btn" id="pick-file-btn">Kies een bestand</button>
+      <input type="file" id="file-input" accept=".csv,.xlsx,.xls">
+      <div class="filetypes">.csv &nbsp;·&nbsp; .xlsx &nbsp;·&nbsp; .xls</div>
+    </div>
+  </div>
+
+  <div id="app-main">
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="profiling">Profiling</button>
+      <button class="tab-btn" data-tab="cross">Cross-tabel</button>
+      <button class="tab-btn" data-tab="export">Export</button>
+      <button class="tab-btn" data-tab="projects">Projecten</button>
+    </div>
+
+    <!-- PROFILING TAB -->
+    <div class="tab-panel active" id="tab-profiling">
+      <div class="stats-row" id="stats-row"></div>
+      <div class="toolbar">
+        <div class="meta" id="file-meta"></div>
+        <button class="btn secondary" id="reset-btn">Ander bestand laden</button>
+      </div>
+      <div class="col-list" id="col-list"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <!-- CROSS-TABEL TAB -->
+    <div class="tab-panel" id="tab-cross">
+      <div id="cross-upload-wrap">
+        <div class="dropzone small" id="ref-dropzone">
+          <h3>Referentietabel</h3>
+          <p>Upload een tweede tabel om referentiële integriteit te controleren, bijv. of elk klantnummer in de hoofdtabel ook echt bestaat in de klantentabel.</p>
+          <button class="btn secondary" id="ref-pick-btn">Kies referentiebestand</button>
+          <input type="file" id="ref-file-input" accept=".csv,.xlsx,.xls">
+        </div>
+      </div>
+      <div id="cross-check-wrap" style="display:none">
+        <div class="field-row">
+          <div>
+            <label class="field-label">Kolom in hoofdtabel</label>
+            <select id="cross-primary-col"></select>
+          </div>
+          <div>
+            <label class="field-label">Kolom in referentietabel</label>
+            <select id="cross-ref-col"></select>
+          </div>
+          <button class="btn" id="cross-check-btn">Controleer</button>
+          <button class="btn secondary" id="ref-reset-btn">Andere referentietabel</button>
+        </div>
+        <div id="cross-result"></div>
+      </div>
+    </div>
+
+    <!-- EXPORT TAB -->
+    <div class="tab-panel" id="tab-export">
+      <p style="color:var(--muted); font-size:13.5px; max-width:64ch;">
+        Alleen signalen die je bij "bevestigd" op <b>ja</b> hebt gezet in de Profiling-tab worden meegenomen in de export. Zo blijft het een door mensen gevalideerde regelset, geen ruwe automatische output.
+      </p>
+      <div class="export-tabs" id="export-tabs">
+        <button class="export-tab-btn active" data-fmt="text">Bedrijfstaal</button>
+        <button class="export-tab-btn" data-fmt="sql">SQL</button>
+        <button class="export-tab-btn" data-fmt="ge">Great Expectations</button>
+        <button class="export-tab-btn" data-fmt="dbt">dbt schema.yml</button>
+      </div>
+      <div class="field-row">
+        <button class="btn small" id="export-download-btn">Download bestand</button>
+        <button class="btn small secondary" id="export-copy-btn">Kopieer naar klembord</button>
+        <button class="btn small secondary" id="export-print-btn">Print / PDF-rapport</button>
+      </div>
+      <pre class="export-preview" id="export-preview"></pre>
+    </div>
+
+    <!-- PROJECTS TAB -->
+    <div class="tab-panel" id="tab-projects">
+      <div class="field-row">
+        <button class="btn" id="save-project-btn">Bewaar huidig project</button>
+        <button class="btn secondary" id="export-json-btn">Exporteer project als JSON</button>
+        <button class="btn secondary" id="import-json-btn">Importeer project (JSON)</button>
+        <input type="file" id="import-json-input" accept=".json" style="display:none">
+      </div>
+      <div id="project-list"></div>
+      <p style="color:var(--faint); font-size:12px; margin-top:14px;">
+        Projecten worden lokaal in je browser bewaard (localStorage). Voor het delen van projecten tussen collega's of apparaten heb je op termijn een echte backend nodig, bijvoorbeeld Supabase.
+      </p>
+    </div>
+
+    <footer class="hint">
+      Regelvoorstellen zijn automatisch gegenereerd op basis van profiling (en optioneel AI) en zijn een startpunt, geen eindoordeel — controleer elke regel bij de bronhouder voordat je hem vastlegt.
+    </footer>
+  </div>
+
+</div>
+
+<!-- AI settings modal -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <h3>AI-verrijking</h3>
+    <p>Om semantische regelvoorstellen te krijgen (bijv. relaties tussen kolommen), heb je een kleine server-functie nodig die jouw Anthropic API-sleutel veilig achter de schermen houdt. Zie de meegeleverde <code>netlify/functions/generate-rule.js</code>. Zet je sleutel als omgevingsvariabele <code>ANTHROPIC_API_KEY</code> in je Netlify-projectinstellingen, deploy, en vul hieronder het functie-adres in.</p>
+    <div class="row">
+      <label class="field-label">Functie-URL</label>
+      <input type="text" id="ai-endpoint-input" style="width:100%" placeholder="/.netlify/functions/generate-rule">
+    </div>
+    <p id="ai-usage-label" style="font-size:12.5px; color:var(--muted);"></p>
+    <div class="actions">
+      <button class="btn secondary small" id="settings-cancel-btn">Sluiten</button>
+      <button class="btn small" id="settings-save-btn">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  const DIMENSIONS = {
+    compleetheid:   { label: 'Compleetheid',   color: 'var(--dim-compleetheid)' },
+    juistheid:      { label: 'Juistheid',      color: 'var(--dim-juistheid)' },
+    consistentie:   { label: 'Consistentie',   color: 'var(--dim-consistentie)' },
+    actualiteit:    { label: 'Actualiteit',    color: 'var(--dim-actualiteit)' },
+    uniciteit:      { label: 'Uniciteit',      color: 'var(--dim-uniciteit)' },
+    plausibiliteit: { label: 'Plausibiliteit', color: 'var(--dim-plausibiliteit)' }
+  };
+  const DIM_KEYS = Object.keys(DIMENSIONS);
+  const NULL_TOKENS = new Set(['', 'na', 'n.a.', 'n/a', 'nvt', 'n.v.t.', 'null', 'none', '-', '--', 'onbekend']);
+
+  const PATTERNS = {
+    postcode: /^\d{4}\s?[A-Za-z]{2}$/,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    iban: /^NL\d{2}[A-Z]{4}\d{10}$/i,
+    date_iso: /^\d{4}-\d{2}-\d{2}$/,
+    date_nl: /^\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4}$/,
+    integer: /^-?\d+$/,
+    decimal: /^-?\d+([.,]\d+)?$/,
+    bsn: /^\d{8,9}$/
+  };
+
+  // ---------- global state ----------
+  const STATE = {
+    fileName: null, headers: [], rows: [], profiles: [],
+    refTable: null, // { fileName, headers, rows }
+    maskSensitive: (localStorage.getItem('nora_mask_sensitive') ?? 'true') === 'true'
+  };
+
+  function isSensitiveRole(role){ return role === 'bsn' || role === 'iban'; }
+
+  function maskValue(value, role){
+    const s = String(value);
+    if (role === 'iban') {
+      if (s.length <= 8) return '•'.repeat(s.length);
+      return s.slice(0, 4) + ' •••• •••• ' + s.slice(-4);
+    }
+    if (role === 'bsn') {
+      if (s.length <= 2) return '•'.repeat(s.length);
+      return '•'.repeat(s.length - 2) + s.slice(-2);
+    }
+    return s;
+  }
+
+  function displayValue(value, role){
+    if (STATE.maskSensitive && isSensitiveRole(role)) return maskValue(value, role);
+    return String(value);
+  }
+
+  // creates a span with plain text content (safe for arbitrary uploaded data, no HTML injection)
+  function tspan(cls, content){
+    const s = document.createElement('span');
+    if (cls) s.className = cls;
+    s.textContent = content;
+    return s;
+  }
+
+  function isNullish(v){
+    if (v === null || v === undefined) return true;
+    return NULL_TOKENS.has(String(v).trim().toLowerCase());
+  }
+
+  function bsnElfproef(bsn){
+    const digits = bsn.padStart(9, '0').split('').map(Number);
+    if (digits.length !== 9) return false;
+    let sum = 0;
+    for (let i = 0; i < 8; i++) sum += digits[i] * (9 - i);
+    sum += digits[8] * -1;
+    return sum % 11 === 0;
+  }
+
+  function guessColumnRole(name){
+    const n = name.toLowerCase();
+    if (/postcode/.test(n)) return 'postcode';
+    if (/e-?mail/.test(n)) return 'email';
+    if (/\bbsn\b|burgerservicenummer/.test(n)) return 'bsn';
+    if (/iban|rekeningnummer/.test(n)) return 'iban';
+    if (/^id$|nummer$|\bcode\b|_id$/.test(n)) return 'identifier';
+    if (/datum|_dt$|^date/.test(n)) return 'date';
+    if (/status/.test(n)) return 'status';
+    return null;
+  }
+
+  function inferType(values){
+    const nonNull = values.filter(v => !isNullish(v));
+    if (nonNull.length === 0) return { type: 'onbekend', confidence: 0 };
+    let intCount = 0, decCount = 0, dateCount = 0, boolCount = 0;
+    const boolTokens = new Set(['true','false','ja','nee','yes','no','0','1']);
+    nonNull.forEach(v => {
+      const s = String(v).trim();
+      if (PATTERNS.integer.test(s)) intCount++;
+      else if (PATTERNS.decimal.test(s)) decCount++;
+      if (PATTERNS.date_iso.test(s) || PATTERNS.date_nl.test(s)) dateCount++;
+      if (boolTokens.has(s.toLowerCase())) boolCount++;
+    });
+    const total = nonNull.length;
+    const candidates = [
+      ['geheel getal', intCount], ['decimaal getal', decCount],
+      ['datum', dateCount], ['boolean', boolCount], ['tekst', total]
+    ];
+    candidates.sort((a,b) => b[1] - a[1]);
+    const [type, count] = candidates[0];
+    return { type, confidence: count / total };
+  }
+
+  function quantile(sorted, q){
+    const pos = (sorted.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if (sorted[base + 1] !== undefined) return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    return sorted[base];
+  }
+
+  function profileColumn(name, values){
+    const total = values.length;
+    const nonNullValues = values.filter(v => !isNullish(v));
+    const nullCount = total - nonNullValues.length;
+    const nullPct = total ? (nullCount / total) * 100 : 0;
+    const distinct = new Set(nonNullValues.map(v => String(v).trim()));
+    const uniqueRatio = nonNullValues.length ? distinct.size / nonNullValues.length : 0;
+    const duplicateCount = nonNullValues.length - distinct.size;
+    const sampleValues = [...distinct].slice(0, 5);
+
+    const typeInfo = inferType(nonNullValues);
+    const role = guessColumnRole(name);
+
+    let outliers = 0, min = null, max = null;
+    const numeric = nonNullValues.map(v => parseFloat(String(v).replace(',', '.'))).filter(v => !isNaN(v));
+    if (typeInfo.type.includes('getal') && numeric.length >= 4) {
+      const sorted = [...numeric].sort((a,b) => a-b);
+      const q1 = quantile(sorted, 0.25), q3 = quantile(sorted, 0.75), iqr = q3 - q1;
+      const lower = q1 - 1.5 * iqr, upper = q3 + 1.5 * iqr;
+      outliers = numeric.filter(v => v < lower || v > upper).length;
+      min = sorted[0]; max = sorted[sorted.length - 1];
+    }
+
+    let invalidPattern = 0, patternName = null;
+    if (role && PATTERNS[role]) {
+      patternName = role;
+      invalidPattern = nonNullValues.filter(v => {
+        const s = String(v).trim();
+        if (role === 'bsn') return !(PATTERNS.bsn.test(s) && bsnElfproef(s));
+        return !PATTERNS[role].test(s);
+      }).length;
+    }
+
+    const flags = [];
+    if (nullPct > 0) {
+      flags.push({ dim: 'compleetheid',
+        text: `\`${name}\` moet altijd gevuld zijn (nu ${nullPct.toFixed(1)}% leeg, ${nullCount} van ${total} rijen).`,
+        sql: `SELECT COUNT(*) FROM tabel WHERE ${name} IS NULL;` });
+    }
+    if ((role === 'identifier' || uniqueRatio > 0.9) && duplicateCount > 0) {
+      flags.push({ dim: 'uniciteit',
+        text: `\`${name}\` lijkt een sleutel- of identificatieveld en moet uniek zijn (nu ${duplicateCount} duplicaten gevonden).`,
+        sql: `SELECT ${name}, COUNT(*) FROM tabel GROUP BY ${name} HAVING COUNT(*) > 1;` });
+    }
+    if (patternName && invalidPattern > 0) {
+      const patternLabel = {
+        postcode: 'het formaat 1234 AB', email: 'een geldig e-mailadres',
+        iban: 'een geldig IBAN-formaat', bsn: 'een geldig BSN (inclusief elfproef)'
+      }[patternName] || 'het verwachte formaat';
+      flags.push({ dim: 'juistheid',
+        text: `\`${name}\` moet voldoen aan ${patternLabel} (nu ${invalidPattern} afwijkende waarden).`,
+        sql: `-- controle op formaat, voorbeeld voor postcode:\nSELECT * FROM tabel WHERE ${name} NOT SIMILAR TO '[0-9]{4} ?[A-Za-z]{2}';` });
+    }
+    if (typeInfo.confidence < 0.98 && typeInfo.confidence > 0) {
+      flags.push({ dim: 'consistentie',
+        text: `\`${name}\` bevat waarden die niet allemaal hetzelfde type/formaat volgen (${(typeInfo.confidence*100).toFixed(0)}% consistent als "${typeInfo.type}").`,
+        sql: `-- handmatig te controleren: waarden die afwijken van het meest voorkomende type` });
+    }
+    if (role === 'date' && nonNullValues.length) {
+      const parsed = nonNullValues
+        .map(v => new Date(String(v).replace(/(\d{2})[-\/](\d{2})[-\/](\d{4})/, '$3-$2-$1')))
+        .filter(d => !isNaN(d));
+      if (parsed.length) {
+        const newest = new Date(Math.max(...parsed));
+        const ageDays = (Date.now() - newest.getTime()) / (1000*60*60*24);
+        if (ageDays > 730) {
+          flags.push({ dim: 'actualiteit',
+            text: `\`${name}\` lijkt verouderd: de meest recente waarde dateert van meer dan 2 jaar geleden.`,
+            sql: `SELECT MAX(${name}) FROM tabel;` });
+        }
+      }
+    }
+    if (outliers > 0) {
+      flags.push({ dim: 'plausibiliteit',
+        text: `\`${name}\` bevat ${outliers} statistische uitschieters (buiten het verwachte bereik van ${min ?? '?'} tot ${max ?? '?'}), controleer of dit plausibele waarden zijn.`,
+        sql: `-- IQR-uitschieters, pas grenzen aan op basis van vakkennis` });
+    }
+
+    return {
+      name, total, nullCount, nullPct, distinctCount: distinct.size,
+      uniqueRatio, duplicateCount, typeInfo, role, outliers, min, max,
+      invalidPattern, patternName, flags, sampleValues,
+      confirmations: {}, // { flagIndex: 'Ja' | 'Nee' | 'Twijfel' }
+      crossChecks: []    // referential integrity results added from cross-tabel tab
+    };
+  }
+
+  function confirmedFlags(profile){
+    return profile.flags
+      .map((f, i) => ({ ...f, _idx: i }))
+      .filter(f => (profile.confirmations[f._idx] ?? 'Ja') === 'Ja')
+      .concat(profile.crossChecks.filter(c => c.confirmed !== false));
+  }
+
+  // ---------- dom helpers ----------
+  function el(tag, attrs, children){
+    const e = document.createElement(tag);
+    if (attrs) Object.entries(attrs).forEach(([k,v]) => {
+      if (k === 'html') e.innerHTML = v;
+      else if (k === 'class') e.className = v;
+      else e.setAttribute(k, v);
+    });
+    (children || []).forEach(c => e.appendChild(c));
+    return e;
+  }
+
+  function download(filename, content, mime){
+    const blob = new Blob([content], { type: mime || 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      if (btn.dataset.tab === 'export') renderExportPreview();
+      if (btn.dataset.tab === 'projects') renderProjectList();
+    });
+  });
+
+  // ---------- rendering: profiling ----------
+  function renderStats(){
+    const row = document.getElementById('stats-row');
+    row.innerHTML = '';
+    row.appendChild(el('div', {class:'stat-pill'}, [
+      el('div', {class:'n', html:String(STATE.rows.length)}), el('div', {class:'l', html:'rijen'})
+    ]));
+    row.appendChild(el('div', {class:'stat-pill'}, [
+      el('div', {class:'n', html:String(STATE.profiles.length)}), el('div', {class:'l', html:'kolommen'})
+    ]));
+    DIM_KEYS.forEach(key => {
+      const count = STATE.profiles.filter(p => p.flags.some(f => f.dim === key)).length;
+      const pill = el('div', {class:'stat-pill dim'}, [
+        el('div', {class:'n', html:String(count)}), el('div', {class:'l', html:DIMENSIONS[key].label})
+      ]);
+      pill.style.setProperty('--dim-color', DIMENSIONS[key].color);
+      row.appendChild(pill);
+    });
+  }
+
+  function renderLegend(){
+    const legend = document.getElementById('legend');
+    legend.innerHTML = '';
+    DIM_KEYS.forEach(key => {
+      const item = el('div', {class:'item'}, [ el('span', {class:'dot'}), el('span', {html: DIMENSIONS[key].label}) ]);
+      item.querySelector('.dot').style.background = DIMENSIONS[key].color;
+      legend.appendChild(item);
+    });
+  }
+
+  function renderColumns(){
+    const list = document.getElementById('col-list');
+    const openNames = new Set([...list.querySelectorAll('.col-card.open')].map(c => c.dataset.name));
+    list.innerHTML = '';
+    STATE.profiles.forEach(p => {
+      const card = el('div', {class:'col-card' + (openNames.has(p.name) ? ' open' : '')});
+      card.dataset.name = p.name;
+
+      const fingerprint = el('div', {class:'fingerprint'});
+      DIM_KEYS.forEach(key => {
+        const flagged = p.flags.some(f => f.dim === key);
+        const dot = el('span', {class:'dot' + (flagged ? ' lit' : ''), title: DIMENSIONS[key].label});
+        if (flagged) dot.style.background = DIMENSIONS[key].color;
+        fingerprint.appendChild(dot);
+      });
+
+      const head = el('div', {class:'col-card-head'}, [
+        el('span', {class:'col-name', html: p.name}),
+        el('span', {class:'col-type', html: p.typeInfo.type}),
+        el('div', {class:'quick-stats'}, [
+          el('span', {html: `<b>${p.nullPct.toFixed(0)}%</b> leeg`}),
+          el('span', {html: `<b>${(p.uniqueRatio*100).toFixed(0)}%</b> uniek`}),
+          el('span', {html: `<b>${confirmedFlags(p).length}</b> bevestigd`})
+        ]),
+        fingerprint,
+        el('span', {class:'chevron', html:'&rsaquo;'})
+      ]);
+      head.addEventListener('click', () => card.classList.toggle('open'));
+
+      const detail = el('div', {class:'col-detail'});
+      const grid = el('div', {class:'detail-grid'});
+
+      const statsBlock = el('div', {class:'detail-block'}, [
+        el('h4', {html:'Profiling'}),
+        el('div', {class:'stat-line'}, [el('span',{html:'Type (betrouwbaarheid)'}), el('span',{html:`${p.typeInfo.type} · ${(p.typeInfo.confidence*100).toFixed(0)}%`})]),
+        el('div', {class:'stat-line'}, [el('span',{html:'Leeg'}), el('span',{html:`${p.nullCount} / ${p.total}`})]),
+        el('div', {class:'stat-line'}, [el('span',{html:'Unieke waarden'}), el('span',{html:`${p.distinctCount} (${(p.uniqueRatio*100).toFixed(1)}%)`})]),
+        el('div', {class:'stat-line'}, [el('span',{html:'Duplicaten'}), el('span',{html:String(p.duplicateCount)})]),
+      ]);
+      if (p.min !== null) statsBlock.appendChild(el('div', {class:'stat-line'}, [el('span',{html:'Bereik'}), el('span',{html:`${p.min} – ${p.max}`})]));
+      if (p.outliers) statsBlock.appendChild(el('div', {class:'stat-line'}, [el('span',{html:'Uitschieters (IQR)'}), el('span',{html:String(p.outliers)})]));
+      if (p.sampleValues && p.sampleValues.length) {
+        const shown = p.sampleValues.slice(0, 5).map(v => displayValue(v, p.role)).join(', ');
+        statsBlock.appendChild(el('div', {class:'stat-line'}, [el('span',{html:'Voorbeeldwaarden'}), tspan(null, shown)]));
+      }
+
+      const aiBtn = el('button', {class:'btn secondary small ai-enrich-btn', html:'Verrijk met AI'});
+      aiBtn.addEventListener('click', () => enrichWithAI(p, aiBtn));
+      statsBlock.appendChild(aiBtn);
+
+      const flagsBlock = el('div', {class:'detail-block'});
+      flagsBlock.appendChild(el('h4', {html:'NORA-signalen &amp; regelvoorstel'}));
+      if (p.flags.length === 0) {
+        flagsBlock.appendChild(el('div', {class:'no-flags', html:'Geen bijzonderheden gevonden op basis van profiling.'}));
+      } else {
+        p.flags.forEach((f, idx) => {
+          const dim = DIMENSIONS[f.dim];
+          const flagEl = el('div', {class:'flag'});
+          const swatch = el('span', {class:'swatch'}); swatch.style.background = dim.color;
+          const dimRow = el('div', {class:'dim-row'}, [
+            el('span', {class:'dim-label', html: dim.label})
+          ]);
+          dimRow.querySelector('.dim-label').style.color = dim.color;
+          if (f.ai) dimRow.appendChild(el('span', {class:'ai-tag', html:'AI-suggestie'}));
+
+          const body = el('div', {class:'body'}, [
+            dimRow,
+            el('div', {class:'rule-text', html: f.text}),
+            el('code', {class:'sql', html: f.sql})
+          ]);
+
+          const confirm = el('div', {class:'confirm-toggle'});
+          const current = p.confirmations[idx] ?? 'Ja';
+          ['Ja','Nee','Twijfel'].forEach(label => {
+            const opt = el('span', {class:'confirm-opt' + (label===current ? ' active' + (label==='Nee' ? ' neg' : '') : ''), html: 'Bevestigd: ' + label});
+            opt.addEventListener('click', () => {
+              p.confirmations[idx] = label;
+              confirm.querySelectorAll('.confirm-opt').forEach(o => o.classList.remove('active','neg'));
+              opt.classList.add('active'); if (label==='Nee') opt.classList.add('neg');
+              renderStats();
+              const qs = card.querySelector('.quick-stats');
+              if (qs) qs.children[2].innerHTML = `<b>${confirmedFlags(p).length}</b> bevestigd`;
+            });
+            confirm.appendChild(opt);
+          });
+          body.appendChild(confirm);
+
+          flagEl.appendChild(swatch); flagEl.appendChild(body);
+          flagsBlock.appendChild(flagEl);
+        });
+      }
+
+      grid.appendChild(statsBlock); grid.appendChild(flagsBlock);
+      detail.appendChild(grid);
+      card.appendChild(head); card.appendChild(detail);
+      list.appendChild(card);
+    });
+  }
+
+  function processRows(headers, rows, filename){
+    STATE.fileName = filename; STATE.headers = headers; STATE.rows = rows;
+    STATE.profiles = headers.map(h => profileColumn(h, rows.map(r => r[h])));
+    STATE.profiles.sort((a,b) => b.flags.length - a.flags.length);
+
+    document.getElementById('file-meta').textContent = `${filename} · ${rows.length} rijen · ${headers.length} kolommen`;
+    renderStats(); renderLegend(); renderColumns();
+    populateCrossSelectors();
+
+    document.getElementById('app-empty').style.display = 'none';
+    document.getElementById('app-main').style.display = 'block';
+  }
+
+  function parseFile(file, callback){
+    const name = file.name.toLowerCase();
+    if (name.endsWith('.csv')) {
+      Papa.parse(file, { header:true, skipEmptyLines:true,
+        complete: (res) => callback(res.meta.fields || [], res.data, file.name) });
+    } else {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const wb = XLSX.read(e.target.result, {type:'array'});
+        const sheet = wb.Sheets[wb.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet, {defval:''});
+        const headers = json.length ? Object.keys(json[0]) : [];
+        callback(headers, json, file.name);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  }
+
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('file-input');
+  document.getElementById('pick-file-btn').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => { if (e.target.files[0]) parseFile(e.target.files[0], processRows); });
+  ['dragenter','dragover'].forEach(evt => dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(evt => dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+  dropzone.addEventListener('drop', (e) => { if (e.dataTransfer.files[0]) parseFile(e.dataTransfer.files[0], processRows); });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    document.getElementById('app-main').style.display = 'none';
+    document.getElementById('app-empty').style.display = 'block';
+    fileInput.value = '';
+  });
+
+  // ---------- AI enrichment (fase 1) ----------
+  function getAIEndpoint(){ return localStorage.getItem('nora_ai_endpoint') || '/.netlify/functions/generate-rule'; }
+
+  // Zachte, client-side dagelijkse limiet per browser. Geen waterdichte beveiliging
+  // (lokale opslag is te wissen), maar voorkomt onbedoeld/overmatig gebruik. Pas
+  // AI_DAILY_LIMIT aan naar wat past bij je verwachte gebruik en API-budget.
+  const AI_DAILY_LIMIT = 20;
+  function todayKey(){ return 'nora_ai_calls_' + new Date().toISOString().slice(0, 10); }
+  function getAICallCount(){ return parseInt(localStorage.getItem(todayKey()) || '0', 10); }
+  function incrementAICallCount(){ localStorage.setItem(todayKey(), String(getAICallCount() + 1)); }
+  function aiCallsRemaining(){ return Math.max(0, AI_DAILY_LIMIT - getAICallCount()); }
+
+  async function enrichWithAI(profile, btn){
+    if (aiCallsRemaining() <= 0) {
+      alert(`Dagelijkse limiet van ${AI_DAILY_LIMIT} AI-verrijkingen voor deze browser is bereikt. Probeer het morgen opnieuw, of pas de limiet aan in de instellingen als je meer nodig hebt.`);
+      return;
+    }
+    const endpoint = getAIEndpoint();
+    const original = btn.textContent;
+    btn.textContent = 'Bezig...'; btn.disabled = true;
+    incrementAICallCount();
+    try {
+      const res = await fetch(endpoint, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          columnName: profile.name,
+          profileSummary: {
+            type: profile.typeInfo.type, nullPct: Number(profile.nullPct.toFixed(1)),
+            uniqueRatio: Number(profile.uniqueRatio.toFixed(2)), role: profile.role,
+            duplicateCount: profile.duplicateCount
+          },
+          sampleValues: profile.sampleValues,
+          otherColumns: STATE.headers.filter(h => h !== profile.name)
+        })
+      });
+      if (!res.ok) throw new Error('serverfout ' + res.status);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      (data.suggestions || []).forEach(s => {
+        if (DIM_KEYS.includes(s.dim)) profile.flags.push({ dim: s.dim, text: s.text, sql: s.sql || '', ai: true });
+      });
+      renderColumns(); renderStats();
+    } catch (err) {
+      alert('AI-verrijking niet gelukt: ' + err.message + '\n\nControleer of netlify/functions/generate-rule.js is gedeployed en ANTHROPIC_API_KEY is ingesteld in je Netlify-projectinstellingen.');
+    } finally {
+      btn.textContent = original; btn.disabled = false;
+      updateSettingsUsageLabel();
+    }
+  }
+
+  // privacy mask toggle
+  const maskBtn = document.getElementById('mask-toggle-btn');
+  function updateMaskBtnLabel(){ maskBtn.textContent = 'Maskeer gevoelige waarden: ' + (STATE.maskSensitive ? 'aan' : 'uit'); }
+  updateMaskBtnLabel();
+  maskBtn.addEventListener('click', () => {
+    STATE.maskSensitive = !STATE.maskSensitive;
+    localStorage.setItem('nora_mask_sensitive', String(STATE.maskSensitive));
+    updateMaskBtnLabel();
+    if (STATE.profiles.length) renderColumns();
+    // cross-tabel result, if shown, needs a fresh check to re-apply masking
+    const crossResult = document.getElementById('cross-result');
+    if (crossResult) crossResult.innerHTML = '';
+  });
+
+  // settings modal
+  const settingsModal = document.getElementById('settings-modal');
+  function updateSettingsUsageLabel(){
+    const label = document.getElementById('ai-usage-label');
+    if (label) label.textContent = `Vandaag gebruikt: ${getAICallCount()} van ${AI_DAILY_LIMIT} AI-verrijkingen voor deze browser.`;
+  }
+  document.getElementById('settings-btn').addEventListener('click', () => {
+    document.getElementById('ai-endpoint-input').value = getAIEndpoint();
+    updateSettingsUsageLabel();
+    settingsModal.classList.add('show');
+  });
+  document.getElementById('settings-cancel-btn').addEventListener('click', () => settingsModal.classList.remove('show'));
+  document.getElementById('settings-save-btn').addEventListener('click', () => {
+    const val = document.getElementById('ai-endpoint-input').value.trim() || '/.netlify/functions/generate-rule';
+    localStorage.setItem('nora_ai_endpoint', val);
+    settingsModal.classList.remove('show');
+  });
+
+  // ---------- cross-tabel (fase 4) ----------
+  function populateCrossSelectors(){
+    const primarySel = document.getElementById('cross-primary-col');
+    primarySel.innerHTML = STATE.headers.map(h => `<option value="${h}">${h}</option>`).join('');
+  }
+
+  const refDropzone = document.getElementById('ref-dropzone');
+  const refFileInput = document.getElementById('ref-file-input');
+  document.getElementById('ref-pick-btn').addEventListener('click', () => refFileInput.click());
+  refFileInput.addEventListener('change', (e) => { if (e.target.files[0]) loadRefTable(e.target.files[0]); });
+  ['dragenter','dragover'].forEach(evt => refDropzone.addEventListener(evt, (e)=>{e.preventDefault(); refDropzone.classList.add('drag');}));
+  ['dragleave','drop'].forEach(evt => refDropzone.addEventListener(evt, (e)=>{e.preventDefault(); refDropzone.classList.remove('drag');}));
+  refDropzone.addEventListener('drop', (e) => { if (e.dataTransfer.files[0]) loadRefTable(e.dataTransfer.files[0]); });
+
+  function loadRefTable(file){
+    parseFile(file, (headers, rows, filename) => {
+      STATE.refTable = { fileName: filename, headers, rows };
+      document.getElementById('cross-upload-wrap').style.display = 'none';
+      document.getElementById('cross-check-wrap').style.display = 'block';
+      document.getElementById('cross-ref-col').innerHTML = headers.map(h => `<option value="${h}">${h}</option>`).join('');
+    });
+  }
+
+  document.getElementById('ref-reset-btn').addEventListener('click', () => {
+    STATE.refTable = null;
+    document.getElementById('cross-upload-wrap').style.display = 'block';
+    document.getElementById('cross-check-wrap').style.display = 'none';
+    document.getElementById('cross-result').innerHTML = '';
+    refFileInput.value = '';
+  });
+
+  document.getElementById('cross-check-btn').addEventListener('click', () => {
+    const primaryCol = document.getElementById('cross-primary-col').value;
+    const refCol = document.getElementById('cross-ref-col').value;
+    const refSet = new Set(STATE.refTable.rows.map(r => String(r[refCol]).trim()).filter(v => v && v.toLowerCase() !== 'undefined'));
+    const primaryValues = STATE.rows.map(r => r[primaryCol]).filter(v => !isNullish(v)).map(v => String(v).trim());
+    const missing = primaryValues.filter(v => !refSet.has(v));
+    const missingUnique = [...new Set(missing)];
+    const matchPct = primaryValues.length ? ((primaryValues.length - missing.length) / primaryValues.length) * 100 : 100;
+
+    const resultBox = document.getElementById('cross-result');
+    resultBox.innerHTML = '';
+    const box = el('div', {class:'result-box'}, [
+      el('div', {class:'big', html: matchPct.toFixed(1) + '%'}),
+      el('div', {style:'color:var(--muted); font-size:13px; margin-top:4px;', html: `van de waarden in \`${primaryCol}\` komt voor in \`${refCol}\` van ${STATE.refTable.fileName}`}),
+    ]);
+    if (missingUnique.length) {
+      const primaryRole = (STATE.profiles.find(p => p.name === primaryCol) || {}).role;
+      const shownExamples = missingUnique.slice(0, 5).map(v => displayValue(v, primaryRole)).join(', ');
+      box.appendChild(tspan('missing-list',
+        `${missing.length} rijen met een ontbrekende referentie, ${missingUnique.length} unieke waarden. Voorbeelden: ${shownExamples}`));
+      const addBtn = el('button', {class:'btn small', html:'Voeg toe als regel bij ' + primaryCol});
+      addBtn.style.marginTop = '12px';
+      addBtn.addEventListener('click', () => {
+        const profile = STATE.profiles.find(p => p.name === primaryCol);
+        if (profile) {
+          profile.crossChecks.push({
+            dim: 'juistheid',
+            text: `Elke waarde in \`${primaryCol}\` moet voorkomen in \`${refCol}\` van de referentietabel (nu ${missing.length} rijen zonder match, ${matchPct.toFixed(1)}% dekking).`,
+            sql: `SELECT t.* FROM tabel t LEFT JOIN referentie r ON t.${primaryCol} = r.${refCol} WHERE r.${refCol} IS NULL;`,
+            confirmed: true, crossTable: true
+          });
+          renderColumns(); renderStats();
+          alert('Toegevoegd. Je vindt het terug bij de export en in de "bevestigd"-teller van ' + primaryCol + '.');
+        }
+      });
+      box.appendChild(addBtn);
+    } else {
+      box.appendChild(el('div', {class:'missing-list', html:'Alle waarden hebben een match. Geen referentiële-integriteitsissues gevonden.'}));
+    }
+    resultBox.appendChild(box);
+  });
+
+  // ---------- export (fase 2) ----------
+  let currentExportFmt = 'text';
+  document.querySelectorAll('.export-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.export-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentExportFmt = btn.dataset.fmt;
+      renderExportPreview();
+    });
+  });
+
+  function allConfirmed(){
+    const out = [];
+    STATE.profiles.forEach(p => confirmedFlags(p).forEach(f => out.push({ col: p.name, ...f })));
+    return out;
+  }
+
+  function buildText(rules){
+    if (!rules.length) return 'Nog geen bevestigde regels. Ga naar de Profiling-tab en zet signalen op "bevestigd: ja".';
+    const byDim = {};
+    rules.forEach(r => { (byDim[r.dim] = byDim[r.dim] || []).push(r); });
+    let out = `Datakwaliteitsregels — ${STATE.fileName}\n${'='.repeat(40)}\n\n`;
+    DIM_KEYS.forEach(dim => {
+      if (!byDim[dim]) return;
+      out += `${DIMENSIONS[dim].label.toUpperCase()}\n${'-'.repeat(DIMENSIONS[dim].label.length)}\n`;
+      byDim[dim].forEach(r => { out += `- [${r.col}] ${r.text}\n`; });
+      out += '\n';
+    });
+    return out;
+  }
+
+  function buildSQL(rules){
+    if (!rules.length) return '-- Nog geen bevestigde regels.';
+    let out = `-- Datakwaliteitschecks — ${STATE.fileName}\n-- Gegenereerd door NORA Data Quality Rule Assistant\n\n`;
+    rules.forEach(r => { out += `-- [${DIMENSIONS[r.dim].label}] ${r.col}: ${r.text}\n${r.sql}\n\n`; });
+    return out;
+  }
+
+  function buildGE(rules){
+    const expectations = rules.map(r => ({
+      expectation_type: 'expect_column_values_to_satisfy_custom_rule',
+      kwargs: { column: r.col },
+      meta: { nora_dimension: r.dim, description: r.text, reference_sql: r.sql }
+    }));
+    return JSON.stringify({
+      expectation_suite_name: (STATE.fileName || 'tabel').replace(/\.[^.]+$/, '') + '_suite',
+      expectations
+    }, null, 2) + '\n\n// Let op: dit is een vereenvoudigd skelet. Vertaal expectation_type naar de daadwerkelijke Great Expectations expectations (bijv. expect_column_values_to_not_be_null) per regel.';
+  }
+
+  function buildDbt(rules){
+    const byCol = {};
+    rules.forEach(r => { (byCol[r.col] = byCol[r.col] || []).push(r); });
+    let out = `version: 2\n\nmodels:\n  - name: ${(STATE.fileName || 'tabel').replace(/\.[^.]+$/, '')}\n    columns:\n`;
+    Object.entries(byCol).forEach(([col, colRules]) => {
+      out += `      - name: ${col}\n        description: "${colRules.map(r=>r.text.replace(/"/g,"'")).join(' ')}"\n        tests:\n`;
+      colRules.forEach(r => {
+        if (r.dim === 'compleetheid') out += `          - not_null\n`;
+        if (r.dim === 'uniciteit') out += `          - unique\n`;
+        if (r.crossTable) out += `          # - relationships (zie referentietabel, vul relation en field in)\n`;
+      });
+    });
+    return out;
+  }
+
+  function renderExportPreview(){
+    const rules = allConfirmed();
+    let text;
+    if (currentExportFmt === 'text') text = buildText(rules);
+    else if (currentExportFmt === 'sql') text = buildSQL(rules);
+    else if (currentExportFmt === 'ge') text = buildGE(rules);
+    else text = buildDbt(rules);
+    document.getElementById('export-preview').textContent = text;
+  }
+
+  document.getElementById('export-download-btn').addEventListener('click', () => {
+    const ext = { text:'txt', sql:'sql', ge:'json', dbt:'yml' }[currentExportFmt];
+    download(`datakwaliteitsregels.${ext}`, document.getElementById('export-preview').textContent);
+  });
+  document.getElementById('export-copy-btn').addEventListener('click', () => {
+    navigator.clipboard.writeText(document.getElementById('export-preview').textContent);
+  });
+  document.getElementById('export-print-btn').addEventListener('click', () => {
+    document.querySelector('[data-tab="profiling"]').click();
+    document.querySelectorAll('.col-card').forEach(c => c.classList.add('open'));
+    setTimeout(() => window.print(), 150);
+  });
+
+  // ---------- projects (fase 3, localStorage) ----------
+  function getProjects(){ try { return JSON.parse(localStorage.getItem('nora_projects') || '[]'); } catch(e) { return []; } }
+  function setProjects(list){ localStorage.setItem('nora_projects', JSON.stringify(list)); }
+
+  function serializeState(){
+    return {
+      fileName: STATE.fileName, headers: STATE.headers, rows: STATE.rows,
+      profiles: STATE.profiles, savedAt: new Date().toISOString()
+    };
+  }
+
+  document.getElementById('save-project-btn').addEventListener('click', () => {
+    const name = prompt('Naam voor dit project:', STATE.fileName || 'project');
+    if (!name) return;
+    const projects = getProjects().filter(p => p.name !== name);
+    projects.push({ name, ...serializeState() });
+    setProjects(projects);
+    renderProjectList();
+  });
+
+  document.getElementById('export-json-btn').addEventListener('click', () => {
+    download((STATE.fileName || 'project') + '.json', JSON.stringify(serializeState(), null, 2), 'application/json');
+  });
+
+  document.getElementById('import-json-btn').addEventListener('click', () => document.getElementById('import-json-input').click());
+  document.getElementById('import-json-input').addEventListener('change', (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        restoreState(data);
+      } catch(err) { alert('Kon dit JSON-bestand niet lezen: ' + err.message); }
+    };
+    reader.readAsText(file);
+  });
+
+  function restoreState(data){
+    STATE.fileName = data.fileName; STATE.headers = data.headers; STATE.rows = data.rows;
+    STATE.profiles = data.profiles.map(p => ({ crossChecks: [], confirmations: {}, ...p }));
+    document.getElementById('file-meta').textContent = `${STATE.fileName} · ${STATE.rows.length} rijen · ${STATE.headers.length} kolommen`;
+    renderStats(); renderLegend(); renderColumns(); populateCrossSelectors();
+    document.getElementById('app-empty').style.display = 'none';
+    document.getElementById('app-main').style.display = 'block';
+    document.querySelector('[data-tab="profiling"]').click();
+  }
+
+  function renderProjectList(){
+    const wrap = document.getElementById('project-list');
+    const projects = getProjects();
+    wrap.innerHTML = '';
+    if (!projects.length) {
+      wrap.appendChild(el('p', {style:'color:var(--muted); font-size:13.5px;', html:'Nog geen opgeslagen projecten.'}));
+      return;
+    }
+    projects.slice().reverse().forEach(p => {
+      const row = el('div', {class:'project-row'}, [
+        el('div', {}, [
+          el('div', {class:'name', html: p.name}),
+          el('div', {class:'meta', html: `${p.fileName} · ${new Date(p.savedAt).toLocaleString('nl-NL')}`})
+        ]),
+      ]);
+      const actions = el('div', {class:'actions'});
+      const loadBtn = el('button', {class:'btn small secondary', html:'Laad'});
+      loadBtn.addEventListener('click', () => restoreState(p));
+      const delBtn = el('button', {class:'btn small danger', html:'Verwijder'});
+      delBtn.addEventListener('click', () => { setProjects(getProjects().filter(x => x.name !== p.name)); renderProjectList(); });
+      actions.appendChild(loadBtn); actions.appendChild(delBtn);
+      row.appendChild(actions);
+      wrap.appendChild(row);
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
