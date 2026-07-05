@@ -245,7 +245,7 @@
     align-items:center; justify-content:center; z-index:50; padding:20px;
   }
   .modal-overlay.show{ display:flex; }
-  .modal{ background:var(--surface); border-radius:12px; padding:24px; max-width:440px; width:100%; }
+  .modal{ background:var(--surface); border-radius:12px; padding:24px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; }
   .modal h3{ font-family:var(--font-display); font-weight:500; margin:0 0 6px; font-size:18px; }
   .modal p{ font-size:13px; color:var(--muted); margin:0 0 16px; }
   .modal .row{ margin-bottom:14px; }
@@ -375,12 +375,13 @@
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
     <h3>AI-verrijking</h3>
-    <p>Om semantische regelvoorstellen te krijgen (bijv. relaties tussen kolommen), heb je een kleine server-functie nodig die jouw Anthropic API-sleutel veilig achter de schermen houdt. Zie de meegeleverde <code>netlify/functions/generate-rule.js</code>. Zet je sleutel als omgevingsvariabele <code>ANTHROPIC_API_KEY</code> in je Netlify-projectinstellingen, deploy, en vul hieronder het functie-adres in.</p>
+    <p>Deze app gebruikt een gedeelde sleutel die via een server-functie loopt (<code>netlify/functions/generate-rule.js</code>), met een dagelijkse limiet per browser.</p>
     <div class="row">
       <label class="field-label">Functie-URL</label>
       <input type="text" id="ai-endpoint-input" style="width:100%" placeholder="/.netlify/functions/generate-rule">
     </div>
     <p id="ai-usage-label" style="font-size:12.5px; color:var(--muted);"></p>
+
     <div class="actions">
       <button class="btn secondary small" id="settings-cancel-btn">Sluiten</button>
       <button class="btn small" id="settings-save-btn">Opslaan</button>
@@ -808,9 +809,8 @@
   // ---------- AI enrichment (fase 1) ----------
   function getAIEndpoint(){ return localStorage.getItem('nora_ai_endpoint') || '/.netlify/functions/generate-rule'; }
 
-  // Zachte, client-side dagelijkse limiet per browser. Geen waterdichte beveiliging
-  // (lokale opslag is te wissen), maar voorkomt onbedoeld/overmatig gebruik. Pas
-  // AI_DAILY_LIMIT aan naar wat past bij je verwachte gebruik en API-budget.
+  // Zachte, client-side dagelijkse limiet per browser voor de GEDEELDE sleutel.
+  // Geldt niet als iemand zijn eigen sleutel invult (die kosten zijn dan van hemzelf).
   const AI_DAILY_LIMIT = 20;
   function todayKey(){ return 'nora_ai_calls_' + new Date().toISOString().slice(0, 10); }
   function getAICallCount(){ return parseInt(localStorage.getItem(todayKey()) || '0', 10); }
@@ -819,7 +819,7 @@
 
   async function enrichWithAI(profile, btn){
     if (aiCallsRemaining() <= 0) {
-      alert(`Dagelijkse limiet van ${AI_DAILY_LIMIT} AI-verrijkingen voor deze browser is bereikt. Probeer het morgen opnieuw, of pas de limiet aan in de instellingen als je meer nodig hebt.`);
+      alert(`Dagelijkse limiet van ${AI_DAILY_LIMIT} AI-verrijkingen voor deze browser is bereikt. Probeer het morgen opnieuw.`);
       return;
     }
     const endpoint = getAIEndpoint();
