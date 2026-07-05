@@ -124,6 +124,20 @@
   .dropzone p{ color:var(--muted); margin:0 0 22px; font-size:14px; }
   .dropzone .filetypes{ font-family:var(--font-mono); font-size:12px; color:var(--faint); margin-top:18px; }
 
+  .demo-section{ margin-top:24px; text-align:center; }
+  .demo-label{ font-size:13px; color:var(--muted); margin:0 0 12px; }
+  .demo-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
+  @media (max-width:680px){ .demo-grid{ grid-template-columns:1fr 1fr; } }
+  .demo-btn{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:14px 10px; cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:3px;
+  }
+  .demo-btn:hover:not(:disabled){ border-color:var(--accent); }
+  .demo-btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .demo-tier{ font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--accent); }
+  .demo-name{ font-size:12.5px; color:var(--ink); }
+  .demo-note{ font-size:11.5px; color:var(--faint); margin-top:14px; max-width:56ch; margin-left:auto; margin-right:auto; }
+
   .btn{
     display:inline-flex; align-items:center; gap:8px;
     background:var(--accent); color:var(--accent-ink);
@@ -202,6 +216,34 @@
   .flag-delete-btn{ background:none; border:none; color:var(--faint); font-size:17px; line-height:1; cursor:pointer; padding:0 2px; }
   .flag-delete-btn:hover{ color:var(--danger); }
   .add-rule-section{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+
+  .dash-section{ margin-bottom:32px; }
+  .dash-section h4{ font-family:var(--font-display); font-weight:500; font-size:16.5px; margin:0 0 16px; }
+  .dash-bar-row{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .dash-bar-label{ width:150px; font-size:12.5px; color:var(--muted); flex-shrink:0; }
+  .dash-bar-label.mono{ font-family:var(--font-mono); font-size:12px; }
+  .dash-bar-track{ flex:1; background:var(--surface-sunken); border-radius:6px; overflow:hidden; height:22px; display:flex; }
+  .dash-bar-fill{ height:100%; }
+  .dash-bar-count{ width:32px; text-align:right; font-family:var(--font-mono); font-size:12px; color:var(--muted); flex-shrink:0; }
+  .dash-empty{ font-size:13.5px; color:var(--muted); padding:20px 0; }
+  .dash-insight{ background:var(--accent-soft); border-radius:12px; padding:18px 20px; margin-bottom:28px; font-size:13.5px; color:var(--ink); }
+  .dash-insight b{ color:var(--accent); }
+
+  .dash-rule-group{ margin-bottom:22px; }
+  .dash-rule-group-header{ display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .dash-rule-group-header .dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .dash-rule-group-header .label{ font-weight:600; font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); }
+  .dash-rule-group-header .count{ font-family:var(--font-mono); font-size:11.5px; color:var(--faint); }
+  .dash-rule-item{ background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:8px; }
+  .dash-rule-top{ display:flex; justify-content:space-between; align-items:center; gap:14px; }
+  .dash-rule-col{ font-family:var(--font-mono); font-size:12.5px; font-weight:500; }
+  .dash-rule-result{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .dash-pass-label{ font-family:var(--font-mono); font-size:12px; white-space:nowrap; }
+  .dash-passbar{ display:flex; width:64px; height:7px; border-radius:4px; overflow:hidden; background:var(--surface-sunken); flex-shrink:0; }
+  .dash-passbar .pass{ background:var(--accent); }
+  .dash-passbar .fail{ background:var(--danger); }
+  .dash-manual-badge{ font-size:10.5px; font-family:var(--font-mono); background:var(--surface-sunken); color:var(--muted); padding:3px 8px; border-radius:10px; white-space:nowrap; }
+  .dash-rule-text{ font-size:12.5px; color:var(--muted); margin-top:6px; }
   .add-rule-form{ margin-top:10px; display:flex; flex-direction:column; gap:8px; }
   .flag .rule-text{ font-size:13.5px; margin-top:3px; }
   .flag .sql{ font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-top:6px; background:var(--surface-sunken); padding:6px 8px; border-radius:6px; display:block; overflow-x:auto; white-space:pre; }
@@ -215,6 +257,24 @@
   .ai-enrich-btn{ margin-top:2px; }
 
   footer.hint{ margin-top:40px; font-size:12.5px; color:var(--faint); border-top:1px solid var(--line); padding-top:18px; }
+
+  .maker-footer{ margin-top:56px; padding-top:32px; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  @media (max-width:720px){ .maker-footer{ grid-template-columns:1fr; gap:28px; } }
+  .maker-info{ display:flex; align-items:center; gap:14px; }
+  .maker-avatar{ width:56px; height:56px; border-radius:50%; object-fit:cover; flex-shrink:0; border:1px solid var(--line); }
+  .maker-name{ font-family:var(--font-display); font-weight:500; font-size:16px; }
+  .maker-tagline{ font-size:12.5px; color:var(--muted); margin-top:3px; max-width:38ch; }
+  .feedback-block h4{ font-size:12px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin:0 0 10px; font-weight:600; }
+  .feedback-row{ display:flex; gap:10px; margin-bottom:10px; }
+  .feedback-row input{ flex:1; }
+  .feedback-block textarea{
+    width:100%; font-family:var(--font-body); font-size:13.5px; padding:10px 12px;
+    border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink);
+    resize:vertical; margin-bottom:10px;
+  }
+  #feedback-status{ font-size:12.5px; margin-top:8px; }
+  #feedback-status.ok{ color:var(--accent); }
+  #feedback-status.err{ color:var(--danger); }
 
   .legend{ display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--muted); margin-top:14px; }
   .legend .item{ display:flex; align-items:center; gap:6px; }
@@ -291,12 +351,36 @@
       <input type="file" id="file-input" accept=".csv,.xlsx,.xls">
       <div class="filetypes">.csv &nbsp;·&nbsp; .xlsx &nbsp;·&nbsp; .xls</div>
     </div>
+
+    <div class="demo-section">
+      <p class="demo-label">Of probeer meteen met voorbeelddata:</p>
+      <div class="demo-grid">
+        <button class="demo-btn" data-demo="gemeente">
+          <span class="demo-tier">Gemeente</span>
+          <span class="demo-name">Meldingen openbare ruimte</span>
+        </button>
+        <button class="demo-btn" data-demo="rijk">
+          <span class="demo-tier">Rijk</span>
+          <span class="demo-name">Voertuigregistraties (RDW)</span>
+        </button>
+        <button class="demo-btn" data-demo="provincie">
+          <span class="demo-tier">Provincie</span>
+          <span class="demo-name">Lichtmasten (Zuid-Holland)</span>
+        </button>
+        <button class="demo-btn" data-demo="waterschap">
+          <span class="demo-tier">Waterschap</span>
+          <span class="demo-name">Waterkwaliteitsmetingen</span>
+        </button>
+      </div>
+      <p class="demo-note">Voorbeelddata gebaseerd op de structuur van echte open-datasets, gesynthetiseerd voor demonstratiedoeleinden — geen live overheidsdata.</p>
+    </div>
   </div>
 
   <div id="app-main">
 
     <div class="tabs">
       <button class="tab-btn active" data-tab="profiling">Profiling</button>
+      <button class="tab-btn" data-tab="dashboard">Dashboard</button>
       <button class="tab-btn" data-tab="cross">Cross-tabel</button>
       <button class="tab-btn" data-tab="export">Export</button>
       <button class="tab-btn" data-tab="projects">Projecten</button>
@@ -311,6 +395,21 @@
       </div>
       <div class="col-list" id="col-list"></div>
       <div class="legend" id="legend"></div>
+    </div>
+
+    <!-- DASHBOARD TAB -->
+    <div class="tab-panel" id="tab-dashboard">
+      <div id="dash-insight-slot"></div>
+
+      <div class="dash-section">
+        <h4>Regels per NORA-dimensie, met resultaat</h4>
+        <div id="dash-dimension-chart"></div>
+      </div>
+
+      <div class="dash-section">
+        <h4>Kolommen naar aantal bevestigde regels</h4>
+        <div id="dash-column-chart"></div>
+      </div>
     </div>
 
     <!-- CROSS-TABEL TAB -->
@@ -380,6 +479,30 @@
     </footer>
   </div>
 
+  <footer class="maker-footer">
+    <div class="maker-info">
+      <img class="maker-avatar" src="data:image/jpeg;base64,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" alt="Foto van Bas Bloemberg">
+      <div>
+        <div class="maker-name">Bas Bloemberg</div>
+        <div class="maker-tagline">Onafhankelijk adviseur datavolwassenheid — deze tool is een eigen initiatief, los van klantopdrachten.</div>
+      </div>
+    </div>
+
+    <div class="feedback-block">
+      <h4>Vragen of feedback?</h4>
+      <form name="feedback" method="POST" data-netlify="true" id="feedback-form">
+        <input type="hidden" name="form-name" value="feedback">
+        <div class="feedback-row">
+          <input type="text" name="naam" placeholder="Naam" required>
+          <input type="email" name="email" placeholder="E-mailadres" required>
+        </div>
+        <textarea name="bericht" rows="3" placeholder="Je vraag, opmerking of suggestie" required></textarea>
+        <button type="submit" class="btn small">Versturen</button>
+        <div id="feedback-status"></div>
+      </form>
+    </div>
+  </footer>
+
 </div>
 
 
@@ -410,6 +533,891 @@
   };
 
   // ---------- global state ----------
+  // Gesynthetiseerde demo-dataset o.b.v. de structuur van de officiele Amsterdam
+  // MORA-dataset (Meldingen Openbare Ruimte) -- geen live overheidsdata.
+  const DEMO_DATASETS = {
+    gemeente: {
+      filename: 'gemeente_amsterdam_meldingen_demo.csv',
+      csv: `meldingsnummer,hoofdcategorie,subcategorie,stadsdeel,buurt,datum_melding,datum_afgerond,status,externe_status,afhandeltermijn,doorlooptijd_dagen,anoniem_gemeld
+SIA-2025-100001,Civiele Constructies,Brug,Noord,Buikslotermeer,2025-03-13,,In behandeling,open,3,,Nee
+SIA-2025-100002,Schoon,,Oost,Watergraafsmeer,2025-02-17,,Gemeld,open,5,,Ja
+SIA-2025-100003,"Wegen, verkeer, straatmeubilair",Losliggende stoeptegel,Oost,Indische Buurt,2025-10-07,2025-10-28,Afgehandeld,afgesloten,21,21,Nee
+SIA-2025-100004,Afval,Grofvuil,Noord,Buikslotermeer,2025-03-21,,In behandeling,open,5,,Nee
+SIA-2025-100005,Overlast van boten,Woonboot,Centrum,Grachtengordel-West,2025-06-26,,Gemeld,open,10,,Nee
+SIA-2025-100006,Overlast van en door personen of groepen,Jongerenoverlast,Zuid,De Pijp,2025-07-05,2025-07-15,Afgehandeld,afgesloten,5,10,Nee
+SIA-2025-100007,Afval,Grofvuil,Zuidoost,Gaasperdam,2025-04-30,2025-04-30,Geannuleerd,afgesloten,3,0,Nee
+SIA-2025-100008,Openbaar groen en water,Plantsoen,Nieuw-West,Osdorp,2025-02-06,2025-02-14,Afgehandeld,afgesloten,5,8,Nee
+SIA-2025-100009,Overlast Bedrijven en Horeca,Geluidsoverlast,Zuid,Buitenveldert,2025-10-13,,In behandeling,open,5,,Nee
+SIA-2025-100010,Afval,Grofvuil,Zuidoost,Bijlmer Centrum,2025-07-25,2025-08-12,Afgehandeld,afgesloten,10,18,Nee
+SIA-2025-100011,Overlast van boten,Woonboot,Noord,Buikslotermeer,2025-08-23,2025-08-31,Afgehandeld,afgesloten,5,8,Nee
+SIA-2025-100012,Overlast Bedrijven en Horeca,,Oost,IJburg,2025-10-27,,In behandeling,open,21,,Nee
+SIA-2025-100013,Overlast van dieren,Ratten,West,Oud-West,2025-02-16,2025-02-20,Afgehandeld,afgesloten,3,4,Ja
+SIA-2025-100014,Overlast van dieren,Meeuwen,Centrum,Grachtengordel-West,2025-08-28,2025-09-05,Afgehandeld,afgesloten,10,8,Nee
+SIA-2025-100015,Afval,Huisvuil,Noord,Tuindorp Oostzaan,2025-06-24,2025-06-26,Afgehandeld,afgesloten,3,2,Ja
+SIA-2025-100016,Overlast in de openbare ruimte,Graffiti,Zuidoost,Bijlmer Centrum,2025-02-24,2025-03-08,Afgehandeld,afgesloten,10,12,Nee
+SIA-2025-100070,Schoon,Onkruid,West,Oud-West,2025-03-24,2025-03-24,Afgehandeld,afgesloten,3,0,Ja
+SIA-2025-100018,Overlast van boten,Vaargedrag,West,Oud-West,18-10-2025,,In behandeling,open,3,,Ja
+SIA-2025-100019,Overlast van en door personen of groepen,Jongerenoverlast,Zuidoost,Bullewijk,2025-03-07,2025-03-25,Afgehandeld,afgesloten,21,18,Nee
+SIA-2025-100020,Openbaar groen en water,Plantsoen,Oost,IJburg,2025-04-19,2025-04-23,Afgehandeld,afgesloten,5,4,Nee
+SIA-2025-100021,Overlast van boten,Vaargedrag,Oost,Watergraafsmeer,2025-04-26,,Gemeld,open,3,,Nee
+SIA-2025-100022,"Wegen, verkeer, straatmeubilair",Verkeersbord,Oost,Indische Buurt,2025-01-31,,Gemeld,open,5,,Ja
+SIA-2025-100023,Afval,Bedrijfsafval,Centrum,Nieuwmarkt,06-09-2025,,In behandeling,open,5,,Nee
+SIA-2025-100024,"Wegen, verkeer, straatmeubilair",,West,Bos en Lommer,2025-04-08,2025-04-08,Afgehandeld,afgesloten,3,0,Ja
+SIA-2025-100025,Overlast van dieren,Ratten,Zuid,Buitenveldert,28-01-2025,2025-02-05,Afgehandeld,afgesloten,3,8,Nee
+SIA-2025-100026,Civiele Constructies,Kademuur,West,Oud-West,2025-03-13,2025-04-05,Afgehandeld,afgesloten,21,340,Ja
+SIA-2025-100027,Overlast van en door personen of groepen,Jongerenoverlast,Zuidoost,Bijlmer Centrum,2025-10-09,2025-10-26,Afgehandeld,afgesloten,3,17,Nee
+SIA-2025-100028,Civiele Constructies,Kademuur,West,Bos en Lommer,2025-04-20,2025-05-15,Afgehandeld,afgesloten,21,25,Nee
+SIA-2025-100029,Openbaar groen en water,Oever,Centrum,Grachtengordel-West,21-08-2025,,In behandeling,open,10,,Nee
+SIA-2025-100030,Schoon,,Noord,Buikslotermeer,2025-06-01,,In behandeling,open,5,,Nee
+SIA-2025-100031,"Wegen, verkeer, straatmeubilair",,Noord,Buikslotermeer,2025-10-27,,Gemeld,open,21,,Nee
+SIA-2025-100032,Schoon,Zwerfvuil,Centrum,Nieuwmarkt,2025-04-06,,Gemeld,open,3,,Nee
+SIA-2025-100033,Overlast Bedrijven en Horeca,,Centrum,Nieuwmarkt,2025-01-21,,In behandeling,open,3,,Nee
+SIA-2025-100034,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Nieuw-West,Osdorp,2025-06-10,2025-06-14,Afgehandeld,afgesloten,5,4,Nee
+SIA-2025-100035,Overlast van en door personen of groepen,Drugsoverlast,Zuidoost,Bijlmer Centrum,2025-10-16,,Gemeld,open,3,,Ja
+SIA-2025-100210,Overlast Bedrijven en Horeca,Terras,Nieuw-West,Osdorp,2025-02-05,2025-02-12,Geannuleerd,afgesloten,5,7,Nee
+SIA-2025-100037,Openbaar groen en water,Oever,Zuidoost,Bullewijk,2025-09-28,2025-09-28,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100038,Civiele Constructies,,Nieuw-West,Osdorp,2025-10-11,2025-10-11,Afgehandeld,afgesloten,5,0,Nee
+SIA-2025-100039,"Wegen, verkeer, straatmeubilair",Verkeersbord,Noord,Buikslotermeer,2025-05-16,,In behandeling,open,21,,Nee
+SIA-2025-100040,Afval,Huisvuil,Noord,Buikslotermeer,2025-01-23,2025-01-24,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100041,Openbaar groen en water,Oever,Oost,IJburg,2025-01-05,2025-01-09,Afgehandeld,afgesloten,3,4,Ja
+SIA-2025-100042,OVERLAST,Onkruid,Zuidoost,Gaasperdam,2025-03-17,2025-04-09,Afgehandeld,afgesloten,21,23,Nee
+SIA-2025-100043,Afval,Bedrijfsafval,West,De Baarsjes,2025-02-22,,In behandeling,open,10,,Nee
+SIA-2025-100044,Overlast van dieren,Meeuwen,Noord,Nieuwendam,2025-05-02,2025-05-09,Geannuleerd,afgesloten,5,7,Nee
+SIA-2025-100045,Openbaar groen en water,Oever,Centrum,Jordaan,2025-06-20,2025-07-13,Afgehandeld,afgesloten,21,23,Nee
+SIA-2025-100046,Overlast in de openbare ruimte,Zwerfvuil,Zuidoost,Bullewijk,2025-01-20,,Gemeld,open,21,,Ja
+SIA-2025-100047,Overlast van en door personen of groepen,Drugsoverlast,Nieuw-West,Osdorp,2025-04-09,,In behandeling,open,21,,Nee
+SIA-2025-100048,Civiele Constructies,Duiker,Nieuw-West,Geuzenveld,2025-10-02,2025-10-04,Afgehandeld,afgesloten,10,2,Nee
+SIA-2025-100049,Civiele Constructies,Duiker,West,De Baarsjes,2025-05-16,2025-05-15,Geannuleerd,afgesloten,3,6,Nee
+SIA-2025-100050,Overlast van boten,Vaargedrag,Oost,IJburg,2025-10-23,,Gemeld,open,5,,Nee
+SIA-2025-100051,Overlast van dieren,Duiven,Oost,IJburg,2025-04-11,2025-04-23,Afgehandeld,afgesloten,10,12,Nee
+SIA-2025-100052,Overlast van boten,Ligplaats,Nieuw-West,Geuzenveld,03-06-2025,2025-06-11,Afgehandeld,afgesloten,10,8,Nee
+SIA-2025-100053,Schoon,Zwerfvuil,West,Bos en Lommer,2025-07-14,2025-07-15,Afgehandeld,afgesloten,5,1,Nee
+SIA-2025-100054,Overlast in de openbare ruimte,Wildplassen,Oost,Indische Buurt,2025-04-18,,In behandeling,open,21,,Nee
+SIA-2025-100055,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Zuid,Buitenveldert,2025-04-20,2025-05-13,Afgehandeld,afgesloten,21,23,Nee
+SIA-2025-100056,Civiele Constructies,Duiker,Oost,IJburg,2025-06-21,2025-06-21,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100057,Overlast Bedrijven en Horeca,Terras,Nieuw-West,Osdorp,2025-03-17,2025-03-31,Afgehandeld,afgesloten,3,14,Nee
+SIA-2025-100058,Civiele Constructies,Tunnel,Zuid,Zuidas,2025-07-16,2025-08-09,Afgehandeld,afgesloten,21,24,Nee
+SIA-2025-100059,Openbaar groen en water,Onkruid,Zuidoost,Bijlmer Centrum,2025-04-23,2025-04-30,Afgehandeld,afgesloten,5,7,Nee
+SIA-2025-100060,Schoon,Zwerfvuil,Zuidoost,Bijlmer Centrum,2025-08-26,2025-08-30,Afgehandeld,afgesloten,10,4,Nee
+SIA-2025-100061,Divers,Drugsoverlast,Zuidoost,Bullewijk,2025-03-23,2025-04-06,Afgehandeld,afgesloten,21,14,Nee
+SIA-2025-100062,Overlast in de openbare ruimte,Graffiti,Zuid,Zuidas,2025-08-14,,In behandeling,open,3,,Nee
+SIA-2025-100063,Overlast Bedrijven en Horeca,Geuroverlast,Nieuw-West,Slotervaart,2025-02-11,2025-02-10,Afgehandeld,afgesloten,5,7,Ja
+SIA-2025-100064,Overlast van dieren,Meeuwen,West,De Baarsjes,2025-08-01,,In behandeling,open,21,,Nee
+SIA-2025-100065,Overlast van en door personen of groepen,Drugsoverlast,Centrum,Jordaan,2025-07-19,2025-07-26,Afgehandeld,afgesloten,3,7,Nee
+SIA-2025-100066,Afval,Bedrijfsafval,Nieuw-West,Slotervaart,2025-08-03,2025-08-03,Afgehandeld,afgesloten,5,0,Nee
+SIA-2025-100067,Overlast in de openbare ruimte,Wildplassen,Zuid,De Pijp,2025-07-27,2025-08-05,Afgehandeld,afgesloten,5,9,Nee
+SIA-2025-100068,Schoon,Zwerfvuil,Zuid,Zuidas,2025-01-14,2025-01-14,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100069,Divers,Oever,West,Oud-West,2025-06-17,,In behandeling,open,5,,Nee
+SIA-2025-100070,Overlast van boten,Vaargedrag,Nieuw-West,Slotervaart,2025-02-11,,In behandeling,open,21,,Ja
+SIA-2025-100071,Schoon,Zwerfvuil,Nieuw-West,Osdorp,2025-01-21,2025-01-26,Afgehandeld,afgesloten,3,5,Ja
+SIA-2025-100072,Openbaar groen en water,Boom,West,Bos en Lommer,16-10-2025,2025-10-20,Afgehandeld,afgesloten,5,4,Nee
+SIA-2025-100073,Overlast in de openbare ruimte,Wildplassen,West,De Baarsjes,2025-02-28,2025-03-06,Afgehandeld,afgesloten,5,6,Ja
+SIA-2025-100074,Overlast in de openbare ruimte,Graffiti,Noord,Buikslotermeer,12-04-2025,2025-04-14,Afgehandeld,afgesloten,3,2,Nee
+SIA-2025-100075,Overlast Bedrijven en Horeca,Geluidsoverlast,Noord,Buikslotermeer,2025-03-03,2025-03-01,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100076,Schoon,Onkruid,Nieuw-West,Osdorp,2025-09-08,2025-09-14,Afgehandeld,afgesloten,3,6,Nee
+SIA-2025-100077,Overlast van boten,Ligplaats,Zuidoost,Gaasperdam,2025-08-11,2025-08-14,Afgehandeld,afgesloten,5,3,Nee
+SIA-2025-100078,Schoon,Uitwerpselen,Zuid,Buitenveldert,2025-05-18,2025-05-18,Afgehandeld,afgesloten,10,0,Nee
+SIA-2025-100079,Civiele Constructies,Duiker,Zuid,De Pijp,2025-10-19,2025-11-06,Afgehandeld,afgesloten,21,18,Nee
+SIA-2025-100080,Overlast van en door personen of groepen,Jongerenoverlast,Nieuw-West,Slotervaart,2025-05-22,,In behandeling,open,3,,Nee
+SIA-2025-100081,Overlast Bedrijven en Horeca,Geluidsoverlast,West,De Baarsjes,2025-10-12,2025-10-20,Afgehandeld,afgesloten,5,8,Nee
+SIA-2025-100082,Overlast van en door personen of groepen,Drugsoverlast,Zuidoost,Bijlmer Centrum,2025-04-24,,Gemeld,open,21,,Nee
+SIA-2025-100083,Overlast in de openbare ruimte,Graffiti,Oost,Watergraafsmeer,2025-09-29,2025-10-03,Afgehandeld,afgesloten,10,4,Nee
+SIA-2025-100084,Overlast van en door personen of groepen,Drugsoverlast,Nieuw-West,Slotervaart,2025-04-09,,In behandeling,open,10,,Ja
+SIA-2025-100085,Schoon,Onkruid,West,Oud-West,2025-09-05,,In behandeling,open,10,,Nee
+SIA-2025-100086,Schoon,Onkruid,Nieuw-West,Osdorp,2025-06-01,2025-06-08,Afgehandeld,afgesloten,5,7,Nee
+SIA-2025-100087,Overlast in de openbare ruimte,Zwerfvuil,Noord,Tuindorp Oostzaan,2025-01-24,,Gemeld,open,3,,Nee
+SIA-2025-100088,Openbaar groen en water,Oever,Centrum,Jordaan,2025-08-29,2025-09-16,Afgehandeld,afgesloten,21,18,Ja
+SIA-2025-100089,Overlast van en door personen of groepen,Jongerenoverlast,Zuidoost,Bijlmer Centrum,2025-02-07,2025-02-10,Afgehandeld,afgesloten,3,3,Ja
+SIA-2025-100090,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Centrum,Jordaan,2025-08-02,,Gemeld,open,5,,Nee
+SIA-2025-100091,Overlast van dieren,Ratten,Zuid,Buitenveldert,2025-08-08,2025-08-16,Afgehandeld,afgesloten,10,8,Nee
+SIA-2025-100092,onbekend,Kademuur,Noord,Nieuwendam,2025-02-11,,In behandeling,open,5,,Ja
+SIA-2025-100093,Schoon,Zwerfvuil,West,Oud-West,2025-08-29,2025-09-07,Afgehandeld,afgesloten,10,9,Ja
+SIA-2025-100094,Overlast in de openbare ruimte,Graffiti,Nieuw-West,Geuzenveld,2025-02-06,2025-02-17,Afgehandeld,afgesloten,5,11,Nee
+SIA-2025-100095,Overlast Bedrijven en Horeca,Geuroverlast,Centrum,Nieuwmarkt,2025-03-18,,In behandeling,open,10,,Nee
+SIA-2025-100096,Civiele Constructies,Brug,West,Bos en Lommer,2025-10-19,2025-10-25,Afgehandeld,afgesloten,10,6,Nee
+SIA-2025-100097,Overlast van en door personen of groepen,Drugsoverlast,Noord,Buikslotermeer,2025-09-14,2025-09-30,Geannuleerd,afgesloten,21,16,Nee
+SIA-2025-100098,Overlast van boten,Ligplaats,Nieuw-West,Osdorp,2025-10-22,,Gemeld,open,3,,Nee
+SIA-2025-100099,Overlast in de openbare ruimte,Graffiti,Centrum,Jordaan,2025-08-15,2025-08-14,Afgehandeld,afgesloten,10,12,Ja
+SIA-2025-100100,"Wegen, verkeer, straatmeubilair",Fietsrek,Noord,Buikslotermeer,2025-08-29,2025-09-05,Geannuleerd,afgesloten,10,7,Ja
+SIA-2025-100101,Openbaar groen en water,Plantsoen,Zuid,Zuidas,2025-07-25,2025-07-29,Afgehandeld,afgesloten,3,4,Nee
+SIA-2025-100102,Overlast van boten,Vaargedrag,Nieuw-West,Osdorp,2025-07-26,2025-07-26,Geannuleerd,afgesloten,3,0,Nee
+SIA-2025-100103,Overlast Bedrijven en Horeca,Terras,Nieuw-West,Geuzenveld,2025-08-15,2025-08-15,Afgehandeld,afgesloten,3,0,Ja
+SIA-2025-100104,Schoon,Zwerfvuil,Nieuw-West,Slotervaart,2025-09-06,2025-09-14,Afgehandeld,afgesloten,3,8,Nee
+SIA-2025-100105,Openbaar groen en water,Plantsoen,Oost,Indische Buurt,2025-02-17,2025-02-23,Afgehandeld,afgesloten,5,6,Nee
+SIA-2025-100106,Civiele Constructies,Tunnel,Centrum,Nieuwmarkt,2025-09-13,2025-09-11,Afgehandeld,afgesloten,10,224,Nee
+SIA-2025-100107,Overlast van en door personen of groepen,Jongerenoverlast,Zuid,Zuidas,2025-04-08,,Gemeld,open,5,,Nee
+SIA-2025-100108,Overlast in de openbare ruimte,Wildplassen,Nieuw-West,Geuzenveld,2025-01-02,,In behandeling,open,10,,Nee
+SIA-2025-100109,"Wegen, verkeer, straatmeubilair",Fietsrek,Zuidoost,Bijlmer Centrum,2025-09-05,2025-09-14,Afgehandeld,afgesloten,10,9,Nee
+SIA-2025-100110,Schoon,Uitwerpselen,Zuid,Buitenveldert,2025-05-03,2025-05-24,Afgehandeld,afgesloten,21,21,Ja
+SIA-2025-100111,Overlast van en door personen of groepen,Drugsoverlast,Zuid,Zuidas,2025-03-19,2025-04-15,Afgehandeld,afgesloten,21,27,Nee
+SIA-2025-100112,Openbaar groen en water,,Zuidoost,Bijlmer Centrum,14-08-2025,2025-08-14,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100113,Overlast van dieren,Meeuwen,West,Oud-West,2025-05-16,2025-05-25,Afgehandeld,afgesloten,10,9,Nee
+SIA-2025-100114,Overlast van dieren,Meeuwen,Centrum,Grachtengordel-West,01-10-2025,2025-10-27,Afgehandeld,afgesloten,21,368,Nee
+SIA-2025-100115,Overlast van en door personen of groepen,Jongerenoverlast,Oost,Indische Buurt,2025-05-28,,In behandeling,open,5,,Nee
+SIA-2025-100116,Overlast van dieren,Duiven,Zuidoost,Bullewijk,2025-02-21,2025-03-12,Afgehandeld,afgesloten,21,19,Ja
+SIA-2025-100117,Overlast in de openbare ruimte,Zwerfvuil,Centrum,Grachtengordel-West,2025-05-31,2025-06-08,Afgehandeld,afgesloten,10,8,Nee
+SIA-2025-100118,"Wegen, verkeer, straatmeubilair",Verkeersbord,West,Oud-West,2025-07-15,,Gemeld,open,5,,Nee
+SIA-2025-100119,"Wegen, verkeer, straatmeubilair",Verkeersbord,West,Bos en Lommer,2025-08-24,2025-09-04,Afgehandeld,afgesloten,10,11,Nee
+SIA-2025-100120,Overlast van en door personen of groepen,Drugsoverlast,Noord,Tuindorp Oostzaan,15-08-2025,,In behandeling,open,10,,Nee
+SIA-2025-100121,Overlast in de openbare ruimte,Graffiti,Zuid,Zuidas,2025-06-04,,In behandeling,open,5,,Nee
+SIA-2025-100122,Overlast van en door personen of groepen,Jongerenoverlast,West,Bos en Lommer,22-10-2025,2025-11-04,Afgehandeld,afgesloten,10,13,Nee
+SIA-2025-100123,Overlast van dieren,Ratten,Centrum,Nieuwmarkt,2025-01-26,2025-02-15,Afgehandeld,afgesloten,21,20,Nee
+SIA-2025-100124,Overlast in de openbare ruimte,Zwerfvuil,Oost,Watergraafsmeer,2025-04-08,,In behandeling,open,10,,Nee
+SIA-2025-100125,Openbaar groen en water,Onkruid,Noord,Tuindorp Oostzaan,2025-08-14,,Gemeld,open,3,,Nee
+SIA-2025-100126,Openbaar groen en water,Onkruid,Nieuw-West,Slotervaart,31-03-2025,2025-04-08,Afgehandeld,afgesloten,5,8,Nee
+SIA-2025-100127,Schoon,Onkruid,Nieuw-West,Osdorp,2025-09-04,,In behandeling,open,10,,Nee
+SIA-2025-100128,Overlast van boten,Woonboot,Zuid,De Pijp,2025-04-26,,Gemeld,open,21,,Nee
+SIA-2025-100129,Schoon,Uitwerpselen,Centrum,Grachtengordel-West,2025-10-02,,Gemeld,open,3,,Nee
+SIA-2025-100130,Overlast in de openbare ruimte,Graffiti,Zuid,Zuidas,2025-02-25,2025-03-05,Geannuleerd,afgesloten,5,8,Nee
+SIA-2025-100131,"Wegen, verkeer, straatmeubilair",,Oost,Indische Buurt,2025-08-26,2025-09-03,Afgehandeld,afgesloten,10,8,Ja
+SIA-2025-100132,Afval,Bedrijfsafval,Zuid,De Pijp,2025-10-03,,Gemeld,open,5,,Nee
+SIA-2025-100133,Overlast van boten,Ligplaats,Noord,Tuindorp Oostzaan,2025-08-03,2025-08-06,Geannuleerd,afgesloten,5,3,Nee
+SIA-2025-100134,Civiele Constructies,Tunnel,Oost,Watergraafsmeer,2025-05-24,2025-05-25,Geannuleerd,afgesloten,3,1,Nee
+SIA-2025-100135,Overlast Bedrijven en Horeca,Geuroverlast,Centrum,Nieuwmarkt,2025-07-03,2025-07-03,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100136,Overlast Bedrijven en Horeca,Geluidsoverlast,Zuidoost,Gaasperdam,2025-04-19,,Gemeld,open,3,,Ja
+SIA-2025-100137,Overlast van boten,Woonboot,West,De Baarsjes,2025-10-11,,In behandeling,open,5,,Nee
+SIA-2025-100138,Overlast Bedrijven en Horeca,Geuroverlast,Zuidoost,Bijlmer Centrum,2025-01-02,2024-12-28,Afgehandeld,afgesloten,10,11,Ja
+SIA-2025-100139,Overlast in de openbare ruimte,Zwerfvuil,Centrum,Nieuwmarkt,2025-03-09,2025-03-10,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100140,Overlast Bedrijven en Horeca,Terras,Nieuw-West,Osdorp,2025-01-27,,In behandeling,open,5,,Nee
+SIA-2025-100141,Schoon,Zwerfvuil,Noord,Nieuwendam,2025-07-05,2025-07-05,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100142,Schoon,Uitwerpselen,Zuid,Zuidas,2025-02-01,2025-02-22,Geannuleerd,afgesloten,21,21,Nee
+SIA-2025-100143,Overlast van dieren,Meeuwen,Centrum,Grachtengordel-West,2025-08-16,2025-08-21,Afgehandeld,afgesloten,3,5,Ja
+SIA-2025-100144,Openbaar groen en water,Plantsoen,Oost,IJburg,2025-06-16,2025-07-04,Afgehandeld,afgesloten,21,18,Nee
+SIA-2025-100145,Schoon,Uitwerpselen,Zuid,Zuidas,2025-02-20,2025-02-26,Afgehandeld,afgesloten,3,6,Nee
+SIA-2025-100146,Overlast Bedrijven en Horeca,Geuroverlast,Zuid,De Pijp,2025-08-21,2025-09-06,Afgehandeld,afgesloten,21,16,Nee
+SIA-2025-100216,Civiele Constructies,Duiker,Zuid,Buitenveldert,2025-07-11,2025-07-14,Afgehandeld,afgesloten,5,3,Ja
+SIA-2025-100148,Civiele Constructies,Brug,Zuid,De Pijp,2025-07-10,2025-07-10,Afgehandeld,afgesloten,5,0,Nee
+SIA-2025-100149,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Noord,Nieuwendam,05-08-2025,2025-08-13,Afgehandeld,afgesloten,3,8,Nee
+SIA-2025-100150,"Wegen, verkeer, straatmeubilair",Verkeersbord,West,De Baarsjes,2025-02-25,2025-03-05,Afgehandeld,afgesloten,10,8,Nee
+SIA-2025-100151,Overlast van boten,Woonboot,Zuidoost,Gaasperdam,2025-08-08,2025-08-08,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100152,Afval,Grofvuil,Nieuw-West,Geuzenveld,2025-06-23,2025-06-29,Afgehandeld,afgesloten,10,6,Ja
+SIA-2025-100153,Openbaar groen en water,Oever,Centrum,Jordaan,2025-01-16,2025-01-18,Afgehandeld,afgesloten,3,2,Nee
+SIA-2025-100154,Overlast van boten,Woonboot,Nieuw-West,Slotervaart,2025-10-18,2025-10-18,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100155,Openbaar groen en water,Boom,Zuidoost,Bullewijk,11-02-2025,,Gemeld,open,10,,Nee
+SIA-2025-100156,Overlast van dieren,Ratten,Oost,Watergraafsmeer,2025-04-21,2025-04-22,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100157,"Wegen, verkeer, straatmeubilair",Fietsrek,Oost,IJburg,2025-04-23,,In behandeling,open,21,,Nee
+SIA-2025-100158,Afval,,West,Bos en Lommer,2025-03-12,2025-03-23,Geannuleerd,afgesloten,10,331,Nee
+SIA-2025-100159,Civiele Constructies,Brug,Zuid,Zuidas,2025-03-08,2025-03-26,Afgehandeld,afgesloten,21,18,Nee
+SIA-2025-100160,Overlast van boten,Woonboot,Zuid,Zuidas,2025-01-10,,Gemeld,open,21,,Nee
+SIA-2025-100161,Overlast van boten,Ligplaats,Zuid,Zuidas,2025-08-02,2025-08-11,Afgehandeld,afgesloten,10,9,Ja
+SIA-2025-100162,Afval,Bedrijfsafval,West,De Baarsjes,2025-07-05,2025-07-06,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100163,Overlast van dieren,Meeuwen,Centrum,Grachtengordel-West,2025-06-23,2025-06-28,Afgehandeld,afgesloten,5,5,Nee
+SIA-2025-100164,Openbaar groen en water,Onkruid,Oost,IJburg,19-09-2025,,Gemeld,open,5,,Nee
+SIA-2025-100165,Overlast van boten,Vaargedrag,Noord,Tuindorp Oostzaan,01-05-2025,2025-05-05,Afgehandeld,afgesloten,3,4,Nee
+SIA-2025-100166,Civiele Constructies,Kademuur,Zuidoost,Bullewijk,2025-10-16,2025-11-08,Afgehandeld,afgesloten,21,23,Nee
+SIA-2025-100167,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Zuidoost,Bullewijk,2025-08-14,,In behandeling,open,3,,Nee
+SIA-2025-100168,Overlast in de openbare ruimte,Wildplassen,Oost,Indische Buurt,2025-02-07,2025-02-15,Afgehandeld,afgesloten,10,8,Nee
+SIA-2025-100169,Overlast in de openbare ruimte,Zwerfvuil,Noord,Nieuwendam,2025-09-17,2025-10-08,Afgehandeld,afgesloten,21,21,Nee
+SIA-2025-100170,Schoon,Onkruid,Centrum,Grachtengordel-West,2025-10-20,2025-10-23,Geannuleerd,afgesloten,5,3,Ja
+SIA-2025-100171,Afval,Zwerfafval,Centrum,Grachtengordel-West,2025-02-13,2025-02-22,Geannuleerd,afgesloten,5,9,Ja
+SIA-2025-100172,Overlast van en door personen of groepen,Drugsoverlast,Oost,IJburg,2025-07-06,2025-07-19,Afgehandeld,afgesloten,10,13,Nee
+SIA-2025-100173,"Wegen, verkeer, straatmeubilair",Losliggende stoeptegel,Zuidoost,Bullewijk,2025-02-03,2025-01-30,Afgehandeld,afgesloten,10,8,Ja
+SIA-2025-100174,Overlast van dieren,Ratten,Nieuw-West,Geuzenveld,2025-03-18,2025-04-02,Afgehandeld,afgesloten,10,15,Nee
+SIA-2025-100175,Overlast in de openbare ruimte,Graffiti,Noord,Tuindorp Oostzaan,2025-02-13,2025-02-25,Afgehandeld,afgesloten,10,12,Nee
+SIA-2025-100176,Overlast van boten,Woonboot,Noord,Tuindorp Oostzaan,2025-09-27,2025-09-27,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100177,Overlast van boten,,West,Oud-West,2025-09-06,,In behandeling,open,5,,Ja
+SIA-2025-100178,Openbaar groen en water,Boom,Centrum,Grachtengordel-West,2025-02-21,2025-02-21,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100179,Divers,Verkeersbord,Oost,Watergraafsmeer,2025-04-03,,In behandeling,open,5,,Nee
+SIA-2025-100180,Afval,Zwerfafval,Nieuw-West,Geuzenveld,2025-08-16,2025-08-26,Afgehandeld,afgesloten,10,10,Ja
+SIA-2025-100181,Overlast Bedrijven en Horeca,Geuroverlast,Zuidoost,Gaasperdam,2025-04-10,2025-04-13,Geannuleerd,afgesloten,10,3,Nee
+SIA-2025-100182,"Wegen, verkeer, straatmeubilair",Fietsrek,Zuid,Buitenveldert,2025-09-15,2025-10-13,Afgehandeld,afgesloten,21,28,Nee
+SIA-2025-100183,Openbaar groen en water,Plantsoen,Centrum,Nieuwmarkt,2025-07-10,2025-07-11,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100184,Schoon,Zwerfvuil,Nieuw-West,Osdorp,2025-05-20,2025-06-11,Afgehandeld,afgesloten,21,22,Nee
+SIA-2025-100185,Overlast Bedrijven en Horeca,Geuroverlast,Nieuw-West,Osdorp,2025-07-22,2025-07-30,Afgehandeld,afgesloten,10,8,Ja
+SIA-2025-100186,Civiele Constructies,Duiker,West,Oud-West,2025-02-20,,In behandeling,open,10,,Nee
+SIA-2025-100187,Openbaar groen en water,Onkruid,Nieuw-West,Slotervaart,2025-03-13,2025-04-02,Afgehandeld,afgesloten,21,20,Ja
+SIA-2025-100188,Overlast in de openbare ruimte,Zwerfvuil,Zuidoost,Bijlmer Centrum,2025-09-28,2025-10-19,Afgehandeld,afgesloten,21,21,Ja
+SIA-2025-100189,Overlast in de openbare ruimte,Zwerfvuil,Nieuw-West,Osdorp,2025-08-03,,Gemeld,open,21,,Ja
+SIA-2025-100190,Overlast van en door personen of groepen,Jongerenoverlast,Noord,Tuindorp Oostzaan,2025-03-15,2025-03-20,Afgehandeld,afgesloten,10,5,Ja
+SIA-2025-100191,Overlast van dieren,Duiven,Noord,Tuindorp Oostzaan,2025-07-04,,Gemeld,open,3,,Nee
+SIA-2025-100192,Divers,Onkruid,Zuidoost,Bullewijk,2025-07-19,2025-08-11,Afgehandeld,afgesloten,21,23,Ja
+SIA-2025-100193,Afvall,Ratten,Nieuw-West,Geuzenveld,2025-02-04,,Gemeld,open,10,,Ja
+SIA-2025-100194,Afvall,Duiker,West,Oud-West,2025-06-23,2025-06-30,Afgehandeld,afgesloten,5,7,Nee
+SIA-2025-100195,Overlast van en door personen of groepen,Jongerenoverlast,Zuidoost,Bijlmer Centrum,2025-08-23,,Gemeld,open,3,,Nee
+SIA-2025-100196,onbekend,Grofvuil,Centrum,Grachtengordel-West,2025-09-21,2025-10-06,Geannuleerd,afgesloten,21,15,Nee
+SIA-2025-100197,Schoon,Uitwerpselen,Nieuw-West,Osdorp,2025-04-08,2025-04-13,Afgehandeld,afgesloten,10,5,Nee
+SIA-2025-100198,Overlast van boten,Vaargedrag,Centrum,Grachtengordel-West,2025-07-24,2025-08-19,Afgehandeld,afgesloten,21,26,Nee
+SIA-2025-100199,Overlast van dieren,Ratten,West,Bos en Lommer,2025-07-08,2025-07-20,Afgehandeld,afgesloten,10,12,Ja
+SIA-2025-100200,"Wegen, verkeer, straatmeubilair",Verkeersbord,Oost,Watergraafsmeer,2025-02-10,,In behandeling,open,10,,Nee
+SIA-2025-100201,Overlast in de openbare ruimte,Wildplassen,Oost,IJburg,2025-08-16,2025-08-19,Afgehandeld,afgesloten,10,3,Nee
+SIA-2025-100202,Overlast van boten,Ligplaats,Zuid,Buitenveldert,2025-01-30,2025-01-31,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100203,Openbaar groen en water,,West,De Baarsjes,2025-08-13,2025-08-13,Afgehandeld,afgesloten,3,0,Ja
+SIA-2025-100204,Overlast Bedrijven en Horeca,Terras,Nieuw-West,Slotervaart,2025-10-18,2025-10-18,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100205,Overlast van boten,Vaargedrag,Zuidoost,Bijlmer Centrum,2025-09-29,2025-10-05,Afgehandeld,afgesloten,10,6,Nee
+SIA-2025-100206,Overlast in de openbare ruimte,Zwerfvuil,Centrum,Jordaan,13-09-2025,2025-10-05,Afgehandeld,afgesloten,21,353,Nee
+SIA-2025-100207,Overlast van en door personen of groepen,Jongerenoverlast,Oost,Watergraafsmeer,2025-09-09,2025-09-12,Afgehandeld,afgesloten,5,3,Ja
+SIA-2025-100208,Civiele Constructies,Tunnel,West,De Baarsjes,2025-02-14,2025-02-20,Afgehandeld,afgesloten,10,6,Nee
+SIA-2025-100209,Overlast in de openbare ruimte,Wildplassen,Zuidoost,Bijlmer Centrum,2025-03-31,2025-04-04,Afgehandeld,afgesloten,10,4,Nee
+SIA-2025-100210,Civiele Constructies,Kademuur,Zuidoost,Bijlmer Centrum,2025-09-10,,In behandeling,open,3,,Nee
+SIA-2025-100211,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Zuid,Zuidas,2025-02-14,,Gemeld,open,3,,Nee
+SIA-2025-100212,Overlast van en door personen of groepen,Drugsoverlast,Zuidoost,Gaasperdam,2025-02-07,2025-02-17,Afgehandeld,afgesloten,5,10,Nee
+SIA-2025-100213,Schoon,,West,De Baarsjes,2025-04-04,2025-04-08,Afgehandeld,afgesloten,5,4,Nee
+SIA-2025-100214,Afval,Huisvuil,Oost,Indische Buurt,2025-03-24,,In behandeling,open,10,,Nee
+SIA-2025-100215,Overlast Bedrijven en Horeca,Geuroverlast,Oost,Watergraafsmeer,2025-05-09,2025-05-10,Afgehandeld,afgesloten,5,1,Ja
+SIA-2025-100216,Overlast in de openbare ruimte,Graffiti,Oost,Indische Buurt,2025-03-28,2025-03-29,Afgehandeld,afgesloten,5,1,Ja
+SIA-2025-100217,"Wegen, verkeer, straatmeubilair",,Zuidoost,Bullewijk,2025-01-15,,Gemeld,open,3,,Ja
+SIA-2025-100218,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Noord,Nieuwendam,2025-08-02,2025-08-02,Afgehandeld,afgesloten,3,0,Nee
+SIA-2025-100219,Overlast in de openbare ruimte,Wildplassen,West,De Baarsjes,2025-08-21,2025-08-24,Afgehandeld,afgesloten,3,3,Nee
+SIA-2025-100220,Openbaar groen en water,Oever,Zuid,Buitenveldert,2025-06-24,2025-06-26,Afgehandeld,afgesloten,5,2,Nee
+SIA-2025-100221,Overlast van boten,Vaargedrag,West,Bos en Lommer,2025-02-24,2025-03-11,Afgehandeld,afgesloten,10,15,Ja
+SIA-2025-100222,Civiele Constructies,Duiker,Zuid,De Pijp,2025-01-26,,Gemeld,open,10,,Nee
+SIA-2025-100223,"Wegen, verkeer, straatmeubilair",Fietsrek,West,Oud-West,2025-10-23,2025-11-02,Afgehandeld,afgesloten,10,10,Nee
+SIA-2025-100224,Overlast van en door personen of groepen,Drugsoverlast,Nieuw-West,Slotervaart,2025-07-21,,Gemeld,open,21,,Nee
+SIA-2025-100225,Overlast Bedrijven en Horeca,Terras,Nieuw-West,Osdorp,11-09-2025,,Gemeld,open,21,,Nee
+SIA-2025-100226,Afval,Huisvuil,Zuid,De Pijp,2025-07-07,2025-07-30,Afgehandeld,afgesloten,21,23,Nee
+SIA-2025-100227,Overlast van dieren,Duiven,Oost,IJburg,2025-10-11,,In behandeling,open,10,,Ja
+SIA-2025-100228,Schoon,Uitwerpselen,Zuidoost,Bullewijk,2025-03-02,,In behandeling,open,5,,Nee
+SIA-2025-100229,Overlast van dieren,Ratten,Zuidoost,Gaasperdam,07-07-2025,2025-07-13,Afgehandeld,afgesloten,5,6,Nee
+SIA-2025-100230,onbekend,Huisvuil,West,De Baarsjes,2025-08-31,,In behandeling,open,21,,Ja
+SIA-2025-100231,Schoon,Zwerfvuil,Nieuw-West,Geuzenveld,2025-07-21,,In behandeling,open,10,,Nee
+SIA-2025-100232,Schoon,Onkruid,Oost,Watergraafsmeer,2025-06-03,2025-06-28,Afgehandeld,afgesloten,21,25,Nee
+SIA-2025-100233,Overlast van boten,Vaargedrag,Noord,Nieuwendam,2025-10-26,2025-11-06,Geannuleerd,afgesloten,10,11,Nee
+SIA-2025-100234,Afval,,Nieuw-West,Geuzenveld,2025-10-24,2025-10-24,Afgehandeld,afgesloten,5,0,Nee
+SIA-2025-100235,"Wegen, verkeer, straatmeubilair",Fietsrek,West,De Baarsjes,2025-07-14,2025-07-20,Afgehandeld,afgesloten,5,6,Nee
+SIA-2025-100236,Civiele Constructies,Kademuur,Centrum,Grachtengordel-West,2025-03-19,,In behandeling,open,21,,Nee
+SIA-2025-100237,Overlast van dieren,,Zuidoost,Bullewijk,2025-02-01,2025-02-03,Geannuleerd,afgesloten,5,2,Nee
+SIA-2025-100238,Schoon,Uitwerpselen,Noord,Buikslotermeer,2025-06-10,2025-06-10,Afgehandeld,afgesloten,5,0,Nee
+SIA-2025-100239,Overlast in de openbare ruimte,Graffiti,Zuid,De Pijp,2025-05-23,2025-06-03,Geannuleerd,afgesloten,10,11,Ja
+SIA-2025-100240,Overlast in de openbare ruimte,Wildplassen,Noord,Nieuwendam,2025-09-08,2025-09-12,Afgehandeld,afgesloten,10,4,Nee
+SIA-2025-100241,Overlast in de openbare ruimte,Wildplassen,Centrum,Nieuwmarkt,2025-07-14,2025-08-04,Afgehandeld,afgesloten,21,21,Nee
+SIA-2025-100093,Openbaar groen en water,Plantsoen,Centrum,Grachtengordel-West,2025-02-10,2025-02-25,Geannuleerd,afgesloten,10,15,Nee
+SIA-2025-100243,Overlast Bedrijven en Horeca,Geluidsoverlast,Zuidoost,Bullewijk,2025-10-15,,In behandeling,open,10,,Ja
+SIA-2025-100244,"Wegen, verkeer, straatmeubilair",Verkeersbord,West,Oud-West,2025-09-29,2025-10-01,Afgehandeld,afgesloten,5,2,Nee
+SIA-2025-100245,Afval,Huisvuil,Zuid,Buitenveldert,2025-02-21,2025-03-03,Afgehandeld,afgesloten,5,10,Nee
+SIA-2025-100246,Overlast van dieren,Meeuwen,Zuid,Buitenveldert,2025-05-28,2025-06-07,Afgehandeld,afgesloten,10,10,Nee
+SIA-2025-100247,Afval,Huisvuil,Noord,Tuindorp Oostzaan,2025-01-20,,In behandeling,open,5,,Nee
+SIA-2025-100248,Openbaar groen en water,Onkruid,Zuidoost,Gaasperdam,2025-04-06,2025-04-16,Afgehandeld,afgesloten,10,10,Nee
+SIA-2025-100249,Civiele Constructies,Duiker,Nieuw-West,Slotervaart,2025-10-06,2025-10-26,Geannuleerd,afgesloten,21,20,Nee
+SIA-2025-100250,Openbaar groen en water,Oever,Nieuw-West,Osdorp,2025-06-19,2025-06-23,Afgehandeld,afgesloten,5,4,Nee
+SIA-2025-100251,Afval,Bedrijfsafval,Zuidoost,Gaasperdam,2025-04-09,2025-04-09,Afgehandeld,afgesloten,5,0,Nee
+SIA-2025-100252,Overlast van dieren,Ratten,Oost,Watergraafsmeer,2025-02-18,,Gemeld,open,5,,Nee
+SIA-2025-100253,Overlast van en door personen of groepen,Drugsoverlast,West,Oud-West,2025-05-01,,In behandeling,open,21,,Nee
+SIA-2025-100254,Overlast van boten,Vaargedrag,Oost,IJburg,2025-05-14,2025-05-23,Afgehandeld,afgesloten,10,9,Ja
+SIA-2025-100255,Overlast in de openbare ruimte,Zwerfvuil,Zuid,Zuidas,2025-06-09,2025-06-10,Afgehandeld,afgesloten,3,1,Nee
+SIA-2025-100256,Overlast in de openbare ruimte,Wildplassen,Oost,Indische Buurt,2025-03-10,,In behandeling,open,21,,Ja
+SIA-2025-100257,"Wegen, verkeer, straatmeubilair",Lantaarnpaal,Zuid,Zuidas,2025-08-30,2025-09-04,Afgehandeld,afgesloten,5,5,Nee
+SIA-2025-100258,Civiele Constructies,Tunnel,Oost,IJburg,16-10-2025,2025-10-16,Afgehandeld,afgesloten,3,0,Ja
+SIA-2025-100259,Schoon,Onkruid,West,De Baarsjes,2025-03-26,2025-04-07,Afgehandeld,afgesloten,10,12,Nee
+SIA-2025-100260,"Wegen, verkeer, straatmeubilair",Fietsrek,Centrum,Nieuwmarkt,2025-01-29,2025-02-15,Afgehandeld,afgesloten,21,17,Ja
+`
+    },
+    rijk: {
+      filename: 'rijk_rdw_voertuigen_demo.csv',
+      csv: `kenteken,merk,handelsbenaming,voertuigsoort,brandstof,datum_eerste_toelating,datum_tenaamstelling,vervaldatum_apk,massa_ledig_voertuig,aantal_zitplaatsen
+1-YEB-63,PEUGEOT,308,Personenauto,Benzine,2001-04-01,2001-05-23,2027-06-18,1042,5
+1-NJZ-15,VOLKSWAGEN,POLO,Personenauto,LPG,2000-08-26,2000-10-17,2027-07-19,1103,4
+84-NEC-2,BMW,1-SERIE,Personenauto,Diesel,2022-04-03,2022-04-10,2027-07-24,1481,4
+GV-815-H,BMW,1-SERIE,Personenauto,LPG,2021-11-07,2021-12-04,2026-11-03,1803,7
+7-DHY-63,VOLKSWAGEN,PASSAT,Personenauto,Elektriciteit,2018-02-18,2018-03-08,2027-09-01,999,2
+NL-960-C,VOLKSWAGEN,GOLF,Bedrijfsauto,Hybride,2012-01-28,2012-02-18,2026-12-10,2834,
+SX-455-A,PEUGEOT,3008,Personenauto,Benzine,2000-09-21,2000-11-06,2026-10-30,2175,7
+4-JYL-31,RENAULT,MEGANE,Personenauto,Benzine,2020-02-23,2020-02-26,2026-07-28,1438,4
+SJ-336-E,RENAULT,MEGANE,Personenauto,Diesel,2017-04-24,2017-06-18,2027-07-03,1420,7
+AK-478-X,VOLKSWAGEN,POLO,Personenauto,Diesel,1998-07-17,1998-08-17,2027-08-12,1223,5
+JJ-593-Y,BMW,3-SERIE,Aanhangwagen,Hybride,2000-06-03,2000-07-02,2027-11-13,2690,
+10-NMY-1,RENAULT,CLIO,Personenauto,Diesel,2017-10-07,2017-10-17,2026-04-08,1546,2
+24-WZL-8,VOLKSWAGEN,POLO,Personenauto,Diesel,2009-04-25,2009-05-17,2027-08-25,1595,7
+77-HSY-9,PEUGEOT,208,Personenauto,Elektriciteit,2009-11-16,2009-12-16,2026-05-31,1907,2
+9-VHE-34,PEUGEOT,208,Personenauto,Elektriciteit,2021-04-03,2021-04-26,2026-06-06,1578,4
+1-ZVL-34,TOYOTA,RAV4,Bedrijfsauto,Diesel,2006-12-20,2006-12-10,2027-05-05,1856,
+EE-739-X,TESLA,MODEL Y,Personenauto,Elektriciteit,2014-05-11,2014-05-16,2026-07-30,1059,4
+VT-589-F,VOLKSWAGEN,TIGUAN,Motorfiets,Elektriciteit,2001-10-21,2001-12-13,2027-10-24,891,
+26-ANL-3,RENAULT,CAPTUR,Personenauto,LPG,2018-10-11,2018-11-05,2026-03-13,2334,4
+11-VSC-3,BMW,X1,Aanhangwagen,Elektriciteit,2004-12-29,2005-02-02,2027-07-01,936,
+4-THM-26,RENAULT,CLIO,Bedrijfsauto,Diesel,1999-04-04,1999-03-15,2026-07-22,1599,
+3-MAK-33,VOLKSWAGEN,PASSAT,Motorfiets,Hybride,2021-03-07,2021-04-02,2027-05-14,935,
+2-NHM-81,BMW,1-SERIE,Bedrijfsauto,Diesel,2005-09-24,2005-10-03,2027-04-15,2935,
+74-KAX-2,RENAULT,CLIO,Motorfiets,Benzine,2009-02-23,2009-03-07,2026-09-26,572,
+4-SXY-43,RENAULT,MEGANE,Personenauto,Hybride,2020-12-22,2021-01-03,2026-09-26,1776,7
+BF-174-G,BMW,1-SERIE,Bedrijfsauto,Diesel,2016-09-09,2016-09-16,2027-01-22,2210,
+EY-507-S,TESLA,MODEL Y,Bedrijfsauto,Diesel,2014-06-05,2014-06-14,2026-09-02,962,
+HS-119-L,TOYOTA,YARIS,Personenauto,LPG,2021-02-16,2021-03-13,2026-11-29,1712,4
+2-CYF-23,BMW,3-SERIE,Personenauto,Benzine,2015-03-30,2015-04-20,2027-05-30,2127,5
+DY-684-S,,PASSAT,Personenauto,Diesel,2010-02-17,2010-04-06,2026-04-28,1714,5
+2-VBW-18,TESLA,MODEL Y,Personenauto,Benzine,2006-03-23,2006-04-19,2026-03-01,1400,2
+77-SYZ-5,PEUGEOT,208,Personenauto,Elektriciteit,2022-10-23,2022-11-18,2026-09-17,2123,4
+3-FVZ-14,VOLKSWAGEN,POLO,Personenauto,Elektriciteit,2011-09-07,2011-10-10,2026-07-15,1443,7
+CW-542-Z,VOLKSWAGEN,GOLF,Bedrijfsauto,Hybride,2006-07-02,2006-08-03,2027-04-17,1406,
+EX-846-Y,RENAULT,CAPTUR,Bedrijfsauto,LPG,2020-09-23,2020-10-12,2026-07-25,1340,
+5-KBR-58,TOYOTA,RAV4,Aanhangwagen,onbekend,2003-10-28,2003-10-28,2026-02-27,2961,
+EF-103-J,BMW,X1,Aanhangwagen,Hybride,2008-11-12,2008-12-26,2026-10-13,585,
+55-EHB-5,PEUGEOT,2008,Aanhangwagen,Hybride,2012-07-06,2012-07-21,2026-01-21,1667,
+NJ-406-K,BMW,X1,Personenauto,Hybride,1998-03-23,1998-03-28,2026-09-13,1033,4
+8-DSR-15,TESLA,MODEL 3,Personenauto,Hybride,2004-12-18,2005-01-29,2027-08-19,1647,5
+1-WNX-97,TESLA,MODEL Y,Bedrijfsauto,Hybride,2004-04-01,2004-05-29,2027-06-06,3483,
+NP-741-V,TESLA,MODEL 3,Personenauto,Benzine,2003-12-21,2004-01-30,2026-12-21,1064,7
+9-BTF-19,TESLA,MODEL 3,Personenauto,Benzine,2018-07-01,2018-08-21,2026-02-26,2382,2
+WB-800-K,PEUGEOT,308,Bedrijfsauto,Diesel,2008-05-08,2008-06-24,2027-10-13,2285,
+3-ABF-96,VOLKSWAGEN,POLO,Personenauto,Diesel,2012-11-18,2012-12-04,2027-10-15,2372,5
+80-EZY-1,VOLKSWAGEN,POLO,Personenauto,Elektriciteit,2021-03-03,2021-03-21,2027-04-06,1804,7
+84-BTF-6,PEUGEOT,3008,Personenauto,Hybride,2018-02-28,2018-03-17,2027-01-17,6768,4
+30-ALK-5,TOYOTA,COROLLA,Motorfiets,Elektriciteit,2008-05-18,2008-06-18,2027-04-28,2014,
+WC-300-A,TESLA,MODEL 3,Personenauto,LPG,2012-03-06,2012-03-13,2026-11-21,853,5
+TW-387-D,TESLA,MODEL Y,Personenauto,Benzine,2015-08-17,2015-09-10,2027-08-12,1006,5
+57-VKA-7,VOLKSWAGEN,PASSAT,Personenauto,Diesel,2009-03-08,2009-03-25,2027-03-08,1896,5
+5-LYN-31,BMW,X1,Personenauto,Benzine,2000-03-21,2000-05-19,2027-02-10,1773,4
+4-GNJ-31,RENAULT,MEGANE,Personenauto,Elektriciteit,2009-06-22,2009-08-08,2027-10-16,1382,7
+KN-349-C,TESLA,MODEL 3,Personenauto,Hybride,2020-04-19,2020-05-24,2026-07-30,1777,5
+62-JTE-5,TOYOTA,COROLLA,Personenauto,Elektriciteit,2008-09-22,2008-10-15,2026-09-07,2016,4
+44-XJR-7,PEUGEOT,208,Personenauto,Hybride,2014-02-26,2014-03-06,2027-05-16,1933,4
+YY-640-R,PEUGEOT,208,Personenauto,LPG,2019-03-26,2019-05-02,2027-05-02,850,2
+99-RTL-9,RENAULT,CLIO,Bedrijfsauto,Diesel,2004-12-04,2004-12-13,2027-06-04,3193,
+5-ZPM-65,,GOLF,Bedrijfsauto,Diesel,2023-07-17,2023-09-13,2026-01-24,3043,
+EP-110-V,TESLA,MODEL 3,Personenauto,Elektriciteit,2021-07-11,2021-09-09,2027-08-05,1242,7
+62-SGA-8,PEUGEOT,3008,Personenauto,Elektriciteit,2008-11-14,2008-12-14,2027-06-08,1330,4
+99-HKS-4,,MODEL Y,Personenauto,Diesel,2017-01-13,2017-03-13,2026-12-31,1314,7
+TE-576-H,VOLKSWAGEN,PASSAT,Bedrijfsauto,Hybride,2001-01-09,2001-01-22,2027-05-08,1220,
+YB-709-E,PEUGEOT,2008,Personenauto,Hybride,2020-03-28,2020-05-06,2026-06-26,1307,7
+60-KSG-2,RENAULT,CLIO,Personenauto,Hybride,2004-05-14,2004-06-09,2026-02-08,2303,2
+7-WZK-23,VOLKSWAGEN,POLO,Personenauto,Diesel,2021-07-17,2021-09-02,2027-04-09,915,5
+HW-941-P,,GOLF,Personenauto,Elektriciteit,2016-11-06,2017-01-01,2026-04-22,1999,4
+JX-131-Y,VOLKSWAGEN,GOLF,Bedrijfsauto,Diesel,2014-09-20,2014-10-24,2027-03-19,1190,
+17-FTX-6,RENAULT,CLIO,Bedrijfsauto,LPG,1999-10-29,1999-11-22,2026-01-21,2300,
+86-YPY-1,PEUGEOT,2008,Personenauto,Hybride,1999-12-16,2000-01-01,2026-11-06,1414,5
+73-EVT-3,TOYOTA,AYGO,Personenauto,LPG,2015-05-04,2015-06-23,2026-08-31,7038,7
+TF-166-Y,BMW,1-SERIE,Personenauto,Elektriciteit,2018-09-02,2018-09-25,2027-08-19,1011,4
+2-EKZ-67,VOLKSWAGEN,TIGUAN,Personenauto,Elektriciteit,2005-03-17,2005-04-13,2026-04-03,997,5
+GN-481-J,TOYOTA,YARIS,Personenauto,LPG,2008-07-16,2008-09-01,2027-06-21,2210,2
+4-HJZ-74,TESLA,MODEL Y,Personenauto,Diesel,2006-05-02,2006-05-17,2026-08-15,1164,5
+67-YAG-2,BMW,1-SERIE,Personenauto,Benzine,2018-10-23,2018-10-25,2026-03-31,8661,7
+PV-780-A,VOLKSWAGEN,POLO,Personenauto,elektrisch,2006-09-17,2006-11-15,2026-03-03,1612,4
+86-TYV-6,VOLKSWAGEN,PASSAT,Personenauto,Elektriciteit,2013-04-02,2013-04-11,2026-01-31,1267,5
+8-BCJ-80,RENAULT,CAPTUR,Personenauto,Hybride,2012-01-03,2012-01-07,2026-07-13,914,7
+YG-680-M,TOYOTA,AYGO,Personenauto,LPG,2010-03-01,2010-03-27,2026-10-03,2217,5
+XK-940-C,RENAULT,MEGANE,Personenauto,Elektriciteit,2006-11-05,2006-11-30,2027-02-04,8174,2
+3-RYB-89,RENAULT,CAPTUR,Motorfiets,LPG,2005-04-17,2005-04-25,2026-01-01,611,
+LV-924-G,PEUGEOT,308,Personenauto,Elektriciteit,2005-04-05,2005-05-08,2026-06-10,987,2
+7-BSS-30,PEUGEOT,308,Bedrijfsauto,Benzine,2019-08-28,2019-09-17,2026-02-09,2888,
+61-YDH-3,TESLA,MODEL 3,Personenauto,Hybride,2006-10-19,2006-12-11,2027-04-15,1224,4
+8-NPG-63,TOYOTA,YARIS,Personenauto,Hybride,1999-09-17,1999-10-29,2026-11-13,1091,7
+89-ZLK-8,PEUGEOT,308,Personenauto,Elektriciteit,2018-01-16,2018-02-17,2027-03-10,1216,2
+MR-141-Y,TOYOTA,RAV4,Personenauto,onbekend,2003-10-06,2003-10-28,2027-03-02,1598,2
+7-RVA-18,TOYOTA,AYGO,Motorfiets,Elektriciteit,2020-12-11,2020-12-16,2026-02-10,3480,
+4-BHT-30,BMW,X1,Personenauto,Benzine,2006-09-09,2006-09-17,2027-05-04,1439,4
+85-FMH-1,PEUGEOT,2008,Motorfiets,LPG,2004-06-10,2004-06-26,2027-05-15,2366,
+77-BWZ-8,TOYOTA,YARIS,Personenauto,Elektriciteit,2012-09-15,2012-11-11,2027-01-06,1195,5
+JJ-249-M,BMW,X1,Personenauto,Benzine,2009-04-22,2009-05-26,2027-09-22,1657,5
+6-TTE-47,PEUGEOT,208,Personenauto,Diesel,2000-03-02,2000-03-20,2027-05-29,1369,5
+88-RAA-6,BMW,X1,Personenauto,DIESEL,2014-05-02,2014-06-28,2026-02-03,1120,7
+56-PLC-4,PEUGEOT,208,Personenauto,Hybride,2008-01-23,2008-02-18,2027-08-06,1466,4
+ZB-940-V,TESLA,MODEL 3,Personenauto,Benzine,2004-06-28,2004-08-22,2027-10-29,1402,7
+78-AED-2,PEUGEOT,3008,Personenauto,Hybride,2020-02-09,2020-02-24,2026-06-04,850,2
+3-MBP-71,VOLKSWAGEN,POLO,Personenauto,Diesel,2021-04-01,2021-05-09,2027-10-06,1888,7
+23-FRC-5,TESLA,MODEL 3,Personenauto,LPG,2018-11-14,2018-11-19,2027-10-19,1776,4
+4-BMD-40,TESLA,MODEL 3,Personenauto,Hybride,2017-07-24,2017-09-05,2027-06-05,1393,5
+4-JWY-95,,MODEL 3,Motorfiets,Elektriciteit,2006-08-11,2006-10-06,2027-01-19,1745,
+5-VJN-82,BMW,3-SERIE,Personenauto,Hybride,1998-04-15,1998-06-08,2026-01-13,1745,4
+1-ADR-15,TOYOTA,YARIS,Personenauto,Benzine,2002-10-14,2002-11-22,2026-05-31,1556,4
+2-XTS-59,TESLA,MODEL 3,Bedrijfsauto,Benzine,2024-06-27,2024-08-14,2026-12-24,1216,
+CC-875-Y,VOLKSWAGEN,POLO,Personenauto,Benzine,1999-07-09,1999-07-11,2027-09-27,1029,5
+57-YTP-8,TOYOTA,COROLLA,Personenauto,LPG,2009-09-18,2009-09-19,2026-12-11,1375,5
+SM-321-C,PEUGEOT,208,Bedrijfsauto,DIESEL,2017-07-30,2017-09-01,2026-03-27,1820,
+54-LLV-3,BMW,3-SERIE,Personenauto,Benzine,2021-06-26,2021-07-08,2026-10-08,2387,2
+8-DSR-15,RENAULT,CAPTUR,Personenauto,Hybride,2009-09-09,2009-10-15,2026-05-28,1431,4
+2-KRJ-48,RENAULT,CAPTUR,Personenauto,Benzine,2012-08-26,2012-09-17,2026-03-24,1671,7
+CP-805-X,PEUGEOT,3008,Motorfiets,Hybride,2005-09-04,2005-09-28,2027-09-23,1356,
+69-KVN-3,,MODEL 3,Personenauto,Elektriciteit,2021-05-28,2021-06-06,2027-03-23,2205,5
+3-ZSP-54,PEUGEOT,3008,Personenauto,Diesel,2020-10-10,2020-10-22,2026-09-16,1467,4
+59-DDG-5,TOYOTA,YARIS,Personenauto,Diesel,2009-08-09,2009-09-24,2026-03-31,1187,2
+61-WKE-5,RENAULT,MEGANE,Personenauto,Benzine,2010-08-06,2010-08-19,2027-01-18,1800,2
+95-SXV-4,RENAULT,CLIO,Personenauto,Hybride,2016-02-26,2016-02-26,2026-08-22,1730,7
+VH-243-R,TESLA,MODEL 3,Personenauto,LPG,2017-05-27,2017-06-16,2026-09-09,2136,2
+3-XHA-72,TOYOTA,COROLLA,Bedrijfsauto,LPG,2018-06-02,2018-06-03,2027-09-14,2076,
+83-LEL-1,VOLKSWAGEN,GOLF,Personenauto,Diesel,2005-03-20,2005-05-04,2026-07-09,1913,5
+2-TPR-42,TESLA,MODEL Y,Personenauto,LPG,2018-07-01,2018-07-14,2027-11-17,1226,7
+5-CGJ-77,PEUGEOT,3008,Personenauto,Benzine,2001-05-16,2001-06-11,2027-02-20,2137,5
+RS-934-E,TOYOTA,RAV4,Personenauto,Diesel,2003-10-20,2003-12-18,2026-02-25,2149,4
+44-SSZ-3,PEUGEOT,3008,Personenauto,elektrisch,2022-08-05,2022-09-15,2026-04-24,1811,5
+LK-752-C,RENAULT,CLIO,Bedrijfsauto,Elektriciteit,2014-01-22,2014-02-06,2027-10-18,1636,
+77-WPA-1,TESLA,MODEL Y,Personenauto,Elektriciteit,2015-04-11,2015-04-14,2026-03-14,2006,5
+HD-512-V,TOYOTA,AYGO,Personenauto,Elektriciteit,2002-07-22,2002-08-28,2026-05-12,1328,4
+2-TKX-81,TOYOTA,AYGO,Personenauto,Hybride,2011-04-29,2011-05-11,2027-05-07,2268,4
+XS-352-S,VOLKSWAGEN,PASSAT,Personenauto,Diesel,2019-03-25,2019-04-25,2027-07-10,969,7
+JK-792-C,TOYOTA,AYGO,Personenauto,Elektriciteit,2018-12-29,2019-02-11,2027-07-16,1869,5
+75-LTD-4,TOYOTA,COROLLA,Personenauto,Benzine,1998-12-03,1999-01-11,2026-02-01,2247,5
+VN-315-K,TESLA,MODEL Y,Personenauto,Elektriciteit,2002-03-28,2002-05-22,2027-10-22,1599,5
+JM-378-T,RENAULT,MEGANE,Personenauto,Hybride,2000-05-13,2000-07-04,2026-10-09,1449,5
+85-ZBZ-7,PEUGEOT,308,Personenauto,Benzine,2012-11-04,2012-11-16,2026-11-06,2310,5
+70-PRV-9,TESLA,MODEL Y,Personenauto,Benzine,2015-11-16,2015-12-05,2026-04-07,862,2
+3-CDA-22,,3-SERIE,Personenauto,Hybride,2001-09-21,2001-10-04,2026-01-26,2216,7
+5-VJN-82,TESLA,MODEL 3,Personenauto,Diesel,2011-11-17,2011-12-22,2026-09-07,1468,4
+BR-708-W,BMW,1-SERIE,Personenauto,Hybride,1999-10-08,1999-11-29,2026-04-17,1712,7
+29-PKA-2,TESLA,MODEL 3,Personenauto,LPG,2022-08-14,2022-08-20,2026-03-11,2169,7
+4-KTY-56,VOLKSWAGEN,POLO,Motorfiets,Diesel,2019-03-10,2019-03-11,2026-09-25,3346,
+LY-360-B,TESLA,MODEL 3,Bedrijfsauto,Benzine,2011-02-24,2011-04-05,2027-07-10,3305,
+PG-688-R,TESLA,MODEL 3,Personenauto,Benzine,2001-07-29,2001-08-22,2026-10-31,1489,4
+JV-378-W,RENAULT,CAPTUR,Personenauto,Benzine,2014-04-18,2014-05-29,2026-06-02,2139,7
+86-WNZ-4,PEUGEOT,2008,Personenauto,Hybride,2024-11-28,2024-12-19,2027-08-29,2336,2
+FK-700-B,,MEGANE,Personenauto,Hybride,2008-07-06,2008-08-26,2027-03-24,1430,2
+HB-666-S,PEUGEOT,308,Bedrijfsauto,Hybride,2004-08-05,2004-08-22,2027-06-30,3204,
+LE-360-W,RENAULT,CLIO,Bedrijfsauto,benzine ,2011-11-19,2011-12-27,2026-02-13,3175,
+NX-953-T,VOLKSWAGEN,TIGUAN,Personenauto,Benzine,2022-01-19,2022-03-11,2026-12-15,978,4
+5-HNJ-76,PEUGEOT,3008,Personenauto,Diesel,2006-06-27,2006-07-10,2026-07-01,1038,4
+29-GAG-1,TOYOTA,YARIS,Personenauto,LPG,2014-10-12,2014-12-06,2026-04-04,1611,7
+KY-885-W,VOLKSWAGEN,GOLF,Personenauto,Hybride,2019-10-25,2019-12-01,2027-07-20,1287,5
+16-AJS-8,BMW,1-SERIE,Personenauto,Benzine,2013-03-14,2013-03-26,2026-06-20,1624,2
+2-ZRJ-67,VOLKSWAGEN,TIGUAN,Motorfiets,Benzine,2009-07-15,2009-08-04,2027-07-18,1355,
+80-XWB-9,TOYOTA,COROLLA,Aanhangwagen,Diesel,2005-09-21,2005-09-23,2026-09-05,1841,
+8-TCH-42,TESLA,MODEL Y,Personenauto,Diesel,2012-04-01,2012-05-19,2025-12-22,1257,5
+SE-136-F,RENAULT,CLIO,Personenauto,LPG,2005-07-24,2005-07-02,2026-08-18,1143,2
+WP-563-L,TOYOTA,AYGO,Motorfiets,Elektriciteit,2004-04-08,2004-05-27,2027-03-19,797,
+67-NDX-5,PEUGEOT,308,Personenauto,Elektriciteit,2004-05-28,2004-06-18,2026-07-31,2357,2
+LG-594-D,RENAULT,MEGANE,Personenauto,Benzine,2010-02-28,2010-02-17,2026-10-16,1535,4
+56-KFF-4,TOYOTA,AYGO,Personenauto,Diesel,2023-02-13,2023-03-15,2026-10-06,1094,5
+VH-243-R,VOLKSWAGEN,TIGUAN,Personenauto,Diesel,2000-07-30,2000-09-21,2026-10-13,1145,2
+3-DDT-32,VOLKSWAGEN,PASSAT,Personenauto,LPG,1999-10-27,1999-12-24,2027-02-08,1297,5
+27-PSV-5,TOYOTA,AYGO,Bedrijfsauto,Hybride,2020-03-23,2020-05-10,2026-09-23,1118,
+GR-604-C,TOYOTA,AYGO,Personenauto,Hybride,2016-04-22,2016-06-14,2026-02-11,1911,5
+33-NZA-6,VOLKSWAGEN,TIGUAN,Motorfiets,LPG,2003-12-24,2004-02-17,2027-10-29,1490,
+25-HFW-6,BMW,X1,Motorfiets,DIESEL,2021-04-26,2021-06-24,2027-03-18,2512,
+MM-650-E,TESLA,MODEL Y,Personenauto,Benzine,2011-01-29,2011-03-25,2026-04-06,2346,7
+NZ-119-D,VOLKSWAGEN,POLO,Aanhangwagen,Diesel,2006-03-08,2006-03-18,2026-04-01,1677,
+54-XSA-2,TESLA,MODEL 3,Personenauto,benzine ,2023-11-11,2023-12-10,2027-06-05,1338,7
+4-WDN-60,RENAULT,MEGANE,Personenauto,Elektriciteit,2002-12-08,2002-12-15,2026-04-20,1680,4
+60-ZBH-7,TOYOTA,AYGO,Motorfiets,LPG,2016-11-11,2016-12-19,2027-08-26,2552,
+51-MZY-4,TOYOTA,COROLLA,Bedrijfsauto,Hybride,2012-05-20,2012-07-11,2027-01-31,2698,
+ER-330-E,RENAULT,CAPTUR,Personenauto,Elektriciteit,2002-11-22,2002-12-25,2026-06-26,991,5
+5-YPP-14,RENAULT,MEGANE,Bedrijfsauto,LPG,2000-02-06,2000-03-28,2026-01-27,540,
+49-HDB-9,BMW,1-SERIE,Personenauto,Hybride,1998-08-12,1998-09-08,2026-08-16,930,5
+YN-380-H,PEUGEOT,208,Personenauto,Hybride,2004-08-28,2004-09-25,2026-04-22,1897,4
+7-ESL-80,TESLA,MODEL 3,Bedrijfsauto,Elektriciteit,2018-05-16,2018-06-24,2027-07-23,1307,
+9-JNA-55,PEUGEOT,3008,Personenauto,Elektriciteit,1999-05-23,1999-06-07,2026-11-23,1303,4
+12-DBX-8,TOYOTA,YARIS,Personenauto,Elektriciteit,2020-01-17,2020-02-03,2026-10-04,1292,5
+3-KRD-35,TESLA,MODEL 3,Personenauto,LPG,2013-11-19,2014-01-05,2026-04-07,1916,4
+3-KCK-80,BMW,X1,Bedrijfsauto,Hybride,2002-04-07,2002-05-24,2027-04-17,1500,
+WS-394-M,BMW,1-SERIE,Personenauto,Hybride,2004-09-17,2004-10-13,2026-09-29,2122,2
+8-JGM-28,PEUGEOT,2008,Personenauto,Hybride,2024-09-16,2024-10-10,2027-10-11,1509,2
+EK-110-A,RENAULT,CAPTUR,Personenauto,Diesel,2001-12-11,2002-02-01,2026-11-20,1513,4
+9-SKL-15,VOLKSWAGEN,PASSAT,Personenauto,LPG,2011-06-14,2011-08-11,2027-06-19,1489,7
+MR-687-E,BMW,X1,Personenauto,Benzine,2001-01-23,2001-01-04,2026-08-08,1052,7
+56-GZW-9,TOYOTA,RAV4,Personenauto,LPG,2024-05-08,2024-05-29,2027-06-12,2378,2
+5-VEX-62,TOYOTA,AYGO,Personenauto,Elektriciteit,2013-05-27,2013-07-18,2027-05-22,1711,4
+7-AAS-80,TOYOTA,AYGO,Personenauto,Hybride,2002-10-13,2002-11-04,2027-07-23,2142,2
+73-TNX-9,VOLKSWAGEN,PASSAT,Personenauto,Benzine,2024-04-18,2024-04-18,2027-11-01,910,4
+22-BYL-8,BMW,1-SERIE,Personenauto,LPG,2003-06-14,2003-06-23,2026-05-26,6388,2
+40-HDF-2,BMW,3-SERIE,Bedrijfsauto,Benzine,1998-07-24,1998-09-05,2027-08-01,1722,
+1-KPF-15,BMW,1-SERIE,Personenauto,LPG,2015-04-20,2015-04-21,2026-02-10,1300,7
+41-RRN-7,TOYOTA,YARIS,Personenauto,LPG,2011-08-16,2011-09-11,2027-08-26,1366,7
+31-HEZ-5,PEUGEOT,3008,Motorfiets,LPG,1999-01-03,1999-02-22,2026-08-23,758,
+2-ZKY-80,RENAULT,CAPTUR,Personenauto,Elektriciteit,2021-12-10,2022-02-03,2027-01-15,1537,7
+1-HDS-21,TOYOTA,RAV4,Personenauto,Elektriciteit,2013-06-14,2013-06-29,2027-03-08,921,5
+HS-485-Y,TOYOTA,COROLLA,Personenauto,Diesel,2022-11-23,2022-12-21,2027-04-09,1341,4
+5-PKZ-78,BMW,1-SERIE,Personenauto,LPG,2020-08-24,2020-09-06,2026-08-06,1777,4
+5-TTA-82,TOYOTA,RAV4,Personenauto,Diesel,2003-08-19,2003-10-13,2026-04-21,2238,2
+2-BYV-48,TOYOTA,COROLLA,Personenauto,Benzine,2005-12-10,2006-01-28,2026-08-11,1507,4
+GJ-575-Y,TOYOTA,AYGO,Bedrijfsauto,Benzine,2008-02-27,2008-03-16,2026-04-25,3335,
+6-XAS-69,TESLA,MODEL 3,Motorfiets,Diesel,1999-04-30,1999-05-23,2027-11-12,3118,
+1-JPK-48,TOYOTA,RAV4,Personenauto,Benzine,2006-02-24,2006-03-14,2026-04-13,1404,4
+4-NSF-65,TOYOTA,RAV4,Bedrijfsauto,Hybride,2011-12-13,2012-01-22,2027-10-01,1135,
+1-ZRA-50,TESLA,MODEL Y,Motorfiets,Benzine,2010-11-05,2011-01-01,2026-01-29,2796,
+4-GBY-64,TOYOTA,COROLLA,Bedrijfsauto,Benzine,2016-09-18,2016-11-01,2027-01-24,3462,
+RW-896-E,RENAULT,MEGANE,Personenauto,LPG,2020-10-25,2020-10-03,2027-11-09,2280,4
+5-FBH-62,RENAULT,CLIO,Personenauto,Hybride,2009-09-19,2009-09-30,2027-06-29,1185,4
+40-ASC-6,VOLKSWAGEN,POLO,Personenauto,Diesel,2004-02-16,2004-03-30,2027-04-29,2222,7
+7-TDR-86,TESLA,MODEL Y,Personenauto,Diesel,2024-05-10,2024-06-15,2026-08-20,1533,2
+15-BGE-5,RENAULT,MEGANE,Bedrijfsauto,Benzine,2010-12-24,2010-12-24,2026-12-21,2393,
+2-BLZ-72,RENAULT,CLIO,Personenauto,LPG,2019-01-09,2019-02-14,2026-12-23,1442,4
+LV-429-A,VOLKSWAGEN,PASSAT,Aanhangwagen,Hybride,2009-11-11,2009-11-17,2027-10-08,2402,
+1-AJD-57,PEUGEOT,208,Personenauto,Hybride,2009-04-12,2009-05-23,2026-08-25,1010,4
+FC-478-J,TOYOTA,YARIS,Personenauto,Elektriciteit,2012-08-27,2012-09-20,2026-06-23,2175,5
+LD-406-X,TOYOTA,AYGO,Personenauto,Hybride,2016-02-02,2016-03-30,2026-02-06,1293,7
+15-WLE-6,BMW,X1,Personenauto,Diesel,2005-05-05,2005-05-13,2027-03-15,2154,7
+1-MKH-66,VOLKSWAGEN,GOLF,Bedrijfsauto,Hybride,2017-01-31,2017-02-09,2026-10-03,694,
+6-NLM-76,VOLKSWAGEN,POLO,Motorfiets,Diesel,2014-12-29,2015-01-16,2025-12-21,2215,
+`
+    },
+    provincie: {
+      filename: 'provincie_zh_lichtmasten_demo.csv',
+      csv: `object_id,type_lichtmast,lamptype,straatnaam,plaatsnaam,x_coordinaat,y_coordinaat,plaatsingsjaar,status,laatste_inspectiedatum
+ZH-LM-10000,Houten mast,Natriumlamp,Nieuwestraat 74,Dordrecht,106471,456032,2001,In gebruik,2002-04-10
+ZH-LM-10001,Houten mast,LED,Dorpsstraat 18,Delft,98565,458574,2017,n.v.t.,2017-06-14
+ZH-LM-10002,Standaard stalen mast,LED,Dorpsstraat 88,Gouda,106832,467477,2017,Gepland voor vervanging,2021-03-31
+ZH-LM-10003,Standaard stalen mast,Natriumlamp,Schoolstraat 80,Den Haag,72559,458449,1995,Buiten gebruik,1997-08-31
+ZH-LM-10004,Standaard stalen mast,Natriumlamp,Dorpsstraat 39,Den Haag,63094,452201,2000,Gepland voor vervanging,2000-03-26
+ZH-LM-10005,Standaard stalen mast,Natriumlamp,Nieuwestraat 15,Dordrecht,87916,469770,1993,Buiten gebruik,1997-12-25
+ZH-LM-10006,LED-mast,LED,Schoolstraat 16,Rotterdam,84050,464426,1995,Buiten gebruik,1999-09-20
+ZH-LM-10007,Houten mast,LED,Nieuwestraat 46,Den Haag,108316,457193,2027,Buiten gebruik,2019-01-02
+ZH-LM-10008,Standaard stalen mast,LED,Molenstraat 33,Leiden,81454,466313,2020,In gebruik,2023-05-20
+ZH-LM-10009,Houten mast,LED,Kerkstraat 63,Den Haag,61394,467464,2013,In gebruik,2016-04-05
+ZH-LM-10010,LED-mast,Onbekend,Molenstraat 76,Leiden,72141,444923,2001,Gepland voor vervanging,2004-02-10
+ZH-LM-10011,LED-mast,Natriumlamp,Dorpsstraat 65,Gouda,89103,440452,2002,actief,2002-02-20
+ZH-LM-10012,Houten mast,Onbekend,Molenstraat 89,Gouda,64889,445973,1987,Buiten gebruik,1990-06-24
+ZH-LM-10013,LED-mast,Halogeen,Nieuwestraat 28,Leiden,100032,456940,1999,In gebruik,1999-06-05
+ZH-LM-10014,Historische lantaarn,Halogeen,Dorpsstraat 43,Delft,100935,441430,2022,Buiten gebruik,2023-03-09
+ZH-LM-10015,LED-mast,Onbekend,Schoolstraat 30,Den Haag,83178,450300,2009,In gebruik,2009-01-13
+ZH-LM-10016,Historische lantaarn,Natriumlamp,Schoolstraat 50,Leiden,99889,441487,2014,In gebruik,2017-07-16
+ZH-LM-10017,Historische lantaarn,LED,Nieuwestraat 13,Rotterdam,77174,451692,2017,Buiten gebruik,2020-03-11
+ZH-LM-10018,LED-mast,Halogeen,Molenstraat 19,Dordrecht,97471,460795,2025,In gebruik,2025-07-22
+ZH-LM-10019,Historische lantaarn,Halogeen,Nieuwestraat 52,Leiden,82380,464232,2004,IN GEBRUIK,2006-01-12
+ZH-LM-10026,Houten mast,Halogeen,Molenstraat 31,Leiden,104024,450590,2006,n.v.t.,2010-12-15
+ZH-LM-10021,Houten mast,Onbekend,Dorpsstraat 51,Delft,73458,440236,1993,Buiten gebruik,1997-12-26
+ZH-LM-10022,LED-mast,Halogeen,Schoolstraat 74,Delft,98456,442173,1995,Gepland voor vervanging,1995-10-22
+ZH-LM-10023,Standaard stalen mast,Natriumlamp,Schoolstraat 75,Leiden,64816,446233,2006,Buiten gebruik,2009-04-09
+ZH-LM-10024,Standaard stalen mast,Onbekend,Schoolstraat 23,Leiden,105238,454033,2007,Buiten gebruik,2011-01-17
+ZH-LM-10025,LED-mast,Natriumlamp,Kerkstraat 28,Den Haag,61512,464854,2019,Buiten gebruik,2019-12-04
+ZH-LM-10026,LED-mast,LED,Molenstraat 31,Dordrecht,73129,469256,2013,In gebruik,2016-05-19
+ZH-LM-10027,Standaard stalen mast,Halogeen,Molenstraat 1,Rotterdam,99388,441592,1993,Buiten gebruik,1993-06-12
+ZH-LM-10028,LED-mast,LED,Molenstraat 42,Leiden,102105,468686,2019,Gepland voor vervanging,2019-01-31
+ZH-LM-10029,LED-mast,Natriumlamp,Kerkstraat 54,Den Haag,102528,455935,1986,actief,1988-04-10
+ZH-LM-10030,Houten mast,Onbekend,Schoolstraat 60,Den Haag,100159,450961,2025,In gebruik,2029-05-09
+ZH-LM-10031,Standaard stalen mast,Onbekend,Nieuwestraat 43,Rotterdam,96971,461433,2005,In gebruik,2006-10-04
+ZH-LM-10032,Standaard stalen mast,Halogeen,Schoolstraat 55,Leiden,70236,446897,1986,Gepland voor vervanging,1986-10-20
+ZH-LM-10033,LED-mast,Natriumlamp,Nieuwestraat 34,Dordrecht,96372,445026,2022,Buiten gebruik,2025-09-08
+ZH-LM-10034,Houten mast,Halogeen,,Delft,102421,450133,1987,Buiten gebruik,1990-08-27
+ZH-LM-10035,Houten mast,LED,Schoolstraat 20,Dordrecht,76575,440296,1993,In gebruik,1996-02-18
+ZH-LM-10036,Historische lantaarn,LED,Kerkstraat 70,Delft,109583,442946,2010,In gebruik,2010-02-27
+ZH-LM-10037,LED-mast,Natriumlamp,Molenstraat 21,Delft,71915,448490,2020,In gebruik,2023-05-26
+ZH-LM-10038,Houten mast,Natriumlamp,Schoolstraat 50,Gouda,106506,447949,2007,In gebruik,2009-06-23
+ZH-LM-10039,Standaard stalen mast,LED,Dorpsstraat 87,Leiden,61734,443532,2005,In gebruik,2008-09-13
+ZH-LM-10040,Houten mast,Natriumlamp,Kerkstraat 33,Den Haag,96975,452320,1999,Buiten gebruik,2001-04-19
+ZH-LM-10041,Historische lantaarn,Halogeen,Dorpsstraat 83,Leiden,75848,447581,2012,Buiten gebruik,2013-12-26
+ZH-LM-10042,Historische lantaarn,Onbekend,Schoolstraat 18,Leiden,74195,458662,2016,Buiten gebruik,2020-06-07
+ZH-LM-10043,Historische lantaarn,Natriumlamp,Schoolstraat 88,Delft,81727,440128,1990,Gepland voor vervanging,1992-09-21
+ZH-LM-10044,Historische lantaarn,Halogeen,Kerkstraat 57,Rotterdam,73898,458980,2013,Buiten gebruik,2013-04-17
+ZH-LM-10045,Standaard stalen mast,Natriumlamp,Kerkstraat 18,Leiden,79503,462451,1993,In gebruik,1993-02-20
+ZH-LM-10046,Historische lantaarn,Onbekend,Dorpsstraat 12,Gouda,108235,451523,2017,Buiten gebruik,2017-07-19
+ZH-LM-10047,Historische lantaarn,Natriumlamp,Kerkstraat 5,Rotterdam,81998,469326,2010,Gepland voor vervanging,2010-03-09
+ZH-LM-10048,Standaard stalen mast,LED,Kerkstraat 41,Den Haag,75180,458836,2023,In gebruik,2025-05-31
+ZH-LM-10049,Houten mast,LED,Molenstraat 29,Dordrecht,91939,444450,1992,Gepland voor vervanging,1994-12-12
+ZH-LM-10050,Standaard stalen mast,Halogeen,Dorpsstraat 10,Leiden,101497,464189,1994,In gebruik,1997-01-22
+ZH-LM-10051,Historische lantaarn,LED,Schoolstraat 35,Den Haag,107932,442372,1999,In gebruik,2000-07-13
+ZH-LM-10052,LED-mast,Halogeen,Kerkstraat 42,Dordrecht,93341,441568,1997,In gebruik,1999-04-16
+ZH-LM-10053,LED-mast,Onbekend,Schoolstraat 52,Gouda,95649,449245,2014,Buiten gebruik,2017-01-28
+ZH-LM-10054,Houten mast,Onbekend,Dorpsstraat 19,Dordrecht,87469,452549,2019,n.v.t.,2019-11-06
+ZH-LM-10055,Houten mast,Natriumlamp,Molenstraat 85,Den Haag,99834,456418,2000,In gebruik,2001-06-05
+ZH-LM-10056,Standaard stalen mast,Onbekend,Nieuwestraat 42,Dordrecht,62205,469770,2024,Gepland voor vervanging,2028-01-07
+ZH-LM-10057,Houten mast,LED,Dorpsstraat 83,Gouda,95975,461889,2013,Gepland voor vervanging,2014-10-09
+ZH-LM-10058,Historische lantaarn,Onbekend,Schoolstraat 9,Gouda,98816,457897,2006,Gepland voor vervanging,2008-02-18
+ZH-LM-10059,LED-mast,LED,Nieuwestraat 86,Rotterdam,999999,461613,2002,Gepland voor vervanging,2005-10-18
+ZH-LM-10060,Houten mast,Halogeen,Nieuwestraat 76,Gouda,77188,469777,2001,Gepland voor vervanging,2005-09-19
+ZH-LM-10136,LED-mast,Natriumlamp,Nieuwestraat 22,Leiden,69311,442157,1999,In gebruik,2003-03-31
+ZH-LM-10062,Houten mast,Natriumlamp,Kerkstraat 42,Gouda,69991,466931,1996,Buiten gebruik,1999-09-17
+ZH-LM-10063,LED-mast,Onbekend,Kerkstraat 47,Leiden,68063,453435,2012,Gepland voor vervanging,2012-11-11
+ZH-LM-10064,Standaard stalen mast,Halogeen,,Gouda,94167,449909,2018,Gepland voor vervanging,2020-07-16
+ZH-LM-10065,Historische lantaarn,Natriumlamp,,Rotterdam,89446,460795,1992,Buiten gebruik,1994-09-06
+ZH-LM-10066,LED-mast,Halogeen,Dorpsstraat 33,Den Haag,94124,461635,2016,Gepland voor vervanging,2017-05-01
+ZH-LM-10067,Standaard stalen mast,Natriumlamp,Schoolstraat 70,Leiden,60052,458695,1997,Buiten gebruik,1998-06-16
+ZH-LM-10068,Houten mast,LED,Nieuwestraat 82,Gouda,75848,448696,2001,In gebruik,2005-09-05
+ZH-LM-10069,LED-mast,Halogeen,Kerkstraat 57,Gouda,68408,453865,1997,Buiten gebruik,2001-06-11
+ZH-LM-10070,Houten mast,Onbekend,Nieuwestraat 33,Leiden,106696,464677,1987,In gebruik,1986-06-01
+ZH-LM-10071,Historische lantaarn,Halogeen,Kerkstraat 86,Rotterdam,97925,444242,2009,Buiten gebruik,2012-06-20
+ZH-LM-10072,Houten mast,Onbekend,Nieuwestraat 54,Gouda,65238,464773,1989,Gepland voor vervanging,1991-07-02
+ZH-LM-10073,Houten mast,Onbekend,Dorpsstraat 54,Gouda,67065,459424,1986,In gebruik,1989-02-28
+ZH-LM-10074,Historische lantaarn,LED,Molenstraat 26,Gouda,88825,453029,1989,Gepland voor vervanging,1991-10-04
+ZH-LM-10075,LED-mast,Onbekend,,Den Haag,104554,449633,1987,In gebruik,1990-02-08
+ZH-LM-10076,Standaard stalen mast,Onbekend,,Delft,97422,466787,1989,Buiten gebruik,1989-02-01
+ZH-LM-10077,LED-mast,Onbekend,Kerkstraat 71,Dordrecht,104628,446548,1988,Gepland voor vervanging,1991-12-27
+ZH-LM-10078,Standaard stalen mast,Natriumlamp,Schoolstraat 43,Rotterdam,98269,444594,2011,Gepland voor vervanging,2013-04-13
+ZH-LM-10079,LED-mast,LED,Schoolstraat 50,Leiden,72199,457658,1985,Gepland voor vervanging,1986-07-17
+ZH-LM-10080,Houten mast,LED,Schoolstraat 39,Rotterdam,96417,452936,2004,Buiten gebruik,2006-11-12
+ZH-LM-10081,Historische lantaarn,Natriumlamp,Kerkstraat 27,Delft,95363,448424,2012,Gepland voor vervanging,2013-09-16
+ZH-LM-10082,Historische lantaarn,Halogeen,Schoolstraat 26,Gouda,90423,461506,2008,Gepland voor vervanging,2010-09-28
+ZH-LM-10083,LED-mast,LED,Nieuwestraat 9,Gouda,103508,441676,2028,Gepland voor vervanging,2025-06-01
+ZH-LM-10084,Houten mast,Halogeen,Molenstraat 27,Delft,62314,448963,2005,Gepland voor vervanging,2006-03-26
+ZH-LM-10085,Historische lantaarn,Natriumlamp,Kerkstraat 24,Gouda,86607,463848,2014,Gepland voor vervanging,2016-06-30
+ZH-LM-10086,Standaard stalen mast,Onbekend,Molenstraat 2,Dordrecht,63208,444489,1992,Gepland voor vervanging,1996-11-01
+ZH-LM-10041,LED-mast,Natriumlamp,Nieuwestraat 21,Rotterdam,999999,447235,1995,Gepland voor vervanging,1998-10-12
+ZH-LM-10088,Standaard stalen mast,Natriumlamp,Kerkstraat 7,Gouda,93831,443305,1998,In gebruik,2000-08-11
+ZH-LM-10089,Houten mast,Natriumlamp,Kerkstraat 90,Rotterdam,106282,469683,2027,In gebruik,2003-06-26
+ZH-LM-10090,Historische lantaarn,Halogeen,Nieuwestraat 20,Leiden,89249,449621,1995,Buiten gebruik,1999-04-02
+ZH-LM-10091,Historische lantaarn,Natriumlamp,Dorpsstraat 5,Leiden,95961,467567,2005,Buiten gebruik,2006-03-16
+ZH-LM-10092,Standaard stalen mast,Natriumlamp,Dorpsstraat 20,Dordrecht,101994,449537,1994,In gebruik,1995-04-03
+ZH-LM-10093,Standaard stalen mast,LED,Schoolstraat 16,Dordrecht,81835,462246,2012,In gebruik,2014-04-02
+ZH-LM-10094,Houten mast,Halogeen,Kerkstraat 64,Den Haag,94493,442389,2018,In gebruik,2019-08-19
+ZH-LM-10095,Standaard stalen mast,Natriumlamp,Molenstraat 61,Leiden,78350,468311,2016,In gebruik,2017-09-12
+ZH-LM-10096,Standaard stalen mast,LED,Schoolstraat 25,Rotterdam,79651,441061,2022,Gepland voor vervanging,2025-04-03
+ZH-LM-10097,LED-mast,Onbekend,Dorpsstraat 32,Leiden,63280,445635,2027,Gepland voor vervanging,2005-11-13
+ZH-LM-10098,LED-mast,LED,Nieuwestraat 59,Den Haag,71721,443592,2008,IN GEBRUIK,2012-06-01
+ZH-LM-10099,Houten mast,Onbekend,Kerkstraat 5,Den Haag,67402,465820,2020,Gepland voor vervanging,2020-11-26
+ZH-LM-10100,Historische lantaarn,Onbekend,Nieuwestraat 46,Den Haag,66371,453533,2022,Buiten gebruik,2025-08-17
+ZH-LM-10101,Standaard stalen mast,Halogeen,Kerkstraat 83,Gouda,83556,445560,1995,Buiten gebruik,1998-09-19
+ZH-LM-10102,Historische lantaarn,LED,Molenstraat 64,Leiden,77123,443080,1994,Gepland voor vervanging,1994-08-07
+ZH-LM-10103,Historische lantaarn,Natriumlamp,Nieuwestraat 69,Den Haag,67705,450625,2019,Gepland voor vervanging,2021-08-16
+ZH-LM-10104,Houten mast,Natriumlamp,Molenstraat 31,Dordrecht,84045,446478,2001,Gepland voor vervanging,2002-08-04
+ZH-LM-10105,Standaard stalen mast,LED,Kerkstraat 63,Dordrecht,75705,469183,2017,Gepland voor vervanging,2017-07-14
+ZH-LM-10106,Standaard stalen mast,Natriumlamp,Molenstraat 34,Den Haag,105151,464369,1998,Buiten gebruik,1999-04-15
+ZH-LM-10107,LED-mast,LED,Kerkstraat 85,Delft,100910,456977,2010,In gebruik,2010-08-13
+ZH-LM-10108,Standaard stalen mast,Natriumlamp,Kerkstraat 77,Leiden,75961,459506,1999,In gebruik,2003-05-07
+ZH-LM-10109,Historische lantaarn,Halogeen,Schoolstraat 11,Gouda,74083,460258,1987,Gepland voor vervanging,1991-05-02
+ZH-LM-10110,Houten mast,LED,Kerkstraat 32,Rotterdam,60705,450403,1996,Gepland voor vervanging,1998-04-23
+ZH-LM-10111,LED-mast,Natriumlamp,Molenstraat 26,Rotterdam,104486,445476,2017,Gepland voor vervanging,2017-11-06
+ZH-LM-10112,Houten mast,LED,Dorpsstraat 68,Leiden,106438,442191,2006,In gebruik,2006-01-06
+ZH-LM-10113,Standaard stalen mast,Halogeen,,Dordrecht,101706,442052,2023,Gepland voor vervanging,2024-02-12
+ZH-LM-10114,Houten mast,Onbekend,Molenstraat 34,Dordrecht,98192,445315,2007,Buiten gebruik,2011-07-04
+ZH-LM-10115,Historische lantaarn,Onbekend,Dorpsstraat 82,Delft,108821,455274,1988,Buiten gebruik,1992-08-31
+ZH-LM-10116,Standaard stalen mast,LED,Schoolstraat 30,Rotterdam,94843,461469,2022,In gebruik,2025-07-19
+ZH-LM-10117,Houten mast,LED,Dorpsstraat 85,Gouda,90009,458402,2022,Gepland voor vervanging,2023-04-30
+ZH-LM-10118,Historische lantaarn,Halogeen,Nieuwestraat 55,Leiden,84839,453311,2006,In gebruik,2006-06-28
+ZH-LM-10119,Standaard stalen mast,Onbekend,Dorpsstraat 53,Delft,92050,459786,2004,Buiten gebruik,2004-02-03
+ZH-LM-10120,Historische lantaarn,LED,Schoolstraat 51,Gouda,69557,450990,2014,Gepland voor vervanging,2017-01-21
+ZH-LM-10121,LED-mast,Natriumlamp,Dorpsstraat 53,Dordrecht,79145,451004,1987,Gepland voor vervanging,1986-06-01
+ZH-LM-10122,Standaard stalen mast,Onbekend,Molenstraat 50,Leiden,67910,447088,2000,Buiten gebruik,2003-10-30
+ZH-LM-10123,LED-mast,Onbekend,Schoolstraat 64,Leiden,83748,445485,1994,Gepland voor vervanging,1995-04-05
+ZH-LM-10124,Historische lantaarn,Onbekend,Nieuwestraat 2,Den Haag,72415,468073,2023,In gebruik,2027-08-29
+ZH-LM-10125,LED-mast,Halogeen,Kerkstraat 71,Dordrecht,76113,454895,1991,Gepland voor vervanging,1994-03-03
+ZH-LM-10126,Houten mast,LED,Nieuwestraat 80,Leiden,68849,464685,2009,Buiten gebruik,2010-06-03
+ZH-LM-10127,Houten mast,LED,Dorpsstraat 64,Leiden,79387,451856,2002,Gepland voor vervanging,2003-09-18
+ZH-LM-10128,Standaard stalen mast,Onbekend,Dorpsstraat 40,Delft,63734,468679,1986,In gebruik,1990-09-06
+ZH-LM-10129,LED-mast,Onbekend,Molenstraat 1,Leiden,109140,455036,2023,In gebruik,2023-03-13
+ZH-LM-10130,Standaard stalen mast,Onbekend,Molenstraat 76,Dordrecht,98505,458899,1997,Buiten gebruik,1999-11-07
+ZH-LM-10131,Standaard stalen mast,Onbekend,Nieuwestraat 53,Dordrecht,109968,447921,2025,In gebruik,2026-08-20
+ZH-LM-10132,LED-mast,Halogeen,Schoolstraat 21,Delft,84935,456154,2025,Buiten gebruik,2028-12-24
+ZH-LM-10133,Historische lantaarn,LED,Molenstraat 40,Dordrecht,94890,451378,1988,actief,1988-10-13
+ZH-LM-10134,LED-mast,Onbekend,Schoolstraat 89,Rotterdam,104656,450222,1995,Buiten gebruik,1995-04-20
+ZH-LM-10135,LED-mast,Onbekend,Dorpsstraat 14,Dordrecht,91112,446466,2004,Buiten gebruik,2007-06-25
+ZH-LM-10136,Houten mast,Halogeen,Kerkstraat 27,Delft,85819,450473,2008,Buiten gebruik,2010-02-28
+ZH-LM-10137,LED-mast,LED,Molenstraat 36,Delft,86755,460876,2017,Buiten gebruik,2017-11-24
+ZH-LM-10138,Standaard stalen mast,Halogeen,Dorpsstraat 47,Dordrecht,103948,453491,2020,Buiten gebruik,2024-03-21
+ZH-LM-10139,Standaard stalen mast,Halogeen,Dorpsstraat 2,Den Haag,0,467899,2018,Gepland voor vervanging,2021-07-14
+ZH-LM-10140,LED-mast,Halogeen,Molenstraat 9,Delft,80026,451588,2021,In gebruik,2024-05-18
+ZH-LM-10141,Standaard stalen mast,Halogeen,Molenstraat 83,Rotterdam,104437,467142,2023,Gepland voor vervanging,2025-04-25
+ZH-LM-10142,Houten mast,Onbekend,Schoolstraat 52,Gouda,108651,462675,2025,Buiten gebruik,2025-08-30
+ZH-LM-10143,Historische lantaarn,Onbekend,Schoolstraat 18,Rotterdam,82919,468344,2006,Buiten gebruik,2007-01-16
+ZH-LM-10144,Standaard stalen mast,Natriumlamp,Nieuwestraat 56,Gouda,87079,442188,1989,In gebruik,1991-10-26
+ZH-LM-10145,Historische lantaarn,Natriumlamp,Molenstraat 86,Rotterdam,107759,448972,2021,Gepland voor vervanging,2025-05-28
+ZH-LM-10146,Houten mast,Halogeen,Molenstraat 83,Dordrecht,78520,469452,1992,Gepland voor vervanging,1992-03-09
+ZH-LM-10147,Standaard stalen mast,Halogeen,Nieuwestraat 28,Rotterdam,100131,469368,2009,Buiten gebruik,2010-07-18
+ZH-LM-10148,Standaard stalen mast,Halogeen,Kerkstraat 90,Delft,83576,462151,1991,In gebruik,1994-03-11
+ZH-LM-10149,Houten mast,Natriumlamp,Dorpsstraat 36,Delft,81308,447156,1992,In gebruik,1992-01-08
+ZH-LM-10150,Standaard stalen mast,LED,Nieuwestraat 60,Den Haag,98682,458183,2013,Buiten gebruik,2016-05-04
+ZH-LM-10151,LED-mast,Natriumlamp,Molenstraat 72,Rotterdam,79277,460625,1999,Buiten gebruik,2000-11-27
+ZH-LM-10152,Historische lantaarn,Natriumlamp,Kerkstraat 65,Leiden,95197,463366,2021,Buiten gebruik,2021-03-04
+ZH-LM-10153,Standaard stalen mast,LED,Dorpsstraat 50,Delft,64132,460644,2008,IN GEBRUIK,2009-07-14
+ZH-LM-10154,Standaard stalen mast,Halogeen,Nieuwestraat 43,Dordrecht,74829,461846,2011,Buiten gebruik,2015-11-12
+ZH-LM-10155,Historische lantaarn,Onbekend,Dorpsstraat 88,Dordrecht,102059,455659,1989,Gepland voor vervanging,1992-03-24
+ZH-LM-10156,Historische lantaarn,LED,Dorpsstraat 22,Leiden,72500,451196,2014,In gebruik,2017-06-14
+ZH-LM-10157,Standaard stalen mast,Onbekend,Molenstraat 26,Leiden,108234,469406,1989,In gebruik,1991-11-24
+ZH-LM-10158,LED-mast,LED,,Den Haag,109515,462977,2020,Buiten gebruik,2024-09-12
+ZH-LM-10159,LED-mast,Halogeen,Molenstraat 73,Dordrecht,87388,440426,1998,Buiten gebruik,1996-06-01
+ZH-LM-10160,Historische lantaarn,Halogeen,Dorpsstraat 4,Dordrecht,80037,443449,2007,Buiten gebruik,2007-04-01
+ZH-LM-10161,Historische lantaarn,Halogeen,Dorpsstraat 63,Den Haag,82474,443496,1991,Buiten gebruik,1995-10-24
+ZH-LM-10162,Historische lantaarn,LED,Nieuwestraat 73,Leiden,91211,469402,2005,Gepland voor vervanging,2009-08-11
+ZH-LM-10163,Standaard stalen mast,Natriumlamp,Schoolstraat 67,Gouda,73715,451593,2009,Gepland voor vervanging,2010-05-31
+ZH-LM-10164,Houten mast,Natriumlamp,Molenstraat 2,Den Haag,70548,466603,2009,In gebruik,2013-09-20
+ZH-LM-10165,Standaard stalen mast,LED,Dorpsstraat 6,Rotterdam,94817,452416,2022,Gepland voor vervanging,2022-02-26
+ZH-LM-10166,LED-mast,Onbekend,Dorpsstraat 82,Rotterdam,64651,468131,2019,In gebruik,2020-10-24
+ZH-LM-10167,Houten mast,LED,Kerkstraat 76,Rotterdam,73398,469681,2000,In gebruik,1999-06-01
+ZH-LM-10168,Houten mast,LED,Nieuwestraat 7,Gouda,89911,458745,2013,In gebruik,2016-04-14
+ZH-LM-10169,Historische lantaarn,Onbekend,Dorpsstraat 78,Rotterdam,102723,462049,2010,In gebruik,2014-11-01
+ZH-LM-10170,Historische lantaarn,Natriumlamp,Kerkstraat 51,Delft,99260,452507,2016,Gepland voor vervanging,2016-05-08
+ZH-LM-10171,Standaard stalen mast,Natriumlamp,Kerkstraat 26,Den Haag,101543,464198,1999,In gebruik,2003-02-27
+ZH-LM-10172,Historische lantaarn,LED,Nieuwestraat 82,Delft,63190,453172,2014,Buiten gebruik,2015-05-08
+ZH-LM-10173,Standaard stalen mast,Onbekend,Kerkstraat 13,Rotterdam,62708,445027,2001,In gebruik,2003-08-17
+ZH-LM-10174,LED-mast,LED,Nieuwestraat 49,Den Haag,70670,460181,2018,actief,2020-11-14
+ZH-LM-10175,Standaard stalen mast,LED,Kerkstraat 85,Delft,96431,461242,1986,Gepland voor vervanging,1990-08-10
+ZH-LM-10176,Standaard stalen mast,Natriumlamp,Kerkstraat 24,Delft,89955,453007,2003,Buiten gebruik,2006-10-05
+ZH-LM-10177,Historische lantaarn,Onbekend,Kerkstraat 79,Den Haag,68005,463204,1998,actief,2001-08-24
+ZH-LM-10178,Standaard stalen mast,Natriumlamp,Kerkstraat 12,Leiden,83103,462205,2018,Buiten gebruik,2018-07-12
+ZH-LM-10179,Historische lantaarn,Onbekend,Nieuwestraat 74,Leiden,80264,464982,2004,In gebruik,2005-08-28
+`
+    },
+    waterschap: {
+      filename: 'waterschap_waterkwaliteit_demo.csv',
+      csv: `meetpunt_id,waterschap,parameter,waarde,eenheid,meetdatum,meetmethode
+MP-RIJ-1000,Rijnland,Zuurstof,6.43,mg/l,2025-06-22,Handmatige monstername
+MP-RIJ-1001,Rijnland,Chloride,1.92,mg/l,2025-08-23,Automatische meting
+MP-DEL-1002,Delfland,Chloride,0.9,mg/l,2025-10-03,Automatische meting
+MP-HOL-1003,Hollandse Delta,Chloride,10.38,mg/l,2025-02-15,Sensor continu
+MP-DEL-1004,Delfland,Fosfaat,4.38,mg/l,2025-01-07,Sensor continu
+MP-SCH-1005,Schieland en de Krimpenerwaard,Temperatuur,16.9,,2025-04-01,Sensor continu
+MP-HOL-1006,Hollandse Delta,Chloride,10.33,mg/l,2025-05-26,Handmatige monstername
+MP-DEL-1007,Delfland,Zuurstof,3.93,mg/l,2025-01-15,Automatische meting
+MP-DEL-1008,Delfland,Zuurgraad (pH),7.02,-,2025-03-14,Sensor continu
+MP-RIJ-1009,Rijnland,Chloride,1.11,mg/l,2025-07-20,Handmatige monstername
+MP-RIJ-1010,Rijnland,Nitraat,10.97,mg/l,02/10/2025,Automatische meting
+MP-RIJ-1011,Rijnland,Zuurstof,1.21,mg/l,2025-10-13,Automatische meting
+MP-HOL-1012,Hollandse Delta,Zuurgraad (pH),8.44,-,2025-05-21,Handmatige monstername
+MP-DEL-1013,Delfland,Nitraat,3.9,mg/l,2025-07-22,Handmatige monstername
+MP-DEL-1014,Delfland,Temperatuur,-21.8,°C,2025-02-18,Handmatige monstername
+MP-SCH-1015,Schieland en de Krimpenerwaard,Zuurstof,12.5,,2025-01-16,Handmatige monstername
+MP-DEL-1016,Delfland,Nitraat,12.84,mg/l,2025-06-29,Sensor continu
+MP-SCH-1017,Schieland en de Krimpenerwaard,Zuurstof,9.41,mg/l,2025-04-08,Automatische meting
+MP-RIJ-1018,Rijnland,Fosfaat,11.76,mg/l,2025-10-28,Handmatige monstername
+MP-SCH-1019,Schieland en de Krimpenerwaard,Fosfaat,0.78,,2025-09-04,Automatische meting
+MP-RIJ-1020,Rijnland,Temperatuur,8.6,°C,2025-02-15,Sensor continu
+MP-RIV-1021,Rivierenland,Fosfaat,1.02,mg/l,2025-06-01,Automatische meting
+MP-SCH-1022,Schieland en de Krimpenerwaard,Fosfaat,14.05,mg/l,01/07/2025,Handmatige monstername
+MP-RIV-1023,Rivierenland,Zuurgraad (pH),6.85,-,09/07/2025,Sensor continu
+MP-SCH-1024,Schieland en de Krimpenerwaard,Zuurstof,5.56,mg/l,2025-09-25,Sensor continu
+MP-RIJ-1025,Rijnland,Fosfaat,13.65,mg/l,2025-03-26,Handmatige monstername
+MP-HOL-1026,Hollandse Delta,Nitraat,3.44,mg/l,2025-04-10,Automatische meting
+MP-HOL-1027,Hollandse Delta,Zuurstof,3.69,mg/l,2025-08-30,Handmatige monstername
+MP-RIJ-1028,Rijnland,Nitraat,1.58,mg/l,2025-07-13,Handmatige monstername
+MP-DEL-1029,Delfland,diversen,0.54,mg/l,2025-08-13,Handmatige monstername
+MP-RIJ-1030,Rijnland,Nitraat,6.95,mg/l,2025-09-09,Automatische meting
+MP-HOL-1031,Hollandse Delta,Nitraat,7.33,mg/l,2025-03-30,Automatische meting
+MP-HOL-1032,Hollandse Delta,Temperatuur,46.6,°C,2025-04-08,Automatische meting
+MP-SCH-1033,Schieland en de Krimpenerwaard,Zuurstof,6.71,mg/l,2025-05-03,Handmatige monstername
+MP-RIV-1034,Rivierenland,Nitraat,1.17,mg/l,2025-04-24,Handmatige monstername
+MP-DEL-1035,Delfland,Chloride,9.21,mg/l,2025-07-12,Automatische meting
+MP-RIJ-1036,Rijnland,Temperatuur,-13.4,°C,2025-05-03,Sensor continu
+MP-DEL-1037,Delfland,Chloride,12.98,mg/l,2025-04-19,Automatische meting
+MP-RIJ-1038,Rijnland,Temperatuur,-8.8,°C,24/08/2025,Sensor continu
+MP-DEL-1039,Delfland,Nitraat,12.12,mg/l,2025-06-12,Automatische meting
+MP-DEL-1040,Delfland,Zuurstof,9.98,mg/l,2025-07-04,Automatische meting
+MP-RIJ-1041,Rijnland,Zuurgraad (pH),8.47,,2025-09-04,Handmatige monstername
+MP-DEL-1042,Delfland,Chloride,0.26,mg/l,2025-09-21,Automatische meting
+MP-HOL-1043,Hollandse Delta,Zuurgraad (pH),7.98,-,2025-10-03,Sensor continu
+MP-DEL-1044,Delfland,Temperatuur,16.0,°C,2025-03-13,Sensor continu
+MP-SCH-1045,Schieland en de Krimpenerwaard,Fosfaat,5.87,mg/l,2025-06-14,Sensor continu
+MP-RIJ-1046,Rijnland,Zuurstof,9.88,mg/l,2025-04-04,Sensor continu
+MP-DEL-1047,Delfland,Nitraat,9.01,mg/l,2025-02-11,Handmatige monstername
+MP-DEL-1048,Delfland,Nitraat,4.35,mg/l,2025-03-13,Automatische meting
+MP-SCH-1049,Schieland en de Krimpenerwaard,Zuurgraad (pH),7.13,,13/04/2025,Automatische meting
+MP-HOL-1050,Hollandse Delta,Nitraat,10.22,mg/l,2025-01-07,Handmatige monstername
+MP-HOL-1051,Hollandse Delta,Fosfaat,1.08,mg/l,2025-07-11,Sensor continu
+MP-HOL-1052,Hollandse Delta,Zuurgraad (pH),8.48,-,2025-04-21,Automatische meting
+MP-HOL-1053,Hollandse Delta,Fosfaat,4.72,,2025-08-22,Handmatige monstername
+MP-DEL-1054,Delfland,Zuurstof,0.57,mg/l,2025-04-01,Handmatige monstername
+MP-HOL-1055,Hollandse Delta,Zuurgraad (pH),7.92,-,2025-10-19,Handmatige monstername
+MP-DEL-1056,Delfland,Fosfaat,12.44,mg/l,2025-01-01,Automatische meting
+MP-RIV-1057,Rivierenland,Zuurstof,-9.14,mg/l,2025-09-01,Sensor continu
+MP-RIV-1058,Rivierenland,Zuurgraad (pH),7.27,-,2025-05-14,Automatische meting
+MP-RIV-1059,Rivierenland,Nitraat,-4.18,mg/l,2025-08-02,Automatische meting
+MP-DEL-1060,Delfland,Chloride,2.12,mg/l,2025-06-14,Automatische meting
+MP-DEL-1061,Delfland,Fosfaat,6.4,mg/l,2025-02-11,Sensor continu
+MP-HOL-1062,Hollandse Delta,Temperatuur,8.6,°C,2025-10-19,Sensor continu
+MP-DEL-1063,Delfland,Fosfaat,14.36,mg/l,2025-05-18,Sensor continu
+MP-HOL-1064,Hollandse Delta,Nitraat,0.87,mg/l,2025-02-23,Automatische meting
+MP-SCH-1065,Schieland en de Krimpenerwaard,onbekend,4.41,mg/l,2025-03-31,Automatische meting
+MP-HOL-1066,Hollandse Delta,diversen,7.99,mg/l,2025-06-03,Sensor continu
+MP-RIV-1067,Rivierenland,Chloride,1.84,mg/l,2025-05-05,Handmatige monstername
+MP-RIV-1068,Rivierenland,Chloride,10.23,mg/l,2025-07-09,Sensor continu
+MP-RIV-1069,Rivierenland,Fosfaat,6.6,mg/l,2025-05-10,Sensor continu
+MP-HOL-1070,Hollandse Delta,Fosfaat,12.91,mg/l,2025-05-11,Sensor continu
+MP-DEL-1071,Delfland,Temperatuur,58.6,°C,2025-09-26,Handmatige monstername
+MP-RIJ-1072,Rijnland,Zuurgraad (pH),7.98,-,2025-08-30,Automatische meting
+MP-SCH-1073,Schieland en de Krimpenerwaard,Nitraat,6.73,mg/l,2025-06-24,Sensor continu
+MP-DEL-1074,Delfland,Temperatuur,21.3,°C,2025-04-30,Handmatige monstername
+MP-RIJ-1075,Rijnland,Fosfaat,8.18,mg/l,2025-07-25,Automatische meting
+MP-DEL-1076,Delfland,Zuurstof,11.06,mg/l,2025-07-04,Handmatige monstername
+MP-HOL-1077,Hollandse Delta,Zuurstof,2.0,mg/l,2025-04-24,Sensor continu
+MP-DEL-1078,Delfland,Zuurstof,1.79,mg/l,2025-09-19,Automatische meting
+MP-HOL-1079,Hollandse Delta,Chloride,6.37,mg/l,2025-02-09,Handmatige monstername
+MP-RIV-1080,Rivierenland,Temperatuur,21.0,°C,2025-10-23,Sensor continu
+MP-SCH-1081,Schieland en de Krimpenerwaard,Zuurstof,10.6,mg/l,2025-08-12,Handmatige monstername
+MP-DEL-1082,Delfland,Temperatuur,-16.5,°C,2025-03-24,Handmatige monstername
+MP-SCH-1083,Schieland en de Krimpenerwaard,Nitraat,14.44,mg/l,2025-05-30,Sensor continu
+MP-DEL-1084,Delfland,Zuurgraad (pH),7.0,-,2025-04-11,Handmatige monstername
+MP-SCH-1085,Schieland en de Krimpenerwaard,nitraat ,7.01,-,2025-02-03,Sensor continu
+MP-HOL-1086,Hollandse Delta,Zuurgraad (pH),8.25,-,2025-01-24,Automatische meting
+MP-RIJ-1087,Rijnland,Chloride,8.07,mg/l,2025-10-15,Handmatige monstername
+MP-RIJ-1088,Rijnland,Nitraat,12.0,mg/l,2025-03-30,Automatische meting
+MP-DEL-1089,Delfland,Nitraat,2.69,mg/l,2025-03-31,Handmatige monstername
+MP-DEL-1090,Delfland,Nitraat,0.46,mg/l,2025-02-12,Automatische meting
+MP-DEL-1091,Delfland,Fosfaat,7.1,mg/l,2025-02-07,Sensor continu
+MP-SCH-1092,Schieland en de Krimpenerwaard,Zuurstof,4.45,mg/l,2025-09-03,Handmatige monstername
+MP-SCH-1093,Schieland en de Krimpenerwaard,Nitraat,13.92,mg/l,2025-05-16,Automatische meting
+MP-SCH-1094,Schieland en de Krimpenerwaard,Nitraat,1.04,mg/l,2025-01-27,Sensor continu
+MP-SCH-1095,Schieland en de Krimpenerwaard,Fosfaat,11.9,mg/l,2025-06-18,Handmatige monstername
+MP-RIV-1096,Rivierenland,Temperatuur,6.5,,2025-10-14,Automatische meting
+MP-DEL-1097,Delfland,Zuurgraad (pH),7.35,-,2025-06-01,Sensor continu
+MP-RIJ-1098,Rijnland,Fosfaat,4.74,mg/l,06/02/2025,Handmatige monstername
+MP-RIJ-1099,Rijnland,nitraat ,8.83,mg/l,2025-04-08,Sensor continu
+MP-HOL-1100,Hollandse Delta,Temperatuur,59.6,°C,2025-04-29,Sensor continu
+MP-RIJ-1101,Rijnland,Zuurgraad (pH),7.44,-,2025-08-11,Automatische meting
+MP-RIJ-1102,Rijnland,Fosfaat,14.01,mg/l,2025-04-21,Automatische meting
+MP-HOL-1103,Hollandse Delta,Fosfaat,11.29,mg/l,2025-09-14,Handmatige monstername
+MP-RIV-1104,Rivierenland,Chloride,5.04,mg/l,2025-01-30,Automatische meting
+MP-DEL-1105,Delfland,Zuurgraad (pH),6.55,-,2025-09-20,Handmatige monstername
+MP-DEL-1106,Delfland,Zuurgraad (pH),7.94,-,2025-08-21,Sensor continu
+MP-DEL-1107,Delfland,Fosfaat,3.15,mg/l,2025-06-09,Sensor continu
+MP-SCH-1108,Schieland en de Krimpenerwaard,Fosfaat,2.44,mg/l,26/04/2025,Handmatige monstername
+MP-SCH-1109,Schieland en de Krimpenerwaard,Zuurgraad (pH),7.93,-,2025-06-08,Handmatige monstername
+MP-SCH-1110,Schieland en de Krimpenerwaard,Chloride,10.85,mg/l,2025-01-29,Sensor continu
+MP-SCH-1111,Schieland en de Krimpenerwaard,Nitraat,4.47,mg/l,16/06/2025,Sensor continu
+MP-DEL-1112,Delfland,Fosfaat,2.71,mg/l,2025-05-06,Handmatige monstername
+MP-RIJ-1113,Rijnland,Fosfaat,4.88,mg/l,2025-09-17,Sensor continu
+MP-RIV-1114,Rivierenland,Zuurstof,10.32,mg/l,2025-09-01,Sensor continu
+MP-SCH-1115,Schieland en de Krimpenerwaard,Nitraat,1.68,mg/l,2025-02-05,Sensor continu
+MP-HOL-1116,Hollandse Delta,Temperatuur,12.7,°C,2025-05-10,Sensor continu
+MP-RIV-1117,Rivierenland,Fosfaat,6.8,mg/l,2025-09-02,Sensor continu
+MP-HOL-1118,Hollandse Delta,Zuurgraad (pH),7.24,-,2025-08-17,Sensor continu
+MP-SCH-1119,Schieland en de Krimpenerwaard,Chloride,0.86,mg/l,2025-08-22,Automatische meting
+MP-SCH-1120,Schieland en de Krimpenerwaard,Fosfaat,0.66,mg/l,2025-10-13,Automatische meting
+MP-RIJ-1121,Rijnland,Temperatuur,16.3,°C,2025-01-18,Handmatige monstername
+MP-RIJ-1122,Rijnland,onbekend,8.04,-,2025-08-12,Sensor continu
+MP-RIJ-1123,Rijnland,Fosfaat,5.97,mg/l,2025-02-18,Sensor continu
+MP-RIJ-1124,Rijnland,Nitraat,4.39,mg/l,2025-03-11,Sensor continu
+MP-RIJ-1125,Rijnland,Zuurgraad (pH),6.64,-,2025-03-25,Sensor continu
+MP-RIV-1126,Rivierenland,Temperatuur,7.0,°C,2025-03-30,Handmatige monstername
+MP-HOL-1127,Hollandse Delta,Zuurgraad (pH),7.18,-,05/03/2025,Automatische meting
+MP-HOL-1128,Hollandse Delta,Chloride,1.84,mg/l,2025-05-13,Sensor continu
+MP-HOL-1129,Hollandse Delta,Temperatuur,8.1,°C,2025-04-05,Sensor continu
+MP-SCH-1130,Schieland en de Krimpenerwaard,Temperatuur,11.1,°C,2025-04-14,Sensor continu
+MP-DEL-1131,Delfland,Zuurgraad (pH),6.89,-,2025-09-09,Automatische meting
+MP-RIV-1132,Rivierenland,Zuurstof,12.05,mg/l,2025-01-15,Handmatige monstername
+MP-RIV-1133,Rivierenland,Temperatuur,18.7,°C,2025-03-18,Sensor continu
+MP-SCH-1134,Schieland en de Krimpenerwaard,Zuurstof,2.67,mg/l,2025-06-24,Sensor continu
+MP-DEL-1135,Delfland,Zuurgraad (pH),7.34,-,2025-01-01,Automatische meting
+MP-RIV-1136,Rivierenland,Zuurstof,0.26,mg/l,2025-05-11,Sensor continu
+MP-RIJ-1137,Rijnland,Nitraat,14.29,mg/l,2025-06-17,Automatische meting
+MP-SCH-1138,Schieland en de Krimpenerwaard,Zuurstof,14.25,mg/l,2025-06-04,Handmatige monstername
+MP-RIV-1139,Rivierenland,Zuurstof,5.98,mg/l,2025-05-26,Automatische meting
+MP-DEL-1140,Delfland,Nitraat,13.65,mg/l,2025-07-30,Sensor continu
+MP-RIV-1141,Rivierenland,Fosfaat,12.27,mg/l,27/01/2025,Sensor continu
+MP-DEL-1142,Delfland,Fosfaat,12.21,mg/l,2025-05-10,Sensor continu
+MP-SCH-1143,Schieland en de Krimpenerwaard,Temperatuur,11.9,°C,2025-06-07,Automatische meting
+MP-DEL-1144,Delfland,onbekend,10.73,mg/l,2025-01-29,Handmatige monstername
+MP-DEL-1145,Delfland,Zuurstof,13.19,mg/l,2025-03-13,Sensor continu
+MP-RIV-1146,Rivierenland,Zuurgraad (pH),8.32,-,2025-10-08,Handmatige monstername
+MP-SCH-1147,Schieland en de Krimpenerwaard,Temperatuur,18.1,°C,2025-04-20,Sensor continu
+MP-SCH-1148,Schieland en de Krimpenerwaard,Zuurstof,3.82,mg/l,2025-02-21,Automatische meting
+MP-SCH-1149,Schieland en de Krimpenerwaard,Nitraat,13.56,mg/l,2025-01-14,Automatische meting
+MP-SCH-1150,Schieland en de Krimpenerwaard,Nitraat,9.26,mg/l,2025-09-12,Sensor continu
+MP-RIJ-1151,Rijnland,Fosfaat,12.91,mg/l,2025-07-25,Handmatige monstername
+MP-HOL-1152,Hollandse Delta,Temperatuur,9.6,°C,2025-10-23,Handmatige monstername
+MP-SCH-1153,Schieland en de Krimpenerwaard,Zuurstof,11.03,mg/l,2025-06-09,Sensor continu
+MP-SCH-1154,Schieland en de Krimpenerwaard,Chloride,13.73,mg/l,2025-10-28,Sensor continu
+MP-RIJ-1155,Rijnland,onbekend,12.0,°C,2025-01-07,Sensor continu
+MP-DEL-1156,Delfland,onbekend,3.21,mg/l,2025-10-05,Handmatige monstername
+MP-RIJ-1157,Rijnland,Zuurgraad (pH),8.33,-,2025-01-18,Handmatige monstername
+MP-RIV-1158,Rivierenland,Chloride,6.54,mg/l,2025-03-09,Handmatige monstername
+MP-RIJ-1159,Rijnland,Fosfaat,7.9,mg/l,2025-09-21,Sensor continu
+MP-SCH-1160,Schieland en de Krimpenerwaard,Nitraat,3.41,mg/l,2025-01-30,Automatische meting
+MP-SCH-1161,Schieland en de Krimpenerwaard,Zuurgraad (pH),7.37,-,14/07/2025,Sensor continu
+MP-RIJ-1162,Rijnland,Temperatuur,47.2,°C,2025-06-04,Handmatige monstername
+MP-RIV-1163,Rivierenland,nitraat ,8.44,-,2025-09-09,Sensor continu
+MP-RIV-1164,Rivierenland,Nitraat,10.06,mg/l,2025-03-15,Sensor continu
+MP-HOL-1165,Hollandse Delta,Chloride,13.51,mg/l,2025-03-26,Automatische meting
+MP-RIJ-1166,Rijnland,Zuurgraad (pH),7.6,-,2025-02-27,Sensor continu
+MP-SCH-1167,Schieland en de Krimpenerwaard,Nitraat,13.87,mg/l,2025-04-17,Sensor continu
+MP-RIJ-1168,Rijnland,Chloride,12.78,mg/l,2025-04-21,Sensor continu
+MP-HOL-1169,Hollandse Delta,Fosfaat,8.44,mg/l,2025-03-15,Automatische meting
+MP-HOL-1170,Hollandse Delta,Nitraat,6.42,mg/l,2025-05-13,Sensor continu
+MP-SCH-1171,Schieland en de Krimpenerwaard,Fosfaat,6.36,mg/l,2025-09-20,Sensor continu
+MP-HOL-1172,Hollandse Delta,Nitraat,1.48,mg/l,2025-01-03,Handmatige monstername
+MP-DEL-1173,Delfland,Zuurgraad (pH),8.07,-,2025-10-03,Handmatige monstername
+MP-DEL-1174,Delfland,Chloride,12.35,mg/l,2025-04-29,Sensor continu
+MP-DEL-1175,Delfland,Fosfaat,14.64,mg/l,2025-02-26,Sensor continu
+MP-HOL-1176,Hollandse Delta,Zuurgraad (pH),7.69,,2025-04-21,Handmatige monstername
+MP-HOL-1177,Hollandse Delta,Chloride,0.88,mg/l,2025-01-01,Handmatige monstername
+MP-RIJ-1178,Rijnland,Nitraat,13.48,mg/l,2025-10-14,Sensor continu
+MP-HOL-1179,Hollandse Delta,Fosfaat,4.87,mg/l,2025-03-29,Sensor continu
+MP-DEL-1180,Delfland,Chloride,5.11,mg/l,2025-05-06,Automatische meting
+MP-DEL-1181,Delfland,Fosfaat,13.05,mg/l,02/07/2025,Sensor continu
+MP-HOL-1182,Hollandse Delta,Zuurstof,4.72,mg/l,2025-04-22,Handmatige monstername
+MP-RIJ-1183,Rijnland,Fosfaat,2.98,mg/l,2025-06-11,Automatische meting
+MP-RIV-1184,Rivierenland,Zuurstof,2.84,mg/l,2025-09-03,Handmatige monstername
+MP-RIV-1185,Rivierenland,Temperatuur,12.5,°C,2025-05-22,Handmatige monstername
+MP-RIV-1186,Rivierenland,Fosfaat,7.13,mg/l,18/09/2025,Automatische meting
+MP-RIV-1187,Rivierenland,Fosfaat,3.57,mg/l,2025-06-30,Sensor continu
+MP-HOL-1188,Hollandse Delta,Nitraat,6.11,,2025-07-01,Sensor continu
+MP-HOL-1189,Hollandse Delta,Zuurstof,5.34,mg/l,2025-07-20,Sensor continu
+MP-DEL-1190,Delfland,Temperatuur,19.6,°C,2025-10-21,Sensor continu
+MP-RIJ-1191,Rijnland,Nitraat,12.76,mg/l,02/09/2025,Handmatige monstername
+MP-RIV-1192,Rivierenland,Zuurgraad (pH),7.92,-,2025-07-25,Handmatige monstername
+MP-RIV-1193,Rivierenland,Zuurstof,2.43,mg/l,2025-01-03,Sensor continu
+MP-DEL-1194,Delfland,Zuurgraad (pH),7.23,-,2025-07-24,Handmatige monstername
+MP-RIV-1195,Rivierenland,Chloride,10.19,mg/l,2025-06-24,Automatische meting
+MP-RIV-1196,Rivierenland,Chloride,6.1,mg/l,2025-04-04,Handmatige monstername
+MP-RIJ-1197,Rijnland,Fosfaat,13.47,mg/l,14/01/2025,Sensor continu
+MP-SCH-1198,Schieland en de Krimpenerwaard,Temperatuur,11.9,°C,2025-05-21,Handmatige monstername
+MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
+`
+    }
+  };
+
   const STATE = {
     fileName: null, headers: [], rows: [], profiles: [],
     refTable: null, // { fileName, headers, rows }
@@ -555,12 +1563,15 @@
     if (nullPct > 0) {
       flags.push({ dim: 'compleetheid',
         text: `\`${name}\` moet altijd gevuld zijn (nu ${nullPct.toFixed(1)}% leeg, ${nullCount} van ${total} rijen).`,
-        sql: `SELECT COUNT(*) FROM tabel WHERE ${name} IS NULL;` });
+        sql: `SELECT COUNT(*) FROM tabel WHERE ${name} IS NULL;`,
+        base: total, violations: nullCount, passRate: total ? ((total - nullCount) / total) * 100 : null });
     }
     if ((role === 'identifier' || uniqueRatio > 0.9) && duplicateCount > 0) {
       flags.push({ dim: 'uniciteit',
         text: `\`${name}\` lijkt een sleutel- of identificatieveld en moet uniek zijn (nu ${duplicateCount} duplicaten gevonden).`,
-        sql: `SELECT ${name}, COUNT(*) FROM tabel GROUP BY ${name} HAVING COUNT(*) > 1;` });
+        sql: `SELECT ${name}, COUNT(*) FROM tabel GROUP BY ${name} HAVING COUNT(*) > 1;`,
+        base: nonNullValues.length, violations: duplicateCount,
+        passRate: nonNullValues.length ? ((nonNullValues.length - duplicateCount) / nonNullValues.length) * 100 : null });
     }
     if (patternName && invalidPattern > 0) {
       const patternLabel = {
@@ -569,12 +1580,16 @@
       }[patternName] || 'het verwachte formaat';
       flags.push({ dim: 'juistheid',
         text: `\`${name}\` moet voldoen aan ${patternLabel} (nu ${invalidPattern} afwijkende waarden).`,
-        sql: `-- controle op formaat, voorbeeld voor postcode:\nSELECT * FROM tabel WHERE ${name} NOT SIMILAR TO '[0-9]{4} ?[A-Za-z]{2}';` });
+        sql: `-- controle op formaat, voorbeeld voor postcode:\nSELECT * FROM tabel WHERE ${name} NOT SIMILAR TO '[0-9]{4} ?[A-Za-z]{2}';`,
+        base: nonNullValues.length, violations: invalidPattern,
+        passRate: nonNullValues.length ? ((nonNullValues.length - invalidPattern) / nonNullValues.length) * 100 : null });
     }
     if (typeInfo.confidence < 0.98 && typeInfo.confidence > 0) {
       flags.push({ dim: 'consistentie',
         text: `\`${name}\` bevat waarden die niet allemaal hetzelfde type/formaat volgen (${(typeInfo.confidence*100).toFixed(0)}% consistent als "${typeInfo.type}").`,
-        sql: `-- handmatig te controleren: waarden die afwijken van het meest voorkomende type` });
+        sql: `-- handmatig te controleren: waarden die afwijken van het meest voorkomende type`,
+        base: nonNullValues.length, violations: Math.round(nonNullValues.length * (1 - typeInfo.confidence)),
+        passRate: typeInfo.confidence * 100 });
     }
     if (role === 'date' && nonNullValues.length) {
       const parsed = nonNullValues
@@ -586,14 +1601,17 @@
         if (ageDays > 730) {
           flags.push({ dim: 'actualiteit',
             text: `\`${name}\` lijkt verouderd: de meest recente waarde dateert van meer dan 2 jaar geleden.`,
-            sql: `SELECT MAX(${name}) FROM tabel;` });
+            sql: `SELECT MAX(${name}) FROM tabel;`,
+            passRate: null }); // binair (wel/niet verouderd), geen zinvol percentage
         }
       }
     }
     if (outliers > 0) {
       flags.push({ dim: 'plausibiliteit',
         text: `\`${name}\` bevat ${outliers} statistische uitschieters (buiten het verwachte bereik van ${min ?? '?'} tot ${max ?? '?'}), controleer of dit plausibele waarden zijn.`,
-        sql: `-- IQR-uitschieters, pas grenzen aan op basis van vakkennis` });
+        sql: `-- IQR-uitschieters, pas grenzen aan op basis van vakkennis`,
+        base: numeric.length, violations: outliers,
+        passRate: numeric.length ? ((numeric.length - outliers) / numeric.length) * 100 : null });
     }
 
     return {
@@ -655,6 +1673,7 @@
       document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
       if (btn.dataset.tab === 'export') renderExportPreview();
       if (btn.dataset.tab === 'projects') renderProjectList();
+      if (btn.dataset.tab === 'dashboard') renderDashboard();
     });
   });
 
@@ -918,6 +1937,17 @@
   ['dragleave','drop'].forEach(evt => dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove('drag'); }));
   dropzone.addEventListener('drop', (e) => { if (e.dataTransfer.files[0]) parseFile(e.dataTransfer.files[0], processRows); });
 
+  document.querySelectorAll('.demo-btn[data-demo]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const demo = DEMO_DATASETS[btn.dataset.demo];
+      if (!demo) return;
+      Papa.parse(demo.csv, {
+        header: true, skipEmptyLines: true,
+        complete: (res) => processRows(res.meta.fields || [], res.data, demo.filename)
+      });
+    });
+  });
+
   document.getElementById('reset-btn').addEventListener('click', () => {
     document.getElementById('app-main').style.display = 'none';
     document.getElementById('app-empty').style.display = 'block';
@@ -1140,7 +2170,8 @@
             dim: 'juistheid',
             text: `Elke waarde in \`${primaryCol}\` moet voorkomen in \`${refCol}\` van de referentietabel (nu ${missing.length} rijen zonder match, ${matchPct.toFixed(1)}% dekking).`,
             sql: `SELECT t.* FROM tabel t LEFT JOIN referentie r ON t.${primaryCol} = r.${refCol} WHERE r.${refCol} IS NULL;`,
-            confirmed: true, crossTable: true
+            confirmed: true, crossTable: true,
+            base: primaryValues.length, violations: missing.length, passRate: matchPct
           });
           renderColumns(); renderStats();
           alert('Toegevoegd. Je vindt het terug bij de export en in de "bevestigd"-teller van ' + primaryCol + '.');
@@ -1315,6 +2346,135 @@
       actions.appendChild(loadBtn); actions.appendChild(delBtn);
       row.appendChild(actions);
       wrap.appendChild(row);
+    });
+  }
+
+  // ---------- dashboard ----------
+  const DEMO_INSIGHTS = {
+    'gemeente_amsterdam_meldingen_demo.csv': 'Deze gemeentedataset laat vooral <b>compleetheid</b>- en <b>juistheid</b>sproblemen zien: ontbrekende subcategorieën en hoofdcategorieën die niet in de officiële waardenlijst voorkomen.',
+    'rijk_rdw_voertuigen_demo.csv': 'Deze RDW-steekproef laat vooral <b>juistheid</b>- en <b>plausibiliteit</b>sproblemen zien: tenaamstellingen vóór de eerste toelating, en enkele extreme gewichtsuitschieters.',
+    'provincie_zh_lichtmasten_demo.csv': 'Dit lichtmasten-register laat vooral <b>juistheid</b>- en <b>consistentie</b>problemen zien: statuswaarden buiten de officiële lijst, en een enkele inspectiedatum vóór het plaatsingsjaar.',
+    'waterschap_waterkwaliteit_demo.csv': 'Deze waterkwaliteitsmetingen laten vooral <b>plausibiliteit</b>sproblemen zien: negatieve waarden waar dat fysiek niet kan, en enkele extreme temperatuuruitschieters.'
+  };
+
+  function renderDashboard(){
+    const insightSlot = document.getElementById('dash-insight-slot');
+    const insightHtml = DEMO_INSIGHTS[STATE.fileName];
+    insightSlot.innerHTML = insightHtml ? `<div class="dash-insight">${insightHtml}</div>` : '';
+
+    // -- alle bevestigde regels plat trekken, met kolomnaam erbij --
+    const allRules = [];
+    STATE.profiles.forEach(p => confirmedFlags(p).forEach(f => allRules.push({ ...f, col: p.name })));
+
+    // -- gegroepeerd per NORA-dimensie, elke regel met resultaat --
+    const dimChart = document.getElementById('dash-dimension-chart');
+    dimChart.innerHTML = '';
+    const byDim = {};
+    DIM_KEYS.forEach(k => byDim[k] = []);
+    allRules.forEach(r => { if (byDim[r.dim]) byDim[r.dim].push(r); });
+    const sortedDims = DIM_KEYS.slice().sort((a, b) => byDim[b].length - byDim[a].length);
+
+    if (!allRules.length) {
+      dimChart.appendChild(el('div', {class:'dash-empty', html:'Nog geen bevestigde regels om te tonen. Bevestig signalen bij Profiling, of laad een demo-dataset.'}));
+    } else {
+      sortedDims.forEach(k => {
+        const rules = byDim[k];
+        if (!rules.length) return;
+        const group = el('div', {class:'dash-rule-group'});
+        const dot = el('span', {class:'dot'}); dot.style.background = DIMENSIONS[k].color;
+        group.appendChild(el('div', {class:'dash-rule-group-header'}, [
+          dot,
+          el('span', {class:'label', html: DIMENSIONS[k].label}),
+          el('span', {class:'count', html: `${rules.length} regel${rules.length===1?'':'s'}`})
+        ]));
+        rules
+          .slice()
+          .sort((a, b) => (a.passRate ?? 101) - (b.passRate ?? 101)) // grootste probleem eerst, "handmatig" onderaan
+          .forEach(r => {
+            const item = el('div', {class:'dash-rule-item'});
+            const top = el('div', {class:'dash-rule-top'}, [ tspan('dash-rule-col', r.col) ]);
+            if (typeof r.passRate === 'number') {
+              const pass = Math.max(0, Math.min(100, r.passRate));
+              const label = el('span', {class:'dash-pass-label', html: pass.toFixed(0) + '% voldoet'});
+              label.style.color = pass >= 90 ? 'var(--accent)' : (pass >= 70 ? 'var(--muted)' : 'var(--danger)');
+              const bar = el('div', {class:'dash-passbar'});
+              const passSeg = el('div', {class:'pass'}); passSeg.style.width = pass + '%';
+              const failSeg = el('div', {class:'fail'}); failSeg.style.width = (100 - pass) + '%';
+              bar.appendChild(passSeg); bar.appendChild(failSeg);
+              top.appendChild(el('div', {class:'dash-rule-result'}, [label, bar]));
+            } else {
+              top.appendChild(el('div', {class:'dash-rule-result'}, [
+                el('span', {class:'dash-manual-badge', html: r.ai ? 'AI · handmatig te beoordelen' : (r.custom ? 'Eigen regel · handmatig' : 'Handmatig te beoordelen')})
+              ]));
+            }
+            item.appendChild(top);
+            item.appendChild(safeEl('div', 'dash-rule-text', r.text));
+            group.appendChild(item);
+          });
+        dimChart.appendChild(group);
+      });
+    }
+
+    // -- per kolom, gestapeld op dimensie (zelfde taal als de vingerafdruk) --
+    const colChart = document.getElementById('dash-column-chart');
+    colChart.innerHTML = '';
+    const colData = STATE.profiles
+      .map(p => {
+        const counts = {};
+        DIM_KEYS.forEach(k => counts[k] = 0);
+        confirmedFlags(p).forEach(f => { if (counts[f.dim] !== undefined) counts[f.dim]++; });
+        const total = Object.values(counts).reduce((a, b) => a + b, 0);
+        return { name: p.name, counts, total };
+      })
+      .filter(c => c.total > 0)
+      .sort((a, b) => b.total - a.total);
+
+    if (!colData.length) {
+      colChart.appendChild(el('div', {class:'dash-empty', html:'Nog geen bevestigde regels om te tonen.'}));
+    } else {
+      const colMax = Math.max(1, ...colData.map(c => c.total));
+      colData.forEach(c => {
+        const track = el('div', {class:'dash-bar-track'});
+        DIM_KEYS.forEach(k => {
+          if (!c.counts[k]) return;
+          const segPct = (c.counts[k] / colMax) * 100;
+          const seg = el('div', {class:'dash-bar-fill', title: `${DIMENSIONS[k].label}: ${c.counts[k]}`});
+          seg.style.width = segPct + '%';
+          seg.style.background = DIMENSIONS[k].color;
+          track.appendChild(seg);
+        });
+        colChart.appendChild(el('div', {class:'dash-bar-row'}, [
+          tspan('dash-bar-label mono', c.name),
+          track,
+          el('span', {class:'dash-bar-count', html: String(c.total)})
+        ]));
+      });
+    }
+  }
+
+  // ---------- feedbackformulier (Netlify Forms, AJAX zodat de pagina niet herlaadt) ----------
+  const feedbackForm = document.getElementById('feedback-form');
+  if (feedbackForm) {
+    feedbackForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const statusEl = document.getElementById('feedback-status');
+      const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+      const formData = new FormData(feedbackForm);
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Bezig met versturen...'; statusEl.className = '';
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
+        .then(() => {
+          statusEl.textContent = 'Verstuurd, dank je wel!'; statusEl.className = 'ok';
+          feedbackForm.reset();
+        })
+        .catch(() => {
+          statusEl.textContent = 'Versturen mislukt — probeer het later opnieuw.'; statusEl.className = 'err';
+        })
+        .finally(() => { submitBtn.disabled = false; });
     });
   }
 
