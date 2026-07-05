@@ -244,6 +244,10 @@
   .dash-passbar .fail{ background:var(--danger); }
   .dash-manual-badge{ font-size:10.5px; font-family:var(--font-mono); background:var(--surface-sunken); color:var(--muted); padding:3px 8px; border-radius:10px; white-space:nowrap; }
   .dash-rule-text{ font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .dash-rule-actions{ margin-top:8px; display:flex; align-items:center; gap:10px; }
+  .dash-worklist-btn{ font-size:11.5px; padding:4px 10px; border-radius:20px; border:1px solid var(--line); background:var(--surface); color:var(--accent); cursor:pointer; }
+  .dash-worklist-btn:hover{ border-color:var(--accent); }
+  .dash-worklist-note{ font-size:11px; color:var(--faint); font-family:var(--font-mono); }
   .add-rule-form{ margin-top:10px; display:flex; flex-direction:column; gap:8px; }
   .flag .rule-text{ font-size:13.5px; margin-top:3px; }
   .flag .sql{ font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-top:6px; background:var(--surface-sunken); padding:6px 8px; border-radius:6px; display:block; overflow-x:auto; white-space:pre; }
@@ -400,6 +404,17 @@
     <!-- DASHBOARD TAB -->
     <div class="tab-panel" id="tab-dashboard">
       <div id="dash-insight-slot"></div>
+
+      <div class="field-row" style="align-items:flex-end;">
+        <div>
+          <label class="field-label">Sleutelkolom (voor werklijst-export)</label>
+          <select id="dash-key-column"></select>
+          <div id="dash-key-status" style="font-size:11.5px; margin-top:5px;"></div>
+        </div>
+        <p style="color:var(--faint); font-size:12px; max-width:44ch; margin:0;">
+          Bepaalt welke kolom als identificatie dient in de "Download werklijst"-export per regel — bijv. een klant- of meldingsnummer. Elke export bevat sowieso ook een rijnummer, zodat een rij altijd terug te vinden is, ook als deze kolom niet uniek blijkt. Het exportbestand bevat ongemaskeerde waarden, dus behandel het vertrouwelijk.
+        </p>
+      </div>
 
       <div class="dash-section">
         <h4>Regels per NORA-dimensie, met resultaat</h4>
@@ -1518,6 +1533,17 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
     return { type, confidence: count / total };
   }
 
+  // classificeert een losse waarde, gebruikt om per rij te bepalen of hij van het
+  // dominante kolomtype afwijkt (voor de "type_mismatch"-werklijst-export)
+  function classifyValue(s){
+    const boolTokens = new Set(['true','false','ja','nee','yes','no','0','1']);
+    if (PATTERNS.integer.test(s)) return 'geheel getal';
+    if (PATTERNS.decimal.test(s)) return 'decimaal getal';
+    if (PATTERNS.date_iso.test(s) || PATTERNS.date_nl.test(s)) return 'datum';
+    if (boolTokens.has(s.toLowerCase())) return 'boolean';
+    return 'tekst';
+  }
+
   function quantile(sorted, q){
     const pos = (sorted.length - 1) * q;
     const base = Math.floor(pos);
@@ -1539,13 +1565,13 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
     const typeInfo = inferType(nonNullValues);
     const role = guessColumnRole(name);
 
-    let outliers = 0, min = null, max = null;
+    let outliers = 0, min = null, max = null, iqrLower = null, iqrUpper = null;
     const numeric = nonNullValues.map(v => parseFloat(String(v).replace(',', '.'))).filter(v => !isNaN(v));
     if (typeInfo.type.includes('getal') && numeric.length >= 4) {
       const sorted = [...numeric].sort((a,b) => a-b);
       const q1 = quantile(sorted, 0.25), q3 = quantile(sorted, 0.75), iqr = q3 - q1;
-      const lower = q1 - 1.5 * iqr, upper = q3 + 1.5 * iqr;
-      outliers = numeric.filter(v => v < lower || v > upper).length;
+      iqrLower = q1 - 1.5 * iqr; iqrUpper = q3 + 1.5 * iqr;
+      outliers = numeric.filter(v => v < iqrLower || v > iqrUpper).length;
       min = sorted[0]; max = sorted[sorted.length - 1];
     }
 
@@ -1564,14 +1590,16 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
       flags.push({ dim: 'compleetheid',
         text: `\`${name}\` moet altijd gevuld zijn (nu ${nullPct.toFixed(1)}% leeg, ${nullCount} van ${total} rijen).`,
         sql: `SELECT COUNT(*) FROM tabel WHERE ${name} IS NULL;`,
-        base: total, violations: nullCount, passRate: total ? ((total - nullCount) / total) * 100 : null });
+        base: total, violations: nullCount, passRate: total ? ((total - nullCount) / total) * 100 : null,
+        checkType: 'not_null' });
     }
     if ((role === 'identifier' || uniqueRatio > 0.9) && duplicateCount > 0) {
       flags.push({ dim: 'uniciteit',
         text: `\`${name}\` lijkt een sleutel- of identificatieveld en moet uniek zijn (nu ${duplicateCount} duplicaten gevonden).`,
         sql: `SELECT ${name}, COUNT(*) FROM tabel GROUP BY ${name} HAVING COUNT(*) > 1;`,
         base: nonNullValues.length, violations: duplicateCount,
-        passRate: nonNullValues.length ? ((nonNullValues.length - duplicateCount) / nonNullValues.length) * 100 : null });
+        passRate: nonNullValues.length ? ((nonNullValues.length - duplicateCount) / nonNullValues.length) * 100 : null,
+        checkType: 'duplicate' });
     }
     if (patternName && invalidPattern > 0) {
       const patternLabel = {
@@ -1582,14 +1610,16 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
         text: `\`${name}\` moet voldoen aan ${patternLabel} (nu ${invalidPattern} afwijkende waarden).`,
         sql: `-- controle op formaat, voorbeeld voor postcode:\nSELECT * FROM tabel WHERE ${name} NOT SIMILAR TO '[0-9]{4} ?[A-Za-z]{2}';`,
         base: nonNullValues.length, violations: invalidPattern,
-        passRate: nonNullValues.length ? ((nonNullValues.length - invalidPattern) / nonNullValues.length) * 100 : null });
+        passRate: nonNullValues.length ? ((nonNullValues.length - invalidPattern) / nonNullValues.length) * 100 : null,
+        checkType: 'pattern', patternKey: patternName });
     }
     if (typeInfo.confidence < 0.98 && typeInfo.confidence > 0) {
       flags.push({ dim: 'consistentie',
         text: `\`${name}\` bevat waarden die niet allemaal hetzelfde type/formaat volgen (${(typeInfo.confidence*100).toFixed(0)}% consistent als "${typeInfo.type}").`,
         sql: `-- handmatig te controleren: waarden die afwijken van het meest voorkomende type`,
         base: nonNullValues.length, violations: Math.round(nonNullValues.length * (1 - typeInfo.confidence)),
-        passRate: typeInfo.confidence * 100 });
+        passRate: typeInfo.confidence * 100,
+        checkType: 'type_mismatch', expectedType: typeInfo.type });
     }
     if (role === 'date' && nonNullValues.length) {
       const parsed = nonNullValues
@@ -1602,7 +1632,7 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
           flags.push({ dim: 'actualiteit',
             text: `\`${name}\` lijkt verouderd: de meest recente waarde dateert van meer dan 2 jaar geleden.`,
             sql: `SELECT MAX(${name}) FROM tabel;`,
-            passRate: null }); // binair (wel/niet verouderd), geen zinvol percentage
+            passRate: null }); // binair (wel/niet verouderd), geen zinvolle rij-voor-rij export
         }
       }
     }
@@ -1611,7 +1641,8 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
         text: `\`${name}\` bevat ${outliers} statistische uitschieters (buiten het verwachte bereik van ${min ?? '?'} tot ${max ?? '?'}), controleer of dit plausibele waarden zijn.`,
         sql: `-- IQR-uitschieters, pas grenzen aan op basis van vakkennis`,
         base: numeric.length, violations: outliers,
-        passRate: numeric.length ? ((numeric.length - outliers) / numeric.length) * 100 : null });
+        passRate: numeric.length ? ((numeric.length - outliers) / numeric.length) * 100 : null,
+        checkType: 'outlier_iqr', lower: iqrLower, upper: iqrUpper });
     }
 
     return {
@@ -1641,6 +1672,78 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
       else if (ki > idx) remapped[ki - 1] = v;
     });
     profile.confirmations = remapped;
+  }
+
+  // Herleidt, voor een gegeven bevestigde regel, welke rijen in de HUIDIGE dataset
+  // 'm daadwerkelijk schenden -- gebruikt voor de "werklijst"-export. Geeft null terug
+  // als de regel niet automatisch herleidbaar is (bijv. eigen/AI-regels, of een
+  // cross-tabelregel waarvan de referentietabel niet meer geladen is).
+  function getViolatingRows(colName, flag, keyCol){
+    if (!flag.checkType) return null;
+    const out = [];
+
+    if (flag.checkType === 'not_null') {
+      STATE.rows.forEach((r, i) => { if (isNullish(r[colName])) out.push({ rowNum: i + 1, key: r[keyCol], value: r[colName] }); });
+
+    } else if (flag.checkType === 'duplicate') {
+      const counts = {};
+      STATE.rows.forEach(r => {
+        if (isNullish(r[colName])) return;
+        const v = String(r[colName]).trim();
+        counts[v] = (counts[v] || 0) + 1;
+      });
+      STATE.rows.forEach((r, i) => {
+        if (isNullish(r[colName])) return;
+        const v = String(r[colName]).trim();
+        if (counts[v] > 1) out.push({ rowNum: i + 1, key: r[keyCol], value: r[colName] });
+      });
+
+    } else if (flag.checkType === 'pattern') {
+      STATE.rows.forEach((r, i) => {
+        const v = r[colName];
+        if (isNullish(v)) return;
+        const s = String(v).trim();
+        const bad = flag.patternKey === 'bsn'
+          ? !(PATTERNS.bsn.test(s) && bsnElfproef(s))
+          : !PATTERNS[flag.patternKey].test(s);
+        if (bad) out.push({ rowNum: i + 1, key: r[keyCol], value: v });
+      });
+
+    } else if (flag.checkType === 'type_mismatch') {
+      STATE.rows.forEach((r, i) => {
+        const v = r[colName];
+        if (isNullish(v)) return;
+        if (classifyValue(String(v).trim()) !== flag.expectedType) out.push({ rowNum: i + 1, key: r[keyCol], value: v });
+      });
+
+    } else if (flag.checkType === 'outlier_iqr') {
+      STATE.rows.forEach((r, i) => {
+        const v = parseFloat(String(r[colName]).replace(',', '.'));
+        if (isNaN(v)) return;
+        if (v < flag.lower || v > flag.upper) out.push({ rowNum: i + 1, key: r[keyCol], value: r[colName] });
+      });
+
+    } else if (flag.checkType === 'cross_reference') {
+      if (!STATE.refTable) return null;
+      const refSet = new Set(
+        STATE.refTable.rows.map(rr => String(rr[flag.refCol]).trim()).filter(v => v && v.toLowerCase() !== 'undefined')
+      );
+      STATE.rows.forEach((r, i) => {
+        const v = r[colName];
+        if (isNullish(v)) return;
+        if (!refSet.has(String(v).trim())) out.push({ rowNum: i + 1, key: r[keyCol], value: v });
+      });
+    }
+
+    return out;
+  }
+
+  // controleert of de gekozen sleutelkolom zelf betrouwbaar uniek is (geen duplicaten/lege waarden)
+  function keyColumnIsReliable(keyCol){
+    const values = STATE.rows.map(r => r[keyCol]);
+    if (values.some(v => isNullish(v))) return false;
+    const distinct = new Set(values.map(v => String(v).trim()));
+    return distinct.size === values.length;
   }
 
   // ---------- dom helpers ----------
@@ -2171,7 +2274,8 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
             text: `Elke waarde in \`${primaryCol}\` moet voorkomen in \`${refCol}\` van de referentietabel (nu ${missing.length} rijen zonder match, ${matchPct.toFixed(1)}% dekking).`,
             sql: `SELECT t.* FROM tabel t LEFT JOIN referentie r ON t.${primaryCol} = r.${refCol} WHERE r.${refCol} IS NULL;`,
             confirmed: true, crossTable: true,
-            base: primaryValues.length, violations: missing.length, passRate: matchPct
+            base: primaryValues.length, violations: missing.length, passRate: matchPct,
+            checkType: 'cross_reference', refCol: refCol
           });
           renderColumns(); renderStats();
           alert('Toegevoegd. Je vindt het terug bij de export en in de "bevestigd"-teller van ' + primaryCol + '.');
@@ -2362,6 +2466,26 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
     const insightHtml = DEMO_INSIGHTS[STATE.fileName];
     insightSlot.innerHTML = insightHtml ? `<div class="dash-insight">${insightHtml}</div>` : '';
 
+    // -- sleutelkolom-selector (voor de werklijst-export) --
+    const keySelect = document.getElementById('dash-key-column');
+    const previousKey = keySelect.value;
+    keySelect.innerHTML = STATE.headers.map(h => `<option value="${h}">${h}</option>`).join('');
+    const defaultIdentifier = STATE.profiles.find(p => p.role === 'identifier');
+    keySelect.value = STATE.headers.includes(previousKey) ? previousKey : (defaultIdentifier ? defaultIdentifier.name : STATE.headers[0]);
+
+    function updateKeyStatus(){
+      const statusEl = document.getElementById('dash-key-status');
+      if (keyColumnIsReliable(keySelect.value)) {
+        statusEl.textContent = '✓ Deze kolom is uniek en leeg-vrij — betrouwbaar als sleutel.';
+        statusEl.style.color = 'var(--accent)';
+      } else {
+        statusEl.textContent = '⚠ Deze kolom heeft lege of dubbele waarden — het rijnummer in de export vangt dit op.';
+        statusEl.style.color = 'var(--danger)';
+      }
+    }
+    keySelect.onchange = updateKeyStatus;
+    updateKeyStatus();
+
     // -- alle bevestigde regels plat trekken, met kolomnaam erbij --
     const allRules = [];
     STATE.profiles.forEach(p => confirmedFlags(p).forEach(f => allRules.push({ ...f, col: p.name })));
@@ -2409,6 +2533,37 @@ MP-RIV-1199,Rivierenland,Nitraat,5.31,mg/l,2025-09-30,Handmatige monstername
             }
             item.appendChild(top);
             item.appendChild(safeEl('div', 'dash-rule-text', r.text));
+
+            if (r.checkType) {
+              const actions = el('div', {class:'dash-rule-actions'});
+              const wlBtn = el('button', {class:'dash-worklist-btn', html:'Download werklijst'});
+              wlBtn.addEventListener('click', () => {
+                const keyCol = document.getElementById('dash-key-column').value;
+                const rows = getViolatingRows(r.col, r, keyCol);
+                if (rows === null) {
+                  alert('Kon deze werklijst niet genereren — waarschijnlijk omdat de referentietabel voor deze cross-tabelregel niet meer geladen is.');
+                  return;
+                }
+                if (!rows.length) {
+                  alert('Geen afwijkende rijen gevonden op basis van de huidige data.');
+                  return;
+                }
+                if (!keyColumnIsReliable(keyCol)) {
+                  const proceed = confirm(`Let op: \`${keyCol}\` bevat lege of dubbele waarden en is dus geen betrouwbare sleutel op zichzelf. Er wordt daarom altijd ook een rijnummer meegenomen zodat elke rij toch eenduidig terug te vinden is. Doorgaan?`);
+                  if (!proceed) return;
+                }
+                let csv = `rijnummer,${keyCol},${r.col}\n`;
+                rows.forEach(row => {
+                  const k = String(row.key ?? '').replace(/"/g, '""');
+                  const v = String(row.value ?? '').replace(/"/g, '""');
+                  csv += `${row.rowNum},"${k}","${v}"\n`;
+                });
+                download(`werklijst_${r.col}_${r.dim}.csv`, csv, 'text/csv');
+              });
+              actions.appendChild(wlBtn);
+              item.appendChild(actions);
+            }
+
             group.appendChild(item);
           });
         dimChart.appendChild(group);
